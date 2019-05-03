@@ -20,7 +20,10 @@ and its installation guide is available
 [here](https://www.artisynth.org/Documentation/InstallGuide).
 
 - **Maven2**: Maven is a software project manager. 
-Maven will then install the rest of the Java dependencies. 
+Maven will then install the rest of the Java dependencies.
+
+- **Eclipse**: The ArtiSynth project and its libraries are fully 
+integrated with the Eclipse java compiler. 
 
      
 
@@ -48,7 +51,13 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 
 ## Installation
 
-- Install *ArtiSynth* following its [installation guide](https://www.artisynth.org/Documentation/InstallGuide).
+- Install the [Eclipse IDE](https://www.eclipse.org/downloads/)
+
+- Install *ArtiSynth* following its [installation guide](https://www.artisynth.org/Documentation/InstallGuide)
+and import the `artisynth_core` project into Eclipse.
+
+- Import the `artisynth_rl_models` and `artisynth_rl_restapi` projects
+ into Eclipse.
 
 - Set the environment variable `$ARTISYNTH_HOME` to the 
 `artisynth_core` directory.
