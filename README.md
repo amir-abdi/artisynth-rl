@@ -1,61 +1,73 @@
-# artisynth_rl
-This is the code for **"Muscle Excitation Estimation in Biomechanical Simulation 
-Using NAF Reinforcement Learning"** paper submitted to the Computational 
-Biomechanics for Medicine XIII, A MICCAI 2018 Workshop, Granada, Spain, 
-2018 September 16.
+# Reinforcement Learning for ArtiSynth
 
-This implementation used an 
-[extended version of keras-rl](https://github.com/amir-abdi/keras-rl) to train 
-a reinforcement learning agent for point-to-point reaching tasks in 
-biomechanical environments.  
+This repository holds the plugin for the biomechanical simulation 
+environment of [ArtiSynth](https://www.artisynth.org).
+The  plugin, implemented in Java, exposes the state of a Reinforcement Learning (RL)
+model through a RESTful API.
 
+This repository also holds sample RL model for ArtiSynth (in Java) and 
+ and their corresponding OpenAI Gym environment (in Python).
+The environments follow the protocols of Gym environments and gives you the 
+flexibility to implement the agent with any deep framework of your choice.
 
 ## Dependencies
 
-- **artisynth_core**: [ArtiSynth](https://www.artisynth.org/Main/HomePage) is a 
+- **ArtiSynth**: [ArtiSynth](https://www.artisynth.org/Main/HomePage) is a 
 biomechanical modeling environment which supports both rigid bodies and finite 
 elements. ArtiSynth can be downloaded from its 
 [git repository](https://github.com/artisynth/artisynth_core),
 and its installation guide is available 
-[here](https://www.artisynth.org/Documentation/InstallGuide). 
+[here](https://www.artisynth.org/Documentation/InstallGuide).
 
-- **keras-rl**: keras-rl is a reinforcement learning library build on top of 
-the keras library. This library is extended by me to include some new 
-functionalities, the details of which are available in the paper. 
-Please check out the extended forked version from 
+- **Maven2**: Maven is a software project manager. 
+Maven will then install the rest of the Java dependencies. 
+
+     
+
+#### Other Dependencies
+
+In order to run the sample toy projects the following dependencies 
+need to be installed:
+
+- **keras**: Installation guide is available [here](https://keras.io).
+
+- **TensorFlow**:  Installation guide is available [here](
+https://www.tensorflow.org/install)
+
+- **PyTorch** Installation guide is available [here](
+https://pytorch.org/get-started/locally/)
+
+- **keras-rl**: Keras implementation of some RL algorithms. 
+The library is forked slightly extended by our team 
 [here](https://github.com/amir-abdi/keras-rl).
 
-- **keras**: Details available [here](https://keras.io).
+- **pytorch-a2c-ppo-acktr-gail**: PyTorch implementation of some RL algorithms.
+The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail).
 
-- **TensorFlow**: Although keras can run with theano as its backend, we have
-extensively leveraged the tensorboard features in our implementation; thus, 
-we encourage users to use TensorFlow. 
 
-- **java-json**: The message passing between the keras-rl (python) and 
-artisynth (java) is through a tcp socket and the packets are sent as serialized
-JSON objects. To enable json support in java, include the java-json.jar
-(available in lib/ directory) in runtime libraries of the artisynth_rl project.
 
-## Dependencies
+## Installation
 
-- Install ArtiSynth following its 
-[installation guide](https://www.artisynth.org/Documentation/InstallGuide)
-- [TensorFlow](https://www.tensorflow.org/install/)
-- [keras](https://keras.io/#installation)
-- [keras-rl](https://github.com/amir-abdi/keras-rl)
-- [pytorch](https://pytorch.org/)
+- Install *ArtiSynth* following its [installation guide](https://www.artisynth.org/Documentation/InstallGuide).
 
-Include keras-rl directory as python path for your project. You can do this
-either by adding the keras-rl library root to the PYTHONPATH environment 
-variable, or add
-the library as an external dependency in your IDE.
+- Set the environment variable `$ARTISYNTH_HOME` to the 
+`artisynth_core` directory.
 
-Add `artisynth_rl/artisynth_src` to Classpath of the artisynth project. 
-If you are using eclipse, import the artisynth_rl into eclipse, 
-open the **Run Configurations** for the artisynth_core project, 
-switch to Classpath tab, and add the artisynth_rl project to the Classpath.
+- Install Maven2: `sudo apt-get install maven2`   
 
-Add `artisynth_core/bin` to the PATH environment variable, so that you can run the `artisynth` command.
+- Run the command:    `source setup.sh`
+
+- If you used any of the third-party python libraries 
+(keras-rl, pytorch-a2c-ppo-acktr-gail, etc), make sure to include them in your PYTHONPATH.
+
+
+### Check installation
+
+- Check that ArtiSynth runs successfully by executing the command: `artisynth`
+
+- Run ArtiSynth with one of the RL environments, e.g.: 
+`artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel`
+
 
 ## Running
 
@@ -68,7 +80,7 @@ Run ArtiSynth with the following arguments for the point-to-point toy environmen
 
 Or run with the following for the LumbarSpine environment:
 
-    artisynth -model artisynth.models.lumbarSpine.RlInvLumbarSpine \
+    artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel \
         [ -port 7024 ] 
         -play -noTimeline
         
