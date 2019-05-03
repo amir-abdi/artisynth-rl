@@ -1,0 +1,6419 @@
+beginmuscle Ps_L1_VB_r
+beginpoints
+-0.010159500000 0.023270000000 0.020000000000 segment lumbar1
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 97.000000000000
+optimal_fiber_length 0.184100000000
+tendon_slack_length 0.064700000000
+pennation_angle 10.699986824068
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8 
+endmuscle
+
+beginmuscle Ps_L1_TP_r
+beginpoints
+-0.023250000000 0.014658400000 0.022625160000 segment lumbar1
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 28.000000000000
+optimal_fiber_length 0.181800000000
+tendon_slack_length 0.063900000000
+pennation_angle 10.699986824068
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L1_L2_IVD_r
+beginpoints
+-0.001253620000 0.003507980000 0.020683410000 segment lumbar1
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 55.200000000000
+optimal_fiber_length 0.166000000000
+tendon_slack_length 0.058300000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L2_TP_r
+beginpoints
+-0.021621370000 0.014587030000 0.022248960000 segment lumbar2
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 97.000000000000
+optimal_fiber_length 0.159700000000
+tendon_slack_length 0.056100000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L2_L3_IVD_r
+beginpoints
+0.001962520000 0.003385190000 0.021447850000 segment lumbar2
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 54.740000000000
+optimal_fiber_length 0.144000000000
+tendon_slack_length 0.050600000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L3_TP_r
+beginpoints
+-0.024506550000 0.020728300000 0.028259870000 segment lumbar3
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 46.460000000000
+optimal_fiber_length 0.139400000000
+tendon_slack_length 0.049000000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L3_L4_IVD_r
+beginpoints
+0.001151930000 0.006210630000 0.021153330000 segment lumbar3
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 16.560000000000
+optimal_fiber_length 0.123500000000
+tendon_slack_length 0.043400000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L4_TP_r
+beginpoints
+-0.015649000000 0.024946450000 0.025876840000 segment lumbar4
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 74.000000000000
+optimal_fiber_length 0.119500000000
+tendon_slack_length 0.042000000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L4_L5_IVD_r
+beginpoints
+0.005419630000 0.003947540000 0.020596570000 segment lumbar4
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 36.340000000000
+optimal_fiber_length 0.099800000000
+tendon_slack_length 0.035100000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L5_TP_r
+beginpoints
+-0.005620010000 0.029139760000 0.025288070000 segment lumbar5
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 79.580000000000
+optimal_fiber_length 0.103400000000
+tendon_slack_length 0.036300000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L5_VB_r
+beginpoints
+0.010000000000 0.012410000000 0.019000000000 segment lumbar5
+-0.023800000000 -0.057000000000 0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 87.860000000000
+optimal_fiber_length 0.090300000000
+tendon_slack_length 0.031700000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L1_VB_l
+beginpoints
+-0.010159500000 0.023270000000 -0.020000000000 segment lumbar1
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 97.000000000000
+optimal_fiber_length 0.184100000000
+tendon_slack_length 0.064700000000
+pennation_angle 10.699986824068
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L1_TP_l
+beginpoints
+-0.023250000000 0.014658400000 -0.022630000000 segment lumbar1
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 28.000000000000
+optimal_fiber_length 0.181800000000
+tendon_slack_length 0.063900000000
+pennation_angle 10.699986824068
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L1_L2_IVD_l
+beginpoints
+-0.001253620000 0.003507980000 -0.020680000000 segment lumbar1
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 55.200000000000
+optimal_fiber_length 0.166000000000
+tendon_slack_length 0.058300000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L2_TP_l
+beginpoints
+-0.021621370000 0.014587030000 -0.022250000000 segment lumbar2
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 97.000000000000
+optimal_fiber_length 0.159700000000
+tendon_slack_length 0.056100000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L2_L3_IVD_l
+beginpoints
+0.001962520000 0.003385190000 -0.021450000000 segment lumbar2
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 54.740000000000
+optimal_fiber_length 0.144000000000
+tendon_slack_length 0.050600000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L3_TP_l
+beginpoints
+-0.024506550000 0.020728300000 -0.028260000000 segment lumbar3
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 46.460000000000
+optimal_fiber_length 0.139400000000
+tendon_slack_length 0.049000000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L3_L4_IVD_l
+beginpoints
+0.001151930000 0.006210630000 -0.021150000000 segment lumbar3
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 16.560000000000
+optimal_fiber_length 0.123500000000
+tendon_slack_length 0.043400000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L4_TP_l
+beginpoints
+-0.015649000000 0.024946450000 -0.025880000000 segment lumbar4
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 74.000000000000
+optimal_fiber_length 0.119500000000
+tendon_slack_length 0.042000000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L4_L5_IVD_l
+beginpoints
+0.005419630000 0.003947540000 -0.020600000000 segment lumbar4
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 36.340000000000
+optimal_fiber_length 0.099800000000
+tendon_slack_length 0.035100000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L5_TP_l
+beginpoints
+-0.005620010000 0.029139760000 -0.025290000000 segment lumbar5
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 79.580000000000
+optimal_fiber_length 0.103400000000
+tendon_slack_length 0.036300000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle Ps_L5_VB_l
+beginpoints
+0.010000000000 0.012410000000 -0.019000000000 segment lumbar5
+-0.023800000000 -0.057000000000 -0.075900000000 segment pelvis
+endpoints
+begingroups
+ Psoas_major
+endgroups
+max_force 87.860000000000
+optimal_fiber_length 0.090300000000
+tendon_slack_length 0.031700000000
+pennation_angle 10.699999429140
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.8
+endmuscle
+
+beginmuscle rect_abd_r
+beginpoints
+-0.041582340000 -0.096476180000 -0.010688750000 segment pelvis
+0.088059740000 0.222574960000 -0.034450940000 segment torso
+endpoints
+begingroups
+ Rectus_Abdominis
+endgroups
+max_force 263.000000000000
+optimal_fiber_length 0.2986
+tendon_slack_length 0.0810
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.788
+endmuscle
+
+beginmuscle rect_abd_l
+beginpoints
+-0.041580000000 -0.096480000000 0.010690000000 segment pelvis
+0.088060000000 0.222570000000 0.034450000000 segment torso
+endpoints
+begingroups
+ Rectus_Abdominis
+endgroups
+max_force 263.000000000000
+optimal_fiber_length 0.2986
+tendon_slack_length 0.0810
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.788
+endmuscle
+
+beginmuscle IL_L1_r
+beginpoints
+-0.159409970000 0.010945610000 0.038293660000 segment pelvis
+-0.030070220000 0.015502070000 0.029178450000 segment lumbar1
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder2 range -1 -1
+max_force 50.000000000000
+optimal_fiber_length 0.051493580000
+tendon_slack_length 0.108906400000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L2_r
+beginpoints
+-0.150919010000 0.028177240000 0.042648890000 segment pelvis
+-0.029831860000 0.011668550000 0.028529370000 segment lumbar2
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 71.000000000000
+optimal_fiber_length 0.037260000000
+tendon_slack_length 0.078918000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L3_r
+beginpoints
+-0.136920360000 0.039810800000 0.047511020000 segment pelvis
+-0.029216020000 0.019988140000 0.030539100000 segment lumbar3
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 84.000000000000
+optimal_fiber_length 0.025162000000
+tendon_slack_length 0.053294000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L4_r
+beginpoints
+-0.131837950000 0.036597320000 0.044204130000 segment pelvis
+-0.021962000000 0.025582310000 0.031428710000 segment lumbar4
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 87.000000000000
+optimal_fiber_length 0.016710000000
+tendon_slack_length 0.035393000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L1_l
+beginpoints
+-0.159409970000 0.010945610000 -0.038293660000 segment pelvis
+-0.030070220000 0.015502070000 -0.029178450000 segment lumbar1
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder2 range -1 -1
+max_force 50.000000000000
+optimal_fiber_length 0.051493580000
+tendon_slack_length 0.108906400000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L2_l
+beginpoints
+-0.150919010000 0.028177240000 -0.042648890000 segment pelvis
+-0.029831860000 0.011668550000 -0.028529370000 segment lumbar2
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 71.000000000000
+optimal_fiber_length 0.037260000000
+tendon_slack_length 0.078918000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L3_l
+beginpoints
+-0.136920360000 0.039810800000 -0.047511020000 segment pelvis
+-0.029216020000 0.019988140000 -0.030539100000 segment lumbar3
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 84.000000000000
+optimal_fiber_length 0.025162000000
+tendon_slack_length 0.053294000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_L4_l
+beginpoints
+-0.131837950000 0.036597320000 -0.044204130000 segment pelvis
+-0.021962000000 0.025582310000 -0.031428710000 segment lumbar4
+endpoints
+begingroups
+ iliocostalis_lumborum_pars_lumborum
+endgroups
+wrapobject Cylinder range -1 -1
+max_force 87.000000000000
+optimal_fiber_length 0.016710000000
+tendon_slack_length 0.035393000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.274
+endmuscle
+
+beginmuscle IL_R5_r
+beginpoints
+-0.156296650000 0.014318100000 0.038972070000 segment pelvis
+-0.049629780000 0.002111340000 0.041570000000 segment lumbar2
+-0.079280000000 0.175414550000 0.043267770000 segment torso
+-0.080787610000 0.202608780000 0.043398770000 segment torso
+-0.082701980000 0.231739940000 0.043772350000 segment torso
+-0.083585830000 0.260188130000 0.045012780000 segment torso
+-0.080848720000 0.280828650000 0.045301760000 segment torso
+-0.076137740000 0.300764130000 0.045567780000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 11.000000000000
+optimal_fiber_length 0.154640000000
+tendon_slack_length 0.216471000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.381
+endmuscle
+
+beginmuscle IL_R6_r
+beginpoints
+-0.145249620000 0.031008190000 0.042568040000 segment pelvis
+-0.049214350000 0.002366120000 0.044360010000 segment lumbar2
+-0.080084080000 0.173627420000 0.046147240000 segment torso
+-0.083302030000 0.205151200000 0.046425010000 segment torso
+-0.083959250000 0.235088480000 0.047280000000 segment torso
+-0.081604600000 0.262818260000 0.048266740000 segment torso
+-0.076212320000 0.276765440000 0.048585690000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 14.000000000000
+optimal_fiber_length 0.148260000000
+tendon_slack_length 0.179310000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.417
+endmuscle
+
+beginmuscle IL_R7_r
+beginpoints
+-0.134158650000 0.038356350000 0.045866400000 segment pelvis
+-0.048664910000 0.002373870000 0.047260000000 segment lumbar2
+-0.080348630000 0.174563340000 0.048657060000 segment torso
+-0.083355430000 0.203553700000 0.049176590000 segment torso
+-0.084365970000 0.234156580000 0.049551550000 segment torso
+-0.079204110000 0.257744650000 0.050899700000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.155000000000
+tendon_slack_length 0.153560000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.452
+endmuscle
+
+beginmuscle IL_R8_r
+beginpoints
+-0.137326790000 0.042901140000 0.050180100000 segment pelvis
+-0.048197820000 0.002855240000 0.050010000000 segment lumbar2
+-0.079052330000 0.170344010000 0.051232920000 segment torso
+-0.081106140000 0.203525530000 0.051049580000 segment torso
+-0.079718010000 0.227964000000 0.052286420000 segment torso
+endpoints
+max_force 16.000000000000
+optimal_fiber_length 0.139100000000
+tendon_slack_length 0.130810000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.462
+endmuscle
+
+beginmuscle IL_R9_r
+beginpoints
+-0.133310230000 0.044884140000 0.051139380000 segment pelvis
+-0.048352410000 0.002654610000 0.052190000000 segment lumbar2
+-0.079489660000 0.174496010000 0.053710000000 segment torso
+-0.076939970000 0.193964670000 0.053785850000 segment torso
+endpoints
+max_force 23.000000000000
+optimal_fiber_length 0.155400000000
+tendon_slack_length 0.083830000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.6
+endmuscle
+
+beginmuscle IL_R10_r
+beginpoints
+-0.130302790000 0.047750000000 0.053108570000 segment pelvis
+-0.048088270000 0.002626840000 0.054670000000 segment lumbar2
+-0.074957460000 0.162842080000 0.056234260000 segment torso
+endpoints
+max_force 46.000000000000
+optimal_fiber_length 0.130900000000
+tendon_slack_length 0.069170000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.6
+endmuscle
+
+beginmuscle IL_R11_r
+beginpoints
+-0.127463560000 0.049956900000 0.055470760000 segment pelvis
+-0.047947060000 0.002703370000 0.057690010000 segment lumbar2
+-0.062439660000 0.135881640000 0.059904560000 segment torso
+endpoints
+max_force 57.000000000000
+optimal_fiber_length 0.116100000000
+tendon_slack_length 0.050620000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.64
+endmuscle
+
+beginmuscle IL_R12_r
+beginpoints
+-0.124813500000 0.052124240000 0.057924860000 segment pelvis
+-0.038334630000 0.106096840000 0.059396330000 segment torso
+endpoints
+max_force 68.000000000000
+optimal_fiber_length 0.089000000000
+tendon_slack_length 0.036570000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.64
+endmuscle
+
+beginmuscle IL_R5_l
+beginpoints
+-0.156296650000 0.014318100000 -0.038970000000 segment pelvis
+-0.049629780000 0.002111340000 -0.041570000000 segment lumbar2
+-0.079280000000 0.175414550000 -0.043270000000 segment torso
+-0.080787610000 0.202608780000 -0.043400000000 segment torso
+-0.082701980000 0.231739940000 -0.043770000000 segment torso
+-0.083585830000 0.260188130000 -0.045010000000 segment torso
+-0.080848720000 0.280828650000 -0.045300000000 segment torso
+-0.076137740000 0.300764130000 -0.045570000000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 11.000000000000
+optimal_fiber_length 0.154640000000
+tendon_slack_length 0.216471000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.381
+endmuscle
+
+beginmuscle IL_R6_l
+beginpoints
+-0.145249620000 0.031008190000 -0.042570000000 segment pelvis
+-0.049214350000 0.002366120000 -0.044360000000 segment lumbar2
+-0.080084080000 0.173627420000 -0.046150000000 segment torso
+-0.083302030000 0.205151200000 -0.046430000000 segment torso
+-0.083959250000 0.235088480000 -0.047280000000 segment torso
+-0.081604600000 0.262818260000 -0.048270000000 segment torso
+-0.076212320000 0.276765440000 -0.048590000000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 14.000000000000
+optimal_fiber_length 0.148260000000
+tendon_slack_length 0.179310000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.417
+endmuscle
+
+beginmuscle IL_R7_l
+beginpoints
+-0.134158650000 0.038356350000 -0.045870000000 segment pelvis
+-0.048664910000 0.002373870000 -0.047260000000 segment lumbar2
+-0.080348630000 0.174563340000 -0.048660000000 segment torso
+-0.083355430000 0.203553700000 -0.049180000000 segment torso
+-0.084365970000 0.234156580000 -0.049550000000 segment torso
+-0.079204110000 0.257744650000 -0.050900000000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.155000000000
+tendon_slack_length 0.153560000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.452
+endmuscle
+
+beginmuscle IL_R8_l
+beginpoints
+-0.137326790000 0.042901140000 -0.050180000000 segment pelvis
+-0.048197820000 0.002855240000 -0.050010000000 segment lumbar2
+-0.079052330000 0.170344010000 -0.051230000000 segment torso
+-0.081106140000 0.203525530000 -0.051050000000 segment torso
+-0.079718010000 0.227964000000 -0.052290000000 segment torso
+endpoints
+max_force 16.000000000000
+optimal_fiber_length 0.139100000000
+tendon_slack_length 0.130810000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.462
+endmuscle
+
+beginmuscle IL_R9_l
+beginpoints
+-0.133310230000 0.044884140000 -0.051140000000 segment pelvis
+-0.048352410000 0.002654610000 -0.052190000000 segment lumbar2
+-0.079489660000 0.174496010000 -0.053710000000 segment torso
+-0.076939970000 0.193964670000 -0.053790000000 segment torso
+endpoints
+max_force 23.000000000000
+optimal_fiber_length 0.155400000000
+tendon_slack_length 0.083830000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.6
+endmuscle
+
+beginmuscle IL_R10_l
+beginpoints
+-0.130302790000 0.047750000000 -0.053110000000 segment pelvis
+-0.048088270000 0.002626840000 -0.054670000000 segment lumbar2
+-0.074957460000 0.162842080000 -0.056230000000 segment torso
+endpoints
+max_force 46.000000000000
+optimal_fiber_length 0.130900000000
+tendon_slack_length 0.069170000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.6
+endmuscle
+
+beginmuscle IL_R11_l
+beginpoints
+-0.127463560000 0.049956900000 -0.055470000000 segment pelvis
+-0.047947060000 0.002703370000 -0.057690000000 segment lumbar2
+-0.062439660000 0.135881640000 -0.059900000000 segment torso
+endpoints
+max_force 57.000000000000
+optimal_fiber_length 0.116100000000
+tendon_slack_length 0.050620000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.64
+endmuscle
+
+beginmuscle IL_R12_l
+beginpoints
+-0.124813500000 0.052124240000 -0.057920000000 segment pelvis
+-0.038334630000 0.106096840000 -0.059400000000 segment torso
+endpoints
+max_force 68.000000000000
+optimal_fiber_length 0.089000000000
+tendon_slack_length 0.036570000000
+pennation_angle 13.800000184766
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.64
+endmuscle
+
+beginmuscle LTpT_T1_r
+beginpoints
+-0.045974930000 -0.010570150000 0.003210000000 segment lumbar1
+-0.052381710000 0.399196030000 0.026150000000 segment torso
+endpoints
+wrapobject Chest_r range -1 -1
+max_force 13.000000000000
+optimal_fiber_length 0.102785000000
+tendon_slack_length 0.243050000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.260
+endmuscle
+
+beginmuscle LTpT_T2_r
+beginpoints
+-0.044796150000 -0.014322840000 0.003830000000 segment lumbar2
+-0.056128280000 0.380254740000 0.026540000000 segment torso
+endpoints
+wrapobject Chest_r range -1 -1
+max_force 26.000000000000
+optimal_fiber_length 0.106110000000
+tendon_slack_length 0.255500000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T3_r
+beginpoints
+-0.046201700000 -0.003427380000 0.004070000000 segment lumbar3
+-0.037110000000 -0.014020000000 0.005000000000 segment lumbar1
+-0.065100100000 0.358858700000 0.025980000000 segment torso
+endpoints
+wrapobject Chest_r range -1 -1
+max_force 26.000000000000
+optimal_fiber_length 0.106730000000
+tendon_slack_length 0.256480000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T4_r
+beginpoints
+-0.045785200000 0.007059860000 0.002820000000 segment lumbar4
+-0.037112940000 -0.014024670000 0.006120000000 segment lumbar1
+-0.073253600000 0.337677000000 0.026150000000 segment torso
+endpoints
+wrapobject Chest_r range -1 -1
+max_force 10.000000000000
+optimal_fiber_length 0.106760000000
+tendon_slack_length 0.256600000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T5_r
+beginpoints
+-0.047300110000 0.003969650000 0.000080000000 segment lumbar4
+-0.044000000000 0.004400000000 0.006400000000 segment lumbar2
+-0.076137750000 0.314622450000 0.028080000000 segment torso
+endpoints
+wrapobject Chest_r range -1 -1
+max_force 10.000000000000
+optimal_fiber_length 0.100760000000
+tendon_slack_length 0.242140000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.267
+endmuscle
+
+beginmuscle LTpT_T6_r
+beginpoints
+-0.036220000000 0.016150000000 0.000213560000 segment lumbar5
+-0.044000000000 0.004400000000 0.009000000000 segment lumbar2
+-0.074797840000 0.186285870000 0.015465230000 segment torso
+-0.083380010000 0.289295530000 0.027660000000 segment torso
+endpoints
+max_force 15.000000000000
+optimal_fiber_length 0.103110000000
+tendon_slack_length 0.235970000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.267
+endmuscle
+
+beginmuscle LTpT_T7_r
+beginpoints
+-0.131316510000 0.060512740000 0.000276860000 segment sacrum
+-0.043990000000 0.004400000000 0.011000000000 segment lumbar2
+-0.075955770000 0.186259930000 0.019557060000 segment torso
+-0.082243100000 0.263091070000 0.026470000000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.118270000000
+tendon_slack_length 0.223570000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.306
+endmuscle
+
+beginmuscle LTpT_T8_r
+beginpoints
+-0.142901250000 0.050245600000 0.000374510000 segment sacrum
+-0.046973870000 0.018044260000 0.005657350000 segment lumbar4
+-0.046749750000 0.013545870000 0.008316360000 segment lumbar3
+-0.045315880000 0.003101510000 0.010940000000 segment lumbar2
+-0.080459170000 0.235898930000 0.025500000000 segment torso
+endpoints
+max_force 29.000000000000
+optimal_fiber_length 0.126140000000
+tendon_slack_length 0.199680000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.346
+endmuscle
+
+beginmuscle LTpT_T9_r
+beginpoints
+-0.165821740000 0.026835230000 0.000000000000 segment sacrum
+-0.046720000000 0.017960000000 0.007480000000 segment lumbar4
+-0.046429470000 0.013853410000 0.009689980000 segment lumbar3
+-0.044716340000 0.003473040000 0.011500000000 segment lumbar2
+-0.076939980000 0.218353580000 0.026330000000 segment torso
+endpoints
+max_force 34.000000000000
+optimal_fiber_length 0.124360000000
+tendon_slack_length 0.210770000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T10_r
+beginpoints
+-0.164463420000 0.024561090000 0.010720000000 segment sacrum
+-0.046720000000 0.017960000000 0.012560000000 segment lumbar4
+-0.046100000000 0.014030000000 0.014410000000 segment lumbar3
+-0.044000000000 0.003380000000 0.015250000000 segment lumbar2
+-0.069823310000 0.189775630000 0.018100000000 segment torso
+endpoints
+max_force 37.000000000000
+optimal_fiber_length 0.112300000000
+tendon_slack_length 0.171608000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T11_r
+beginpoints
+-0.157649170000 0.030709400000 0.024040000000 segment sacrum
+-0.046720000000 0.017000000000 0.021940000000 segment lumbar4
+-0.050148150000 0.013488780000 0.020884990000 segment lumbar3
+-0.046000000000 0.003380000000 0.019830000000 segment lumbar2
+-0.060878970000 0.161718230000 0.017620000000 segment torso
+endpoints
+max_force 38.000000000000
+optimal_fiber_length 0.098023000000
+tendon_slack_length 0.149396000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T12_r
+beginpoints
+-0.144759880000 0.048800000000 0.027930000000 segment sacrum
+-0.046720000000 0.017000000000 0.025240000000 segment lumbar4
+-0.049367400000 0.014056380000 0.023897370000 segment lumbar3
+-0.045802800000 0.003983330000 0.022554260000 segment lumbar2
+-0.052717040000 0.131330000000 0.018180000000 segment torso
+endpoints
+max_force 32.000000000000
+optimal_fiber_length 0.077981000000
+tendon_slack_length 0.118850000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R4_r
+beginpoints
+-0.045785200000 0.007059860000 0.002820130000 segment lumbar4
+-0.046332170000 0.005456220000 0.011477880000 segment lumbar2
+-0.076826090000 0.185680200000 0.025995350000 segment torso
+-0.077576810000 0.210980180000 0.028584850000 segment torso
+-0.078296570000 0.237255590000 0.031120600000 segment torso
+-0.076808690000 0.264525700000 0.033519540000 segment torso
+-0.075537780000 0.329822230000 0.038393020000 segment torso
+endpoints
+max_force 10.000000000000
+optimal_fiber_length 0.135533000000
+tendon_slack_length 0.206564000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R5_r
+beginpoints
+-0.047300110000 0.003969650000 0.000080000000 segment lumbar4
+-0.047433800000 0.004632680000 0.014196210000 segment lumbar2
+-0.079894900000 0.184355310000 0.029906770000 segment torso
+-0.079286910000 0.209430700000 0.031968160000 segment torso
+-0.080006650000 0.236892840000 0.034644520000 segment torso
+-0.077767100000 0.263259580000 0.036516320000 segment torso
+-0.074822160000 0.303826860000 0.039193180000 segment torso
+endpoints
+max_force 10.000000000000
+optimal_fiber_length 0.127010700000
+tendon_slack_length 0.193575000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R6_r
+beginpoints
+-0.036220000000 0.016150000000 0.000210000000 segment lumbar5
+-0.046997350000 0.014733570000 0.010844010000 segment lumbar3
+-0.044000000000 0.004400000000 0.014000000000 segment lumbar2
+-0.079894890000 0.182501840000 0.031007320000 segment torso
+-0.080307350000 0.209123020000 0.034660810000 segment torso
+-0.080858000000 0.236431730000 0.037346740000 segment torso
+-0.077491630000 0.263171240000 0.039520250000 segment torso
+-0.073610000000 0.282893430000 0.040095470000 segment torso
+endpoints
+max_force 15.000000000000
+optimal_fiber_length 0.135678000000
+tendon_slack_length 0.184737000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.353
+endmuscle
+
+beginmuscle LTpT_R7_r
+beginpoints
+-0.131320000000 0.060510000000 0.000280000000 segment sacrum
+-0.046720240000 0.018829420000 0.008129570000 segment lumbar4
+-0.046100480000 0.014169420000 0.012855340000 segment lumbar3
+-0.043990000000 0.004315320000 0.017272370000 segment lumbar2
+-0.080348660000 0.181454950000 0.035490290000 segment torso
+-0.080857860000 0.207772040000 0.039588570000 segment torso
+-0.081868380000 0.235972860000 0.042248820000 segment torso
+-0.079204120000 0.259426220000 0.043332690000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.129543000000
+tendon_slack_length 0.194195000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.333
+endmuscle
+
+beginmuscle LTpT_R8_r
+beginpoints
+-0.142900000000 0.050250000000 0.000370000000 segment sacrum
+-0.046528790000 0.018123580000 0.011393350000 segment lumbar4
+-0.045924760000 0.013504700000 0.016039530000 segment lumbar3
+-0.043990000000 0.003880000000 0.020541430000 segment lumbar2
+-0.081267100000 0.180837650000 0.040712850000 segment torso
+-0.081106150000 0.206371060000 0.043716600000 segment torso
+-0.079718020000 0.230529500000 0.046353740000 segment torso
+endpoints
+max_force 29.000000000000
+optimal_fiber_length 0.106076000000
+tendon_slack_length 0.198398000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.290
+endmuscle
+
+beginmuscle LTpT_R9_r
+beginpoints
+-0.165820000000 0.026840000000 -0.000000000000 segment sacrum
+-0.046720240000 0.017681410000 0.014890070000 segment lumbar4
+-0.046100480000 0.013023520000 0.019582090000 segment lumbar3
+-0.043990480000 0.003936710000 0.024188360000 segment lumbar2
+-0.080794200000 0.178821520000 0.043359020000 segment torso
+-0.080224180000 0.200366780000 0.046759930000 segment torso
+endpoints
+max_force 34.000000000000
+optimal_fiber_length 0.091522000000
+tendon_slack_length 0.207985000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.254
+endmuscle
+
+beginmuscle LTpT_R10_r
+beginpoints
+-0.164460000000 0.024560000000 0.010720000000 segment sacrum
+-0.046665400000 0.016864110000 0.019439150000 segment lumbar4
+-0.046045400000 0.012673990000 0.023454030000 segment lumbar3
+-0.043935640000 0.003646430000 0.027332950000 segment lumbar2
+-0.079189350000 0.172878540000 0.046886750000 segment torso
+endpoints
+max_force 37.000000000000
+optimal_fiber_length 0.107241000000
+tendon_slack_length 0.165678000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.327
+endmuscle
+
+beginmuscle LTpT_R11_r
+beginpoints
+-0.157650000000 0.030710000000 0.024040000000 segment sacrum
+-0.046100000000 0.017960000000 0.029418760000 segment lumbar4
+-0.046100010000 0.013933800000 0.032577260000 segment lumbar3
+-0.044023750000 0.004480000000 0.035573440000 segment lumbar2
+-0.065021610000 0.147655710000 0.045555040000 segment torso
+endpoints
+max_force 38.000000000000
+optimal_fiber_length 0.104511000000
+tendon_slack_length 0.131312000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.370
+endmuscle
+
+beginmuscle LTpT_R12_r
+beginpoints
+-0.144760000000 0.048800000000 0.027930000000 segment sacrum
+-0.046720030000 0.017576620000 0.033507230000 segment lumbar4
+-0.046100010000 0.013643880000 0.035873640000 segment lumbar3
+-0.044000000000 0.004400000000 0.038815250000 segment lumbar2
+-0.045035080000 0.121643520000 0.046614830000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 32.000000000000
+optimal_fiber_length 0.063300000000
+tendon_slack_length 0.123000000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.300
+endmuscle
+
+beginmuscle LTpT_T1_l
+beginpoints
+-0.045974930000 -0.010570150000 -0.003210000000 segment lumbar1
+-0.052381710000 0.399196030000 -0.026150000000 segment torso
+endpoints
+wrapobject Chest_l range -1 -1
+max_force 13.000000000000
+optimal_fiber_length 0.102785000000
+tendon_slack_length 0.243050000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.260
+endmuscle
+
+beginmuscle LTpT_T2_l
+beginpoints
+-0.044796150000 -0.014322840000 -0.003830000000 segment lumbar2
+-0.056128280000 0.380254740000 -0.026540000000 segment torso
+endpoints
+wrapobject Chest_l range -1 -1
+max_force 26.000000000000
+optimal_fiber_length 0.106110000000
+tendon_slack_length 0.255500000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T3_l
+beginpoints
+-0.046201700000 -0.003427380000 -0.004070000000 segment lumbar3
+-0.037110000000 -0.014020000000 -0.005000000000 segment lumbar1
+-0.065100100000 0.358858700000 -0.025980000000 segment torso
+endpoints
+wrapobject Chest_l range -1 -1
+max_force 26.000000000000
+optimal_fiber_length 0.106730000000
+tendon_slack_length 0.256480000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T4_l
+beginpoints
+-0.045785200000 0.007059860000 -0.002820000000 segment lumbar4
+-0.037112940000 -0.014024670000 -0.006120000000 segment lumbar1
+-0.073253600000 0.337677000000 -0.026150000000 segment torso
+endpoints
+wrapobject Chest_l range -1 -1
+max_force 10.000000000000
+optimal_fiber_length 0.106760000000
+tendon_slack_length 0.256600000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T5_l
+beginpoints
+-0.047300110000 0.003969650000 -0.000080000000 segment lumbar4
+-0.044000000000 0.004400000000 -0.006400000000 segment lumbar2
+-0.076137750000 0.314622450000 -0.028080000000 segment torso
+endpoints
+wrapobject Chest_l range -1 -1
+max_force 10.000000000000
+optimal_fiber_length 0.100760000000
+tendon_slack_length 0.242140000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.257
+endmuscle
+
+beginmuscle LTpT_T6_l
+beginpoints
+-0.036220000000 0.016150000000 -0.000210000000 segment lumbar5
+-0.044000000000 0.004400000000 -0.009000000000 segment lumbar2
+-0.074797840000 0.186285870000 -0.015470000000 segment torso
+-0.083380010000 0.289295530000 -0.027660000000 segment torso
+endpoints
+max_force 15.000000000000
+optimal_fiber_length 0.103110000000
+tendon_slack_length 0.235970000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.267
+endmuscle
+
+beginmuscle LTpT_T7_l
+beginpoints
+-0.131316510000 0.060512740000 -0.000280000000 segment sacrum
+-0.043990000000 0.004400000000 -0.011000000000 segment lumbar2
+-0.075955770000 0.186259930000 -0.019560000000 segment torso
+-0.082243100000 0.263091070000 -0.026470000000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.118270000000
+tendon_slack_length 0.223570000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.306
+endmuscle
+
+beginmuscle LTpT_T8_l
+beginpoints
+-0.142901250000 0.050245600000 -0.000370000000 segment sacrum
+-0.046973870000 0.018044260000 -0.005660000000 segment lumbar4
+-0.046749750000 0.013545870000 -0.008320000000 segment lumbar3
+-0.045315880000 0.003101510000 -0.010940000000 segment lumbar2
+-0.080459170000 0.235898930000 -0.025500000000 segment torso
+endpoints
+max_force 29.000000000000
+optimal_fiber_length 0.126140000000
+tendon_slack_length 0.199680000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.346
+endmuscle
+
+beginmuscle LTpT_T9_l
+beginpoints
+-0.165821740000 0.026835230000 0.000000000000 segment sacrum
+-0.046720000000 0.017960000000 -0.007480000000 segment lumbar4
+-0.046429470000 0.013853410000 -0.009690000000 segment lumbar3
+-0.044716340000 0.003473040000 -0.011500000000 segment lumbar2
+-0.076939980000 0.218353580000 -0.026330000000 segment torso
+endpoints
+max_force 34.000000000000
+optimal_fiber_length 0.124360000000
+tendon_slack_length 0.210770000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T10_l
+beginpoints
+-0.164463420000 0.024561090000 -0.010720000000 segment sacrum
+-0.046720000000 0.017960000000 -0.012560000000 segment lumbar4
+-0.046100000000 0.014030000000 -0.014410000000 segment lumbar3
+-0.044000000000 0.003380000000 -0.015250000000 segment lumbar2
+-0.069823310000 0.189775630000 -0.018100000000 segment torso
+endpoints
+max_force 37.000000000000
+optimal_fiber_length 0.112300000000
+tendon_slack_length 0.171608000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T11_l
+beginpoints
+-0.157649170000 0.030709400000 -0.024040000000 segment sacrum
+-0.046720000000 0.017000000000 -0.021940000000 segment lumbar4
+-0.050148150000 0.013488780000 -0.020880000000 segment lumbar3
+-0.046000000000 0.003380000000 -0.019830000000 segment lumbar2
+-0.060878970000 0.161718230000 -0.017620000000 segment torso
+endpoints
+max_force 38.000000000000
+optimal_fiber_length 0.098023000000
+tendon_slack_length 0.149396000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_T12_l
+beginpoints
+-0.144759880000 0.048800000000 0.027930000000 segment sacrum
+-0.046720000000 0.017000000000 0.025240000000 segment lumbar4
+-0.049367400000 0.014056380000 0.023897370000 segment lumbar3
+-0.045802800000 0.003983330000 0.022554260000 segment lumbar2
+-0.052717040000 0.131330000000 0.018180000000 segment torso
+endpoints
+max_force 32.000000000000
+optimal_fiber_length 0.077981000000
+tendon_slack_length 0.118850000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R4_l
+beginpoints
+-0.045785200000 0.007059860000 -0.002820000000 segment lumbar4
+-0.046332170000 0.005456220000 -0.011480000000 segment lumbar2
+-0.076826090000 0.185680200000 -0.026000000000 segment torso
+-0.077576810000 0.210980180000 -0.028580000000 segment torso
+-0.078296570000 0.237255590000 -0.031120000000 segment torso
+-0.076808690000 0.264525700000 -0.033520000000 segment torso
+-0.075537780000 0.329822230000 -0.038390000000 segment torso
+endpoints
+max_force 10.000000000000
+optimal_fiber_length 0.135533000000
+tendon_slack_length 0.206564000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R5_l
+beginpoints
+-0.047300110000 0.003969650000 -0.000080000000 segment lumbar4
+-0.047433800000 0.004632680000 -0.014200000000 segment lumbar2
+-0.079894900000 0.184355310000 -0.029910000000 segment torso
+-0.079286910000 0.209430700000 -0.031970000000 segment torso
+-0.080006650000 0.236892840000 -0.034640000000 segment torso
+-0.077767100000 0.263259580000 -0.036520000000 segment torso
+-0.074822160000 0.303826860000 -0.039190000000 segment torso
+endpoints
+max_force 10.000000000000
+optimal_fiber_length 0.127010700000
+tendon_slack_length 0.193575000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.330
+endmuscle
+
+beginmuscle LTpT_R6_l
+beginpoints
+-0.036220000000 0.016150000000 -0.000210000000 segment lumbar5
+-0.046997350000 0.014733570000 -0.010840000000 segment lumbar3
+-0.044000000000 0.004400000000 -0.014000000000 segment lumbar2
+-0.079894890000 0.182501840000 -0.031010000000 segment torso
+-0.080307350000 0.209123020000 -0.034660000000 segment torso
+-0.080858000000 0.236431730000 -0.037350000000 segment torso
+-0.077491630000 0.263171240000 -0.039520000000 segment torso
+-0.073610000000 0.282893430000 -0.040100000000 segment torso
+endpoints
+max_force 15.000000000000
+optimal_fiber_length 0.135678000000
+tendon_slack_length 0.184737000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.353
+endmuscle
+
+beginmuscle LTpT_R7_l
+beginpoints
+-0.131320000000 0.060510000000 -0.000280000000 segment sacrum
+-0.046720240000 0.018829420000 -0.008130000000 segment lumbar4
+-0.046100480000 0.014169420000 -0.012860000000 segment lumbar3
+-0.043990000000 0.004315320000 -0.017270000000 segment lumbar2
+-0.080348660000 0.181454950000 -0.035490000000 segment torso
+-0.080857860000 0.207772040000 -0.039590000000 segment torso
+-0.081868380000 0.235972860000 -0.042250000000 segment torso
+-0.079204120000 0.259426220000 -0.043330000000 segment torso
+endpoints
+max_force 18.000000000000
+optimal_fiber_length 0.129543000000
+tendon_slack_length 0.194195000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.333
+endmuscle
+
+beginmuscle LTpT_R8_l
+beginpoints
+-0.142900000000 0.050250000000 -0.000370000000 segment sacrum
+-0.046528790000 0.018123580000 -0.011390000000 segment lumbar4
+-0.045924760000 0.013504700000 -0.016040000000 segment lumbar3
+-0.043990000000 0.003880000000 -0.020540000000 segment lumbar2
+-0.081267100000 0.180837650000 -0.040710000000 segment torso
+-0.081106150000 0.206371060000 -0.043720000000 segment torso
+-0.079718020000 0.230529500000 -0.046350000000 segment torso
+endpoints
+max_force 29.000000000000
+optimal_fiber_length 0.106076000000
+tendon_slack_length 0.198398000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.290
+endmuscle
+
+beginmuscle LTpT_R9_l
+beginpoints
+-0.165820000000 0.026840000000 -0.000000000000 segment sacrum
+-0.046720240000 0.017681410000 -0.014890000000 segment lumbar4
+-0.046100480000 0.013023520000 -0.019580000000 segment lumbar3
+-0.043990480000 0.003936710000 -0.024190000000 segment lumbar2
+-0.080794200000 0.178821520000 -0.043360000000 segment torso
+-0.080224180000 0.200366780000 -0.046760000000 segment torso
+endpoints
+max_force 34.000000000000
+optimal_fiber_length 0.091522000000
+tendon_slack_length 0.207985000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.254
+endmuscle
+
+beginmuscle LTpT_R10_l
+beginpoints
+-0.164460000000 0.024560000000 -0.010720000000 segment sacrum
+-0.046665400000 0.016864110000 -0.019440000000 segment lumbar4
+-0.046045400000 0.012673990000 -0.023450000000 segment lumbar3
+-0.043935640000 0.003646430000 -0.027330000000 segment lumbar2
+-0.079189350000 0.172878540000 -0.046890000000 segment torso
+endpoints
+max_force 37.000000000000
+optimal_fiber_length 0.107241000000
+tendon_slack_length 0.165678000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.327
+endmuscle
+
+beginmuscle LTpT_R11_l
+beginpoints
+-0.157650000000 0.030710000000 -0.024040000000 segment sacrum
+-0.046100000000 0.017960000000 -0.029420000000 segment lumbar4
+-0.046100010000 0.013933800000 -0.032580000000 segment lumbar3
+-0.044023750000 0.004480000000 -0.035570000000 segment lumbar2
+-0.065021610000 0.147655710000 -0.045560000000 segment torso
+endpoints
+max_force 38.000000000000
+optimal_fiber_length 0.104511000000
+tendon_slack_length 0.131312000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.370
+endmuscle
+
+beginmuscle LTpT_R12_l
+beginpoints
+-0.144760000000 0.048800000000 -0.027930000000 segment sacrum
+-0.046720030000 0.017576620000 -0.033510000000 segment lumbar4
+-0.046100010000 0.013643880000 -0.035870000000 segment lumbar3
+-0.044000000000 0.004400000000 -0.038820000000 segment lumbar2
+-0.045035080000 0.121643520000 -0.046610000000 segment torso
+endpoints
+wrapobject Cylinder2 range -1 -1
+max_force 32.000000000000
+optimal_fiber_length 0.063300000000
+tendon_slack_length 0.123000000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.3
+endmuscle
+
+beginmuscle LTpL_L5_r
+beginpoints
+-0.141250000000 0.073890000000 0.034870000000 segment sacrum
+-0.010342870000 0.026650000000 0.022400000000 segment lumbar5
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 53.000000000000
+optimal_fiber_length 0.051468000000
+tendon_slack_length 0.001000000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 1
+endmuscle
+
+beginmuscle LTpL_L4_r
+beginpoints
+-0.150501330000 0.017486580000 0.037309670000 segment pelvis
+-0.020342870000 0.023053770000 0.022401620000 segment lumbar4
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 51.000000000000
+optimal_fiber_length 0.039244000000
+tendon_slack_length 0.042404000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.438
+endmuscle
+
+beginmuscle LTpL_L3_r
+beginpoints
+-0.158441990000 0.017490000000 0.040200000000 segment pelvis
+-0.029161060000 0.019630000000 0.019610000000 segment lumbar3
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 47.000000000000
+optimal_fiber_length 0.054869000000
+tendon_slack_length 0.059600000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.436
+endmuscle
+
+beginmuscle LTpL_L2_r
+beginpoints
+-0.159687620000 0.012968780000 0.041945860000 segment pelvis
+-0.028762660000 0.012558330000 0.020295870000 segment lumbar2
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 42.000000000000
+optimal_fiber_length 0.067743000000
+tendon_slack_length 0.074400000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.433
+endmuscle
+
+beginmuscle LTpL_L1_r
+beginpoints
+-0.161990780000 0.010193570000 0.043116820000 segment pelvis
+-0.029075900000 0.015055540000 0.021795090000 segment lumbar1
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+wrapobject Cylinder2 range -1 -1
+max_force 36.000000000000
+optimal_fiber_length 0.081270000000
+tendon_slack_length 0.094400000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.419
+endmuscle
+
+beginmuscle LTpL_L5_l
+beginpoints
+-0.141250000000 0.073887670000 -0.034866990000 segment sacrum
+-0.010342870000 0.026650000000 -0.022400000000 segment lumbar5
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 53.000000000000
+optimal_fiber_length 0.051468000000
+tendon_slack_length 0.001000000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 1
+endmuscle
+
+beginmuscle LTpL_L4_l
+beginpoints
+-0.150501330000 0.017486580000 -0.037310000000 segment pelvis
+-0.020342870000 0.023053770000 -0.022400000000 segment lumbar4
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 51.000000000000
+optimal_fiber_length 0.039244000000
+tendon_slack_length 0.042404000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.438
+endmuscle
+
+beginmuscle LTpL_L3_l
+beginpoints
+-0.158441990000 0.017490000000 -0.040200000000 segment pelvis
+-0.029161060000 0.019630000000 -0.019610000000 segment lumbar3
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 47.000000000000
+optimal_fiber_length 0.054869000000
+tendon_slack_length 0.059600000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.436
+endmuscle
+
+beginmuscle LTpL_L2_l
+beginpoints
+-0.159687620000 0.012968780000 -0.041950000000 segment pelvis
+-0.028760000000 0.012558330000 -0.020300000000 segment lumbar2
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+max_force 42.000000000000
+optimal_fiber_length 0.067743000000
+tendon_slack_length 0.074400000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.433
+endmuscle
+
+beginmuscle LTpL_L1_l
+beginpoints
+-0.161990780000 0.010190000000 -0.043120000000 segment pelvis
+-0.029075900000 0.015055540000 -0.021800000000 segment lumbar1
+endpoints
+begingroups
+ longissimus_thoracis_pars_lumborum
+endgroups
+wrapobject Cylinder2 range -1 -1
+max_force 36.000000000000
+optimal_fiber_length 0.081270000000
+tendon_slack_length 0.094400000000
+pennation_angle 12.600000243433
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.419
+endmuscle
+
+beginmuscle QL_post_I.1-L3_r
+beginpoints
+-0.121470000000 0.046310000000 0.052020000000 segment pelvis
+-0.029000000000 0.019630000000 0.030300000000 segment lumbar3
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 18.200000000000
+optimal_fiber_length 0.038362310000
+tendon_slack_length 0.032185770000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L4_r
+beginpoints
+-0.111469920000 0.056307560000 0.059020000000 segment pelvis
+-0.022000000000 0.026050000000 0.030300000000 segment lumbar4
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 24.200000000000
+optimal_fiber_length 0.022194880000
+tendon_slack_length 0.018621380000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L3_r
+beginpoints
+-0.111469920000 0.056307560000 0.059020000000 segment pelvis
+-0.029000000000 0.019630000000 0.030300000000 segment lumbar3
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 14.100000000000
+optimal_fiber_length 0.050230000000
+tendon_slack_length 0.042142690000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L2_r
+beginpoints
+-0.111469920000 0.056307560000 0.059020000000 segment pelvis
+-0.031000000000 0.012000000000 0.030300000000 segment lumbar2
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 8.800000000000
+optimal_fiber_length 0.034783740000
+tendon_slack_length 0.019100000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L1_r
+beginpoints
+-0.032636160000 0.014876680000 0.029000000000 segment lumbar1
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 12.920000000000
+optimal_fiber_length 0.085607920000
+tendon_slack_length 0.044465460000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L2_r
+beginpoints
+-0.031000000000 0.012000000000 0.030300000000 segment lumbar2
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 13.600000000000
+optimal_fiber_length 0.050415930000
+tendon_slack_length 0.042298690000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L3_r
+beginpoints
+-0.029000000000 0.019630000000 0.030300000000 segment lumbar3
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 23.200000000000
+optimal_fiber_length 0.036059630000
+tendon_slack_length 0.030253800000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.1-L3_l
+beginpoints
+-0.121470000000 0.046310000000 -0.052020000000 segment pelvis
+-0.029000000000 0.019630000000 -0.030300000000 segment lumbar3
+endpoints
+max_force 18.200000000000
+optimal_fiber_length 0.038362310000
+tendon_slack_length 0.032185770000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L4_l
+beginpoints
+-0.111469920000 0.056307560000 -0.059020000000 segment pelvis
+-0.022000000000 0.026050000000 -0.030300000000 segment lumbar4
+endpoints
+max_force 24.200000000000
+optimal_fiber_length 0.022194880000
+tendon_slack_length 0.018621380000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L3_l
+beginpoints
+-0.111469920000 0.056307560000 -0.059020000000 segment pelvis
+-0.029000000000 0.019630000000 -0.030300000000 segment lumbar3
+endpoints
+max_force 14.100000000000
+optimal_fiber_length 0.050230000000
+tendon_slack_length 0.042142690000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.2-L2_l
+beginpoints
+-0.111469920000 0.056307560000 -0.059020000000 segment pelvis
+-0.031000000000 0.012000000000 -0.030300000000 segment lumbar2
+endpoints
+max_force 8.800000000000
+optimal_fiber_length 0.034783740000
+tendon_slack_length 0.019100000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L1_l
+beginpoints
+-0.032636160000 0.014876680000 -0.029000000000 segment lumbar1
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+endpoints
+max_force 12.920000000000
+optimal_fiber_length 0.085607920000
+tendon_slack_length 0.044465460000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L2_l
+beginpoints
+-0.031000000000 0.012000000000 -0.030300000000 segment lumbar2
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+endpoints
+max_force 13.600000000000
+optimal_fiber_length 0.050415930000
+tendon_slack_length 0.042298690000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_post_I.3-L3_l
+beginpoints
+-0.029000000000 0.019630000000 -0.030300000000 segment lumbar3
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+endpoints
+max_force 23.200000000000
+optimal_fiber_length 0.036059630000
+tendon_slack_length 0.030253800000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.505
+endmuscle
+
+beginmuscle QL_mid_L3-12.3_r
+beginpoints
+-0.041911470000 0.112370000000 0.051660000000 segment torso
+-0.029361560000 0.021730740000 0.030380000000 segment lumbar3
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 5.800000000000
+optimal_fiber_length 0.054638460000
+tendon_slack_length 0.028379670000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L3-12.2_r
+beginpoints
+-0.042478160000 0.119222270000 0.043190000000 segment torso
+-0.029360000000 0.021730000000 0.030380000000 segment lumbar3
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 6.600000000000
+optimal_fiber_length 0.057935350000
+tendon_slack_length 0.030092100000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L3-12.1_r
+beginpoints
+-0.041284510000 0.128200000000 0.031190000000 segment torso
+-0.029360000000 0.021730000000 0.030380000000 segment lumbar3
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 11.000000000000
+optimal_fiber_length 0.063056020000
+tendon_slack_length 0.032751820000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L2-12.1_r
+beginpoints
+-0.041280000000 0.128200000000 0.031190000000 segment torso
+-0.029121410000 0.016895940000 0.025620000000 segment lumbar2
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 9.200000000000
+optimal_fiber_length 0.040777830000
+tendon_slack_length 0.021180340000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L4-12.3_r
+beginpoints
+-0.041782470000 0.112316110000 0.051670000000 segment torso
+-0.021382540000 0.030700000000 0.028060000000 segment lumbar4
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 5.400000000000
+optimal_fiber_length 0.072886480000
+tendon_slack_length 0.037857840000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L3-12.3_l
+beginpoints
+-0.041911470000 0.112370000000 -0.051660000000 segment torso
+-0.029361560000 0.021730740000 -0.030380000000 segment lumbar3
+endpoints
+max_force 5.800000000000
+optimal_fiber_length 0.054638460000
+tendon_slack_length 0.028379670000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L3-12.2_l
+beginpoints
+-0.042478160000 0.119222270000 -0.043190000000 segment torso
+-0.029360000000 0.021730000000 -0.030380000000 segment lumbar3
+endpoints
+max_force 6.600000000000
+optimal_fiber_length 0.057935350000
+tendon_slack_length 0.030092100000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L3-12.1_l
+beginpoints
+-0.041284510000 0.128200000000 -0.031190000000 segment torso
+-0.029360000000 0.021730000000 -0.030380000000 segment lumbar3
+endpoints
+max_force 11.000000000000
+optimal_fiber_length 0.063056020000
+tendon_slack_length 0.032751820000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L2-12.1_l
+beginpoints
+-0.041280000000 0.128200000000 -0.031190000000 segment torso
+-0.029121410000 0.016895940000 -0.025620000000 segment lumbar2
+endpoints
+max_force 9.200000000000
+optimal_fiber_length 0.040777830000
+tendon_slack_length 0.021180340000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_mid_L4-12.3_l
+beginpoints
+-0.041782470000 0.112316110000 -0.051670000000 segment torso
+-0.021382540000 0.030700000000 -0.028060000000 segment lumbar4
+endpoints
+max_force 5.400000000000
+optimal_fiber_length 0.072886480000
+tendon_slack_length 0.037857840000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.2-T12_r
+beginpoints
+-0.111469920000 0.056307560000 0.059020000000 segment pelvis
+-0.014200840000 0.130140000000 0.017370000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 7.100000000000
+optimal_fiber_length 0.104545180000
+tendon_slack_length 0.054301000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-T12_r
+beginpoints
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+-0.014200840000 0.130140000000 0.017370000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 13.340000000000
+optimal_fiber_length 0.103342630000
+tendon_slack_length 0.053677020000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.2-12.1_r
+beginpoints
+-0.111469920000 0.056307560000 0.059020000000 segment pelvis
+-0.040280730000 0.124401440000 0.037450000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 4.700000000000
+optimal_fiber_length 0.099889250000
+tendon_slack_length 0.051883300000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.1_r
+beginpoints
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+-0.040280730000 0.124401440000 0.037450000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 8.900000000000
+optimal_fiber_length 0.098653300000
+tendon_slack_length 0.051241340000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.2_r
+beginpoints
+-0.104770000000 0.062120000000 0.069170000000 segment pelvis
+-0.040240000000 0.117860000000 0.046080000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 5.900000000000
+optimal_fiber_length 0.092851710000
+tendon_slack_length 0.048227950000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.3_r
+beginpoints
+-0.104766850000 0.062115380000 0.069170000000 segment pelvis
+-0.038010000000 0.111358890000 0.054520000000 segment torso
+endpoints
+begingroups
+ quadratus_lumborum
+endgroups
+max_force 6.800000000000
+optimal_fiber_length 0.086918590000
+tendon_slack_length 0.045100000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.2-T12_l
+beginpoints
+-0.111469920000 0.056307560000 -0.059020000000 segment pelvis
+-0.014200840000 0.130140000000 -0.017370000000 segment torso
+endpoints
+max_force 7.100000000000
+optimal_fiber_length 0.104545180000
+tendon_slack_length 0.054301000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-T12_l
+beginpoints
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+-0.014200840000 0.130140000000 -0.017370000000 segment torso
+endpoints
+max_force 13.340000000000
+optimal_fiber_length 0.103342630000
+tendon_slack_length 0.053677020000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.2-12.1_l
+beginpoints
+-0.111469920000 0.056307560000 -0.059020000000 segment pelvis
+-0.040280730000 0.124401440000 -0.037450000000 segment torso
+endpoints
+max_force 4.700000000000
+optimal_fiber_length 0.099889250000
+tendon_slack_length 0.051883300000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.1_l
+beginpoints
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+-0.040280730000 0.124401440000 -0.037450000000 segment torso
+endpoints
+max_force 8.900000000000
+optimal_fiber_length 0.098653300000
+tendon_slack_length 0.051241340000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.2_l
+beginpoints
+-0.104770000000 0.062120000000 -0.069170000000 segment pelvis
+-0.040240000000 0.117860000000 -0.046080000000 segment torso
+endpoints
+max_force 5.900000000000
+optimal_fiber_length 0.092851710000
+tendon_slack_length 0.048227950000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle QL_ant_I.3-12.3_l
+beginpoints
+-0.104766850000 0.062115380000 -0.069170000000 segment pelvis
+-0.038010000000 0.111358890000 -0.054520000000 segment torso
+endpoints
+max_force 6.800000000000
+optimal_fiber_length 0.086918590000
+tendon_slack_length 0.045100000000
+pennation_angle 7.399999733713
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.624
+endmuscle
+
+beginmuscle MF_m1s_r
+beginpoints
+-0.030977530000 0.032395060000 0.017474380000 segment lumbar4
+-0.034314460000 -0.013146300000 0.003016840000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 18.400000000000
+optimal_fiber_length 0.046846340000
+tendon_slack_length 0.019476410000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.661
+endmuscle
+
+beginmuscle MF_m1t.1_r
+beginpoints
+-0.018634660000 0.036969740000 0.017594640000 segment lumbar5
+-0.040938530000 -0.016004570000 0.003096360000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 19.320000000000
+optimal_fiber_length 0.075168700000
+tendon_slack_length 0.022539600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m1t.2_r
+beginpoints
+-0.121423860000 0.083976600000 0.018840000000 segment sacrum
+-0.040940000000 -0.016000000000 0.003100000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 16.560000000000
+optimal_fiber_length 0.094312140000
+tendon_slack_length 0.028279800000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m1t.3_r
+beginpoints
+-0.144572600000 0.026421440000 0.038350090000 segment pelvis
+-0.040940000000 -0.016000000000 0.003100000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 27.660000000000
+optimal_fiber_length 0.103000000000
+tendon_slack_length 0.030883680000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m2s_r
+beginpoints
+-0.018502860000 0.037676200000 0.015812290000 segment lumbar5
+-0.035834080000 -0.011759050000 0.003549430000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 17.940000000000
+optimal_fiber_length 0.045397400000
+tendon_slack_length 0.017565690000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.677
+endmuscle
+
+beginmuscle MF_m2t.1_r
+beginpoints
+-0.120758240000 0.085218080000 0.020435440000 segment sacrum
+-0.039560000000 -0.018390000000 0.003640000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 17.940000000000
+optimal_fiber_length 0.063882600000
+tendon_slack_length 0.019421450000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m2t.2_r
+beginpoints
+-0.147334670000 0.021159060000 0.036849210000 segment pelvis
+-0.039560000000 -0.018390000000 0.003640000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 45.540000000000
+optimal_fiber_length 0.080875000000
+tendon_slack_length 0.024587500000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m2t.3_r
+beginpoints
+-0.149720390000 0.007997580000 0.034578420000 segment pelvis
+-0.038808000000 -0.018738280000 0.002365340000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 45.540000000000
+optimal_fiber_length 0.091657000000
+tendon_slack_length 0.027865400000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m3s_r
+beginpoints
+-0.121511270000 0.083635830000 0.017415940000 segment sacrum
+-0.037194870000 -0.006453280000 0.002907330000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.840000000000
+optimal_fiber_length 0.039717000000
+tendon_slack_length 0.016512360000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.661
+endmuscle
+
+beginmuscle MF_m3t.1_r
+beginpoints
+-0.164504650000 -0.034976770000 0.017099550000 segment pelvis
+-0.043380040000 -0.010225190000 0.001662140000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.102818000000
+tendon_slack_length 0.034235560000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m3t.2_r
+beginpoints
+-0.153874710000 -0.016062140000 0.021853940000 segment pelvis
+-0.043360000000 -0.010230000000 0.002660000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.085361160000
+tendon_slack_length 0.028422900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m3t.3_r
+beginpoints
+-0.153874710000 -0.016062140000 0.021853940000 segment pelvis
+-0.043360000000 -0.010230000000 0.002660000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.085361160000
+tendon_slack_length 0.028422900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m4s_r
+beginpoints
+-0.143688790000 0.054709880000 0.016179190000 segment sacrum
+-0.035381880000 -0.000215220000 0.002242840000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.037155000000
+tendon_slack_length 0.023510000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.562
+endmuscle
+
+beginmuscle MF_m4t.1_r
+beginpoints
+-0.152232740000 0.041526490000 0.015358650000 segment sacrum
+-0.041802470000 0.000168210000 0.002880180000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.054815000000
+tendon_slack_length 0.022219670000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m4t.2_r
+beginpoints
+-0.162291900000 -0.028657720000 0.015203580000 segment pelvis
+-0.042800000000 0.000170000000 0.002880000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.073360000000
+tendon_slack_length 0.029736900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m4t.3_r
+beginpoints
+-0.170827600000 -0.041180840000 0.012721530000 segment pelvis
+-0.044100000000 0.000170000000 0.002880000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.084787000000
+tendon_slack_length 0.034369000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5s_r
+beginpoints
+-0.130455480000 0.066270280000 0.010426410000 segment sacrum
+-0.030163790000 0.015390000000 0.003929340000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.014557500000
+tendon_slack_length 0.006442470000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.562
+endmuscle
+
+beginmuscle MF_m5t.1_r
+beginpoints
+-0.174066670000 0.005229220000 0.010033100000 segment sacrum
+-0.035510000000 0.016862950000 0.002925920000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.075919600000
+tendon_slack_length 0.030774600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5t.2_r
+beginpoints
+-0.163116440000 0.025661820000 0.011707950000 segment sacrum
+-0.034551570000 0.015928730000 0.002771470000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.056763000000
+tendon_slack_length 0.023010000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5t.3_r
+beginpoints
+-0.152275550000 0.042584360000 0.011596670000 segment sacrum
+-0.032822770000 0.015246970000 0.002320830000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.040300000000
+tendon_slack_length 0.007089200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m1.laminar_r
+beginpoints
+-0.038708470000 0.025270000000 0.016910000000 segment lumbar3
+-0.034101910000 -0.005605250000 0.006190000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 8.850000000000
+optimal_fiber_length 0.031290000000
+tendon_slack_length 0.011881900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m2.laminar_r
+beginpoints
+-0.030562180000 0.033503730000 0.016940000000 segment lumbar4
+-0.032900990000 -0.005610000000 0.006740000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 10.200000000000
+optimal_fiber_length 0.026921740000
+tendon_slack_length 0.010222440000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m3.laminar_r
+beginpoints
+-0.018700290000 0.037442090000 0.016170000000 segment lumbar5
+-0.035944240000 0.000690450000 0.006350000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 10.615000000000
+optimal_fiber_length 0.026160000000
+tendon_slack_length 0.009933000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m4.laminar_r
+beginpoints
+-0.125360000000 0.077487930000 0.019340000000 segment sacrum
+-0.032115290000 0.005813440000 0.006940000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 7.700000000000
+optimal_fiber_length 0.028602000000
+tendon_slack_length 0.010860000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m5.laminar_r
+beginpoints
+-0.134206030000 0.011110000000 0.012380000000 segment pelvis
+-0.025899590000 0.017050000000 0.005640000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 16.600000000000
+optimal_fiber_length 0.025650000000
+tendon_slack_length 0.009739000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m1s_l
+beginpoints
+-0.030977530000 0.032395060000 -0.017470000000 segment lumbar4
+-0.034314460000 -0.013146300000 -0.003020000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 18.400000000000
+optimal_fiber_length 0.046846340000
+tendon_slack_length 0.019476410000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.661
+endmuscle
+
+beginmuscle MF_m1t.1_l
+beginpoints
+-0.018634660000 0.036969740000 -0.017590000000 segment lumbar5
+-0.040938530000 -0.016004570000 -0.003100000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 19.320000000000
+optimal_fiber_length 0.075168700000
+tendon_slack_length 0.022539600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m1t.2_l
+beginpoints
+-0.121423860000 0.083976600000 -0.018840000000 segment sacrum
+-0.040940000000 -0.016000000000 -0.003100000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 16.560000000000
+optimal_fiber_length 0.094312140000
+tendon_slack_length 0.028279800000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m1t.3_l
+beginpoints
+-0.144572600000 0.026421440000 -0.038350000000 segment pelvis
+-0.040940000000 -0.016000000000 -0.003100000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 27.660000000000
+optimal_fiber_length 0.103000000000
+tendon_slack_length 0.030883680000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.730
+endmuscle
+
+beginmuscle MF_m2s_l
+beginpoints
+-0.018502860000 0.037676200000 -0.015810000000 segment lumbar5
+-0.035834080000 -0.011759050000 -0.003550000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 17.940000000000
+optimal_fiber_length 0.045397400000
+tendon_slack_length 0.017565690000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.677
+endmuscle
+
+beginmuscle MF_m2t.1_l
+beginpoints
+-0.120758240000 0.085218080000 -0.020440000000 segment sacrum
+-0.039560000000 -0.018390000000 -0.003640000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 17.940000000000
+optimal_fiber_length 0.063882600000
+tendon_slack_length 0.019421450000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m2t.2_l
+beginpoints
+-0.147334670000 0.021159060000 -0.036850000000 segment pelvis
+-0.039560000000 -0.018390000000 -0.003640000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 45.540000000000
+optimal_fiber_length 0.080875000000
+tendon_slack_length 0.024587500000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m2t.3_l
+beginpoints
+-0.149720390000 0.007997580000 -0.034580000000 segment pelvis
+-0.038808000000 -0.018738280000 -0.003640000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 45.540000000000
+optimal_fiber_length 0.091657000000
+tendon_slack_length 0.027865400000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.727
+endmuscle
+
+beginmuscle MF_m3s_l
+beginpoints
+-0.121511270000 0.083635830000 -0.017420000000 segment sacrum
+-0.037194870000 -0.006453280000 -0.002370000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.840000000000
+optimal_fiber_length 0.039717000000
+tendon_slack_length 0.016512360000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.661
+endmuscle
+
+beginmuscle MF_m3t.1_l
+beginpoints
+-0.164504650000 -0.034976770000 -0.017100000000 segment pelvis
+-0.043380040000 -0.010225190000 -0.002910000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.102818000000
+tendon_slack_length 0.034235560000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m3t.2_l
+beginpoints
+-0.153874710000 -0.016062140000 -0.021850000000 segment pelvis
+-0.043360000000 -0.010230000000 -0.002660000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.085361160000
+tendon_slack_length 0.028422900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m3t.3_l
+beginpoints
+-0.153874710000 -0.016062140000 -0.021850000000 segment pelvis
+-0.043360000000 -0.010230000000 -0.002660000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.085361160000
+tendon_slack_length 0.028422900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.709
+endmuscle
+
+beginmuscle MF_m4s_l
+beginpoints
+-0.143688790000 0.054709880000 -0.016180000000 segment sacrum
+-0.035381880000 -0.000215220000 -0.002660000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 24.000000000000
+optimal_fiber_length 0.037155000000
+tendon_slack_length 0.023510000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.562
+endmuscle
+
+beginmuscle MF_m4t.1_l
+beginpoints
+-0.152232740000 0.041526490000 -0.015360000000 segment sacrum
+-0.041802470000 0.000168210000 -0.002240000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.054815000000
+tendon_slack_length 0.022219670000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m4t.2_l
+beginpoints
+-0.162291900000 -0.028657720000 -0.015200000000 segment pelvis
+-0.042800000000 0.000170000000 -0.002880000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.073360000000
+tendon_slack_length 0.029736900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m4t.3_l
+beginpoints
+-0.170827600000 -0.041180840000 -0.012720000000 segment pelvis
+-0.044100000000 0.000170000000 -0.002880000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 21.400000000000
+optimal_fiber_length 0.084787000000
+tendon_slack_length 0.034369000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5s_l
+beginpoints
+-0.130455480000 0.066270280000 -0.010430000000 segment sacrum
+-0.030163790000 0.015390000000 -0.003930000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.014557500000
+tendon_slack_length 0.006442470000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.562
+endmuscle
+
+beginmuscle MF_m5t.1_l
+beginpoints
+-0.174066670000 0.005229220000 -0.010030000000 segment sacrum
+-0.035510000000 0.016862950000 -0.002930000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.075919600000
+tendon_slack_length 0.030774600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5t.2_l
+beginpoints
+-0.163116440000 0.025661820000 -0.011710000000 segment sacrum
+-0.034551570000 0.015928730000 -0.002930000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.056763000000
+tendon_slack_length 0.023010000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m5t.3_l
+beginpoints
+-0.152275550000 0.042584360000 -0.011600000000 segment sacrum
+-0.032822770000 0.015246970000 -0.002770000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_spinous_process
+endgroups
+max_force 10.350000000000
+optimal_fiber_length 0.040300000000
+tendon_slack_length 0.007089200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.667
+endmuscle
+
+beginmuscle MF_m1.laminar_l
+beginpoints
+-0.038708470000 0.025270000000 -0.016910000000 segment lumbar3
+-0.034101910000 -0.005605250000 -0.006190000000 segment lumbar1
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 8.850000000000
+optimal_fiber_length 0.031290000000
+tendon_slack_length 0.011881900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m2.laminar_l
+beginpoints
+-0.030562180000 0.033503730000 -0.016940000000 segment lumbar4
+-0.032900990000 -0.005610000000 -0.006740000000 segment lumbar2
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 10.200000000000
+optimal_fiber_length 0.026921740000
+tendon_slack_length 0.010222440000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m3.laminar_l
+beginpoints
+-0.018700290000 0.037442090000 -0.016170000000 segment lumbar5
+-0.035944240000 0.000690450000 -0.006350000000 segment lumbar3
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 10.615000000000
+optimal_fiber_length 0.026160000000
+tendon_slack_length 0.009933000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m4.laminar_l
+beginpoints
+-0.125360000000 0.077487930000 -0.019340000000 segment sacrum
+-0.032115290000 0.005813440000 -0.006940000000 segment lumbar4
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 7.700000000000
+optimal_fiber_length 0.028602000000
+tendon_slack_length 0.010860000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle MF_m5.laminar_l
+beginpoints
+-0.134206030000 0.011110000000 -0.012380000000 segment pelvis
+-0.025899590000 0.017050000000 -0.005640000000 segment lumbar5
+endpoints
+begingroups
+ Multifidus_entry_level
+endgroups
+max_force 16.600000000000
+optimal_fiber_length 0.025650000000
+tendon_slack_length 0.009739000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.681
+endmuscle
+
+beginmuscle EO1_r
+beginpoints
+0.006550200000 0.062743110000 0.030893730000 segment Abdomen
+0.088197290000 0.177994290000 0.095656830000 segment torso
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 90.000000000000
+optimal_fiber_length 0.035877500000
+tendon_slack_length 0.056983100000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.389
+endmuscle
+
+beginmuscle EO2_r
+beginpoints
+0.090589840000 0.145330000000 0.104779030000 segment torso
+0.007233210000 0.032956490000 0.036455070000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 106.600000000000
+optimal_fiber_length 0.037926800000
+tendon_slack_length 0.055165000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.410
+endmuscle
+
+beginmuscle EO3_r
+beginpoints
+0.085370070000 0.113322310000 0.108229050000 segment torso
+0.006771410000 0.012996700000 0.041634640000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 111.870000000000
+optimal_fiber_length 0.038402000000
+tendon_slack_length 0.046576000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.455
+endmuscle
+
+beginmuscle EO4_r
+beginpoints
+0.074560510000 0.091416410000 0.104111950000 segment torso
+0.006951340000 -0.005995640000 0.040330150000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 108.000000000000
+optimal_fiber_length 0.039293990000
+tendon_slack_length 0.044785000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.470
+endmuscle
+
+beginmuscle EO5_r
+beginpoints
+0.016828100000 0.107959230000 0.117862750000 segment torso
+-0.059266200000 0.059414130000 0.113815610000 segment pelvis
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 125.600000000000
+optimal_fiber_length 0.047054200000
+tendon_slack_length 0.051521600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.480
+endmuscle
+
+beginmuscle EO6_r
+beginpoints
+-0.002332020000 0.092123230000 0.105106120000 segment torso
+-0.070076240000 0.062137010000 0.104119250000 segment pelvis
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 182.800000000000
+optimal_fiber_length 0.056524380000
+tendon_slack_length 0.057130000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.500
+endmuscle
+
+beginmuscle IO1_r
+beginpoints
+0.003069510000 -0.040657650000 0.045375450000 segment Abdomen
+-0.025648650000 0.000608660000 0.122457460000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 85.240000000000
+optimal_fiber_length 0.042297770000
+tendon_slack_length 0.063990000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO2_r
+beginpoints
+0.000680530000 -0.011530380000 0.051388930000 segment Abdomen
+-0.034588700000 0.025566890000 0.127071840000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 103.180000000000
+optimal_fiber_length 0.043500000000
+tendon_slack_length 0.065949600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO3_r
+beginpoints
+0.003380960000 0.029305210000 0.041877360000 segment Abdomen
+-0.044680110000 0.046659000000 0.122425180000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 103.960000000000
+optimal_fiber_length 0.051678300000
+tendon_slack_length 0.078350000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO4_r
+beginpoints
+0.076988610000 0.110032180000 0.114500000000 segment torso
+-0.057380000000 0.058899060000 0.110488910000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 123.100000000000
+optimal_fiber_length 0.069693290000
+tendon_slack_length 0.046960000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle IO5_r
+beginpoints
+0.037420000000 0.094850000000 0.111111290000 segment torso
+-0.084888890000 0.065154000000 0.091450000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 108.000000000000
+optimal_fiber_length 0.056835050000
+tendon_slack_length 0.038296000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle IO6_r
+beginpoints
+0.005443960000 0.084417850000 0.100000000000 segment torso
+-0.109600260000 0.060856260000 0.069697840000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 95.300000000000
+optimal_fiber_length 0.054390000000
+tendon_slack_length 0.036650000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle EO1_l
+beginpoints
+0.006550200000 0.062743110000 -0.030890000000 segment Abdomen
+0.088200000000 0.177994290000 -0.095660000000 segment torso
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 90.000000000000
+optimal_fiber_length 0.035877500000
+tendon_slack_length 0.056983100000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.389
+endmuscle
+
+beginmuscle EO2_l
+beginpoints
+0.090589840000 0.145330000000 -0.104780000000 segment torso
+0.007233210000 0.032956490000 -0.036460000000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 106.600000000000
+optimal_fiber_length 0.037926800000
+tendon_slack_length 0.055165000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.410
+endmuscle
+
+beginmuscle EO3_l
+beginpoints
+0.085370070000 0.113322310000 -0.108230000000 segment torso
+0.006771410000 0.012996700000 -0.041630000000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 111.870000000000
+optimal_fiber_length 0.038402000000
+tendon_slack_length 0.046576000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.455
+endmuscle
+
+beginmuscle EO4_l
+beginpoints
+0.074560510000 0.091416410000 -0.104110000000 segment torso
+0.006951340000 -0.005995640000 -0.040330000000 segment Abdomen
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 108.000000000000
+optimal_fiber_length 0.039293990000
+tendon_slack_length 0.044785000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.470
+endmuscle
+
+beginmuscle EO5_l
+beginpoints
+0.016828100000 0.107959230000 -0.117860000000 segment torso
+-0.059266200000 0.059414130000 -0.113820000000 segment pelvis
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 125.600000000000
+optimal_fiber_length 0.047054200000
+tendon_slack_length 0.051521600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.480
+endmuscle
+
+beginmuscle EO6_l
+beginpoints
+-0.002332020000 0.092123230000 -0.105110000000 segment torso
+-0.070076240000 0.062137010000 -0.104120000000 segment pelvis
+endpoints
+begingroups
+ Ext_Oblique
+endgroups
+max_force 182.800000000000
+optimal_fiber_length 0.056524380000
+tendon_slack_length 0.057130000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.500
+endmuscle
+
+beginmuscle IO1_l
+beginpoints
+0.003069510000 -0.040657650000 -0.045380000000 segment Abdomen
+-0.025648650000 0.000608660000 -0.122460000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 85.240000000000
+optimal_fiber_length 0.042297770000
+tendon_slack_length 0.063990000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO2_l
+beginpoints
+0.000680530000 -0.011530380000 -0.051390000000 segment Abdomen
+-0.034588700000 0.025566890000 -0.127070000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 103.180000000000
+optimal_fiber_length 0.043500000000
+tendon_slack_length 0.065949600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO3_l
+beginpoints
+0.003380960000 0.029305210000 -0.041880000000 segment Abdomen
+-0.044680110000 0.046659000000 -0.122430000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 103.960000000000
+optimal_fiber_length 0.051678300000
+tendon_slack_length 0.078350000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.400
+endmuscle
+
+beginmuscle IO4_l
+beginpoints
+0.076988610000 0.110032180000 -0.114500000000 segment torso
+-0.057380000000 0.058899060000 -0.110490000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 123.100000000000
+optimal_fiber_length 0.069693290000
+tendon_slack_length 0.046960000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle IO5_l
+beginpoints
+0.037420000000 0.094850000000 -0.111110000000 segment torso
+-0.084888890000 0.065154000000 -0.091450000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 108.000000000000
+optimal_fiber_length 0.056835050000
+tendon_slack_length 0.038296000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle IO6_l
+beginpoints
+0.005443960000 0.084417850000 -0.100000000000 segment torso
+-0.109600260000 0.060856260000 -0.069700000000 segment pelvis
+endpoints
+begingroups
+ Int_Oblique
+endgroups
+max_force 95.300000000000
+optimal_fiber_length 0.054390000000
+tendon_slack_length 0.036650000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.600
+endmuscle
+
+beginmuscle LD_L1_r
+beginpoints
+-0.041207980000 -0.011263110000 0.004331640000 segment lumbar1
+-0.009487370000 -0.015252590000 0.002688730000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 41.400000000000
+optimal_fiber_length 0.316063000000
+tendon_slack_length 0.069232900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L2_r
+beginpoints
+-0.041210030000 -0.013414820000 0.004145840000 segment lumbar2
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 41.400000000000
+optimal_fiber_length 0.338256000000
+tendon_slack_length 0.074094200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L3_r
+beginpoints
+-0.041210100000 -0.003265110000 0.003859710000 segment lumbar3
+-0.009490000000 -0.015250000000 0.004330000000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.355069600000
+tendon_slack_length 0.077777000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L4_r
+beginpoints
+-0.041185560000 0.003719960000 0.004622780000 segment lumbar4
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.371919200000
+tendon_slack_length 0.081468000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L5_r
+beginpoints
+-0.034480900000 0.018437700000 0.004110730000 segment lumbar5
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.390221600000
+tendon_slack_length 0.080135000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T12_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.053791020000 0.100279200000 0.004363500000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range 1 2
+max_force 23.000000000000
+optimal_fiber_length 0.303220900000
+tendon_slack_length 0.062268570000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T11_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.063121350000 0.127084960000 0.003458080000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.284808400000
+tendon_slack_length 0.058487000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T10_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.069201620000 0.154471310000 0.003829910000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.279701000000
+tendon_slack_length 0.043762800000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.840
+endmuscle
+
+beginmuscle LD_T9_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.080000000000 0.189226460000 0.004076490000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.256967000000
+tendon_slack_length 0.140000000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.840
+endmuscle
+
+beginmuscle LD_T8_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.082684540000 0.210880250000 0.004275440000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.232514000000
+tendon_slack_length 0.047748400000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T7_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.091734490000 0.230014540000 0.004073540000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.223761000000
+tendon_slack_length 0.045951000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_R12_r
+beginpoints
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+-0.043270090000 0.121578920000 0.044266210000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+max_force 18.400000000000
+optimal_fiber_length 0.244474900000
+tendon_slack_length 0.050204700000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_R11_r
+beginpoints
+-0.009490000000 -0.015250000000 0.004330000000 segment r_humerus
+-0.063105060000 0.142303090000 0.052143830000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.240735000000
+tendon_slack_length 0.049436600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.950
+endmuscle
+
+beginmuscle LD_Il_r
+beginpoints
+-0.126225690000 0.043479510000 0.048683040000 segment pelvis
+-0.009490000000 -0.015250000000 0.002690000000 segment r_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_r range -1 -1
+max_force 32.200000000000
+optimal_fiber_length 0.432081000000
+tendon_slack_length 0.018680200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_L1_l
+beginpoints
+-0.041207980000 -0.011260000000 -0.004330000000 segment lumbar1
+-0.009487370000 -0.015250000000 -0.002690000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 41.400000000000
+optimal_fiber_length 0.316063000000
+tendon_slack_length 0.069232900000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L2_l
+beginpoints
+-0.041210030000 -0.013410000000 -0.004150000000 segment lumbar2
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 41.400000000000
+optimal_fiber_length 0.338256000000
+tendon_slack_length 0.074094200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L3_l
+beginpoints
+-0.041210100000 -0.003265110000 -0.003860000000 segment lumbar3
+-0.009490000000 -0.015250000000 -0.004330000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.355069600000
+tendon_slack_length 0.077777000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L4_l
+beginpoints
+-0.041185560000 0.003719960000 -0.004620000000 segment lumbar4
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.371919200000
+tendon_slack_length 0.081468000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.790
+endmuscle
+
+beginmuscle LD_L5_l
+beginpoints
+-0.034480900000 0.018437700000 -0.004110000000 segment lumbar5
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 50.600000000000
+optimal_fiber_length 0.390221600000
+tendon_slack_length 0.080135000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T12_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.053791020000 0.100279200000 -0.004360000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 23.000000000000
+optimal_fiber_length 0.303220900000
+tendon_slack_length 0.062268570000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T11_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.063121350000 0.127084960000 -0.003460000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.284808400000
+tendon_slack_length 0.058487000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T10_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.069201620000 0.154471310000 -0.003830000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.279701000000
+tendon_slack_length 0.043762800000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.840
+endmuscle
+
+beginmuscle LD_T9_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.080000000000 0.189226460000 -0.004080000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.256967000000
+tendon_slack_length 0.140000000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.840
+endmuscle
+
+beginmuscle LD_T8_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.082684540000 0.210880250000 -0.004280000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.232514000000
+tendon_slack_length 0.047748400000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_T7_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.091734490000 0.230014540000 -0.004070000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.223761000000
+tendon_slack_length 0.045951000000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_R12_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+-0.043270090000 0.121578920000 -0.044270000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 18.400000000000
+optimal_fiber_length 0.244474900000
+tendon_slack_length 0.050204700000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_R11_l
+beginpoints
+-0.009490000000 -0.015250000000 -0.004330000000 segment l_humerus
+-0.063105060000 0.142303090000 -0.052140000000 segment torso
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 27.600000000000
+optimal_fiber_length 0.240735000000
+tendon_slack_length 0.049436600000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
+beginmuscle LD_Il_l
+beginpoints
+-0.126225690000 0.043479510000 -0.048680000000 segment pelvis
+-0.009490000000 -0.015250000000 -0.002690000000 segment l_humerus
+endpoints
+begingroups
+ Latissimus Dorsi
+endgroups
+wrapobject Chest_l range -1 -1
+max_force 32.200000000000
+optimal_fiber_length 0.432081000000
+tendon_slack_length 0.018680200000
+pennation_angle 0.000000000000
+activation_time_constant 0.010000000000
+deactivation_time_constant 0.040000000000
+Vmax 10.000000000000
+Vmax0 5.000000000000
+FmaxTendonStrain 0.033000000000
+FmaxMuscleStrain 0.600000000000
+KshapeActive 0.500000000000
+KshapePassive 4.000000000000
+damping 0.050000000000
+Af 0.300000000000
+Flen 1.800000000000
+muscle_model 9
+fiberRatio 0.800
+endmuscle
+
