@@ -6,7 +6,6 @@ import logging
 
 from rl.agents.dqn import NAFAgent
 from rl.random import OrnsteinUhlenbeckProcess
-from rl.callbacks import RlTensorBoard
 from rl.memory import SequentialMemory
 
 import keras
@@ -117,13 +116,12 @@ class MuscleNAFAgent(NAFAgent):
         return action
 
 
-def main(train_test_flag='train'):
+def main():
     setup_tensorflow()
     setup_logger(logger, args.verbose, args.model_name)
 
     get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
 
-    model_name = args.model_name
     log_file_name = args.model_name
     save_path = os.path.join(config.trained_directory,
                              args.algo + "-" + args.env_name + ".pt")
@@ -174,19 +172,25 @@ def main(train_test_flag='train'):
         if args.load_path is not None:
             agent.load_weights(args.load_path)
 
-        tensorboard = RlTensorBoard(
-            log_dir=os.path.join(c.tensorboard_log_directory, log_file_name),
-            histogram_freq=1,
-            batch_size=BATCH_SIZE,
-            write_graph=True,
-            write_grads=True, write_images=False, embeddings_freq=0,
-            embeddings_layer_names=None, embeddings_metadata=None,
-            agent=agent)
-        csv_logger = keras.callbacks.CSVLogger(
-            os.path.join(c.agent_log_directory, log_file_name),
-            append=False, separator=',')
+        callbacks = []
+        if args.use_tensorboard:
+            from rl.callbacks import RlTensorBoard
+            tensorboard = RlTensorBoard(
+                log_dir=os.path.join(c.tensorboard_log_directory, log_file_name),
+                histogram_freq=1,
+                batch_size=BATCH_SIZE,
+                write_graph=True,
+                write_grads=True, write_images=False, embeddings_freq=0,
+                embeddings_layer_names=None, embeddings_metadata=None,
+                agent=agent)
+            callbacks.append(tensorboard)
+        if args.use_csvlogger:
+            csv_logger = keras.callbacks.CSVLogger(
+                os.path.join(c.agent_log_directory, log_file_name),
+                append=False, separator=',')
+            callbacks.append(csv_logger)
 
-        if train_test_flag == 'train':
+        if not args.test:
             # train code
             training = True
             agent.fit(env,
@@ -194,10 +198,10 @@ def main(train_test_flag='train'):
                       visualize=False,
                       verbose=args.verbose,
                       nb_max_episode_steps=NUM_MAX_EPISODE_STEPS,
-                      callbacks=[tensorboard, csv_logger])
+                      callbacks=callbacks)
             print('Training complete')
             agent.save_weights(save_path)
-        elif train_test_flag == 'test':
+        else:
             # test code
             training = False
             env.log_to_file = False
@@ -216,4 +220,4 @@ def main(train_test_flag='train'):
 
 
 if __name__ == "__main__":
-    main('train')
+    main()

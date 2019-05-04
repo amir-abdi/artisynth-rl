@@ -8,9 +8,12 @@ python3 src/python/main_keras.py \
 --verbose=20 \
 --init-artisynth=true \
 --artisynth-model=RlPoint2PointModel \
---artisynth-args="-num 10 -demoType 1d -muscleOptLen 0.1 -radius 5" \
+--artisynth-args="-num 8 -demoType 2d -muscleOptLen 0.1 -radius 5" \
 --wait-action=0.1 \
+--test=false \
 
 
-# demoType=[2d|3d|nonSym]
-# in 3d demoType --> num is fixed to 8 muscles!
+# About demoType argument:
+#     demoType could have the following options: 1d|2d|3d|nonSym
+#     in 1d demoType --> num is fixed to 2 muscles, which makes sense in a 1-dimensional model.
+#     in 3d demoType --> num is fixed to 8 muscles

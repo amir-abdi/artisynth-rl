@@ -108,6 +108,10 @@ def get_args():
                         help='enable visdom visualization')
     parser.add_argument('--eval-mode', type=str2bool,  default=False,
                         help='Initialize environment in evalulation mode.')
+    parser.add_argument('--use-tensorboard', type=str2bool, default=False,
+                        help='Use tensorboard to log training.')
+    parser.add_argument('--use-csvlogger', type=str2bool, default=False,
+                        help='Use csvlogger to log training.')
     parser.add_argument('--include-current-pos', type=str2bool,  default=False,
                         help='Include the current position/rotation of the model in defining the state.')
     parser.add_argument('--goal-threshold', type=float, default=0.1,

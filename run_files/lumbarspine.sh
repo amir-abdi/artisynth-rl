@@ -30,10 +30,7 @@ python3 src/python/main_pytorch.py \
 --verbose=20 \
 --init-artisynth=true \
 --artisynth-model=RlLumbarSpineModel \
-
-
-
-#--test
+--test=false \
 
 
 #--load-path=/home/amirabdi/artisynth_rl/results/SpineEnv-v2/lumbarspine_ppo/trained/ppo-SpineEnv-v2-1,0.0001,0.01.pt \
