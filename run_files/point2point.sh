@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 src/python/main_keras.py \
+python3 src/python/main_keras_naf.py \
 --env-name=Point2PointEnv-v0 \
 --model-name=point2point-naf \
 --algo=naf \
