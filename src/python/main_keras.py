@@ -130,8 +130,10 @@ def main(train_test_flag='train'):
 
     if args.env_name == 'Point2PointEnv-v0':
         env = Point2PointEnvV0(verbose=0, success_thres=args.goal_threshold,
-                               include_current_pos=False, port=args.port,
-                               init_artisynth=args.init_artisynth, artisynth_model=args.artisynth_model)
+                               include_current_pos=False, wait_action=args.wait_action,
+                               port=args.port,
+                               init_artisynth=args.init_artisynth, artisynth_model=args.artisynth_model,
+                               artisynth_args=args.artisynth_args)
     else:
         raise NotImplementedError("No solution is implemneted for the environment {} in keras-rl.")
     env.seed(123)

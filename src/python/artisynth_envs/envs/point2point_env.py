@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+import time
 
 from rl.core import Space
 from rl.core import Processor
@@ -17,10 +18,11 @@ PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
 class Point2PointEnvV0(ArtisynthBase):
     def __init__(self, success_thres=0.1,
                  verbose=2, agent=None,
-                 include_current_pos=True, ip='localhost', port=6006,
-                 init_artisynth=False, artisynth_model=None):
+                 include_current_pos=True, wait_action=0,
+                 ip='localhost', port=6006,
+                 init_artisynth=False, artisynth_model=None, artisynth_args=''):
 
-        super().__init__(ip, port, init_artisynth, artisynth_model)
+        super().__init__(ip, port, init_artisynth, artisynth_model, artisynth_args=artisynth_args)
 
         self.verbose = verbose
         self.success_thres = success_thres
@@ -30,6 +32,7 @@ class Point2PointEnvV0(ArtisynthBase):
         self.include_current_pos = include_current_pos
         self.port = port
         self.prev_distance = None
+        self.wait_action = wait_action
 
         self.action_size = 0
         self.obs_size = 0
@@ -53,7 +56,6 @@ class Point2PointEnvV0(ArtisynthBase):
         self.follower_pos = follower_pos
 
     def state_dic_to_array(self, state_dict: dict):
-        print(state_dict)
         observation = state_dict[c.OBSERVATION_STR]
         observation_vector = np.array([])  # np.zeros(self.obs_size)
 
@@ -106,6 +108,7 @@ class Point2PointEnvV0(ArtisynthBase):
     def step(self, action):
         logger.debug('action:{}'.format(action))
         self.take_action(action)
+        time.sleep(self.wait_action)
 
         state = self.get_state_dict()
         obs = state[c.OBSERVATION_STR]

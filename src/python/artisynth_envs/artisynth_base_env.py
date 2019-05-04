@@ -11,7 +11,7 @@ logger = logging.getLogger()
 
 
 class ArtisynthBase(gym.Env):
-    def __init__(self, ip, port, init_artisynth, artisynth_model):
+    def __init__(self, ip, port, init_artisynth, artisynth_model, artisynth_args=''):
         self.observation_space = None
         self.action_space = None
         self.ip = ip
@@ -19,11 +19,11 @@ class ArtisynthBase(gym.Env):
 
         if init_artisynth:
             logger.info('Running artisynth')
-            self.run_artisynth(ip, port, artisynth_model)
+            self.run_artisynth(ip, port, artisynth_model, artisynth_args)
 
         self.net = RestClient(ip, port)
 
-    def run_artisynth(self, ip, port, artisynth_model):
+    def run_artisynth(self, ip, port, artisynth_model, artisynth_args=''):
         if ip != 'localhost' and ip != '0.0.0.0' and ip != '127.0.0.1':
             raise NotImplementedError('Can\'t initialize ArtiSynth on a remote system.')
 
@@ -31,8 +31,8 @@ class ArtisynthBase(gym.Env):
             return
 
         command = 'artisynth -model artisynth.models.rl.{} '.format(artisynth_model) + \
-                  '[ -port {} ] -play -noTimeline'. \
-                      format(port)
+                  '[ -port {} {} ] -play -noTimeline'. \
+                      format(port, artisynth_args)
         command_list = command.split(' ')
 
         import subprocess

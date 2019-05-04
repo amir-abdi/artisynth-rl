@@ -82,7 +82,7 @@ public class RlController extends ControllerBase
 	protected double targetsPointRadius = DEFAULT_TARGET_RADIUS;
 	protected int targetsLineWidth = DEFAULT_TARGET_LINE_WIDTH;
 	public static final boolean DEFAULT_DEBUG = true;
-	private static final double DEFAULT_TARGET_RADIUS = 0.5d;
+	private static final double DEFAULT_TARGET_RADIUS = 0.4d;
 	private static final int DEFAULT_TARGET_LINE_WIDTH = 2;
 
 	/**
@@ -169,8 +169,7 @@ public class RlController extends ControllerBase
 			target = addTargetPoint((Point) source);
 		} else if (source instanceof Frame) {
 			target = addTargetFrame((RigidBody) source);
-		}
-		else 
+		} else
 			throw new NotImplementedException();
 		return target;
 	}
@@ -273,7 +272,8 @@ public class RlController extends ControllerBase
 		// set target point radius explicitly
 		targetRenderProps.setPointRadius(0.3);
 		targetRenderProps.setVisible(true);
-		
+		targetRenderProps.setPointRadius(targetsPointRadius);
+
 		targetPoints.setRenderProps(targetRenderProps);
 		targetFrames.setRenderProps(targetRenderProps);
 	}
@@ -480,7 +480,8 @@ public class RlController extends ControllerBase
 
 	@Override
 	public void apply(double t0, double t1) {
-		// A controller should implement the apply method, but you can leave this empty as the control is done
+		// A controller should implement the apply method, but you can leave this empty
+		// as the control is done
 		// via the RlRestApi
 	}
 

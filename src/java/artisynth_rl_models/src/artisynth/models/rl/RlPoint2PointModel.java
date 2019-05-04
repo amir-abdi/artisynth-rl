@@ -27,6 +27,7 @@ import artisynth.core.modelbase.Controller;
 import artisynth.core.modelbase.ControllerBase;
 import artisynth.core.modelbase.Model;
 import artisynth.core.modelbase.StepAdjustment;
+import artisynth.core.rl.Log;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.RlModelInterface;
 import artisynth.core.util.ArtisynthIO;
@@ -132,24 +133,22 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		
 		switch (demoType) {
 		case Point1d: {
+			addCenter();
 			add1dMuscles();
 			break;
 		}
 		case Point2d: {
 			addCenter();
-//			addCenterRef();
 			add2dLabeledMuscles(muscleLabels);
 			break;
 		}
 		case Point3d: {
 			addCenter();
-//			addCenterRef();
 			add3dMuscles();
 			break;
 		}
 		case NonSym: {
 			addCenter();
-//			addCenterRef();
 			add2dLabeledMusclesNonSym(muscleLabels);
 			break;
 		}
@@ -288,6 +287,7 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	}
 
 	public void add1dMuscles() {
+		Log.log("add1dMuscles");
 		boolean[] dyn = new boolean[] { false, true, false };
 		int[] x = new int[] { -1, 0, 1 };
 
@@ -449,17 +449,24 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	private void parseArgs(String[] args) {
 		for (int i = 0; i < args.length; i += 2) {
 			if (args[i].equals("-demoType")) {
-				switch (Integer.parseInt(args[i + 1])) {
-				case 2:
+				switch (args[i + 1]) {
+				case "1d":
+					myDemoType = DemoType.Point1d;
+					break;
+				case "2d":
 					myDemoType = DemoType.Point2d;
 					break;
-				case 3:
+				case "3d":
 					myDemoType = DemoType.Point3d;
 					break;
-				case 4:
+				case "nonSym":
 					myDemoType = DemoType.NonSym;
+					break;									
+				default:
+					myDemoType = DemoType.Point1d;
 					break;
 				}
+				Log.log("Demo type" + myDemoType);
 				args[i] = "";
 				args[i + 1] = "";
 			} else if (args[i].equals("-num")) {
@@ -489,6 +496,7 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(mech.frameMarkers().get(point_name));
 
 		for (MuscleExciter m : mex) {
+			Log.log("Add exciter "+ m.getName());
 			rlTrack.addExciter(m);
 		}
 
@@ -535,9 +543,9 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		}
 		
 		private void resetRefPosition() {
-			Frame body_ref = (Frame)motionTargetComponents.get(0);
+			Point point_ref = (Point)motionTargetComponents.get(0);
 			Point3d pos = getRandomTarget(new Point3d(0, 0, 0), POINT_GENERATE_RADIUS);
-			body_ref.setPosition(pos);
+			point_ref.setPosition(pos);
 		}
 	}
 

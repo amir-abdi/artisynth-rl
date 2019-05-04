@@ -54,9 +54,6 @@ def get_args():
 
     parser.add_argument('--algo', default='ppo',
                         help='algorithm to use: a2c | ppo | acktr')
-    parser.add_argument('--artisynth-model', default='RlPoint2PointModel',
-                        help='Name of the artisynth model to run. The model is expected to be inside the '
-                             'package artisynth.models.rl')
     parser.add_argument('--lr', type=float, default=7e-4,
                         help='learning rate (default: 7e-4)')
     parser.add_argument('--eps', type=float, default=1e-5,
@@ -109,9 +106,6 @@ def get_args():
                         help='use a linear schedule on the ppo clipping parameter')
     parser.add_argument('--vis', type=str2bool,  default=False,
                         help='enable visdom visualization')
-
-    parser.add_argument('--init-artisynth', type=str2bool,  default=False,
-                        help='Initialize ArtiSynth automatically.')
     parser.add_argument('--eval-mode', type=str2bool,  default=False,
                         help='Initialize environment in evalulation mode.')
     parser.add_argument('--include-current-pos', type=str2bool,  default=False,
@@ -123,6 +117,14 @@ def get_args():
     parser.add_argument('--goal-reward', type=float, default=1,
                         help='The reward to give if goal was reached.')
 
+    # initialize artisynth
+    parser.add_argument('--init-artisynth', type=str2bool, default=False,
+                        help='Initialize ArtiSynth automatically.')
+    parser.add_argument('--artisynth-model', default='RlPoint2PointModel',
+                        help='Name of the artisynth model to run. The model is expected to be inside the '
+                             'package artisynth.models.rl')
+    parser.add_argument('--artisynth-args', default='',
+                        help='Arguments used in artisynth model initialization.')
 
 
     args = parser.parse_args()
