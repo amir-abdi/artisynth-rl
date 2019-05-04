@@ -79,46 +79,35 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 `artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel`
 
 
-## Running
+## Run and Train
 
-### Step 1
-Run ArtiSynth with the following arguments for the point-to-point toy environment:
+Once you have the keras-rl library installed, 
+to train the point2point reaching toy project, run:
 
-    artisynth -model artisynth.models.rl.PointModelGenericRl \
-        [ -port 7024 -num 6 -demoType 2 -muscleOptLen 0.1 -radius 5 ] \
+    bash run_files/point2point.sh
+
+This will fire up ArtiSynth with the RlPoint2PointModel instantiated 
+and starts training. 
+Change the `artisynth-args` argument to initiate different models.
+
+You can also run ArtiSynth separately by executing the command: 
+
+    artisynth -model artisynth.models.rl.RlPoint2PointModel \
+        [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
         -play -noTimeline
 
-Or run with the following for the LumbarSpine environment:
+And then run the `point2point.sh` bash file with `init-artisynth=false`.
+Make sure to set the `port` argument to the same port where you
+are running ArtiSynth.
 
-    artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel \
-        [ -port 7024 ] 
+You can train the LumbarSpine model by running `bash run_files/lumbarspine.sh`.
+Similarly, ArtiSynth can be independently initiated with the 
+LumbarSpine model by running:
+
+    artisynth -model artisynth.models.rl.RlLumbarSpineModel \
+        [ -port 8080  ] \
         -play -noTimeline
-        
-Or to run the angular version:
-
-    artisynth -model artisynth.models.lumbarSpine.RlInvLumbarSpineAngular \
-            [ -port 7024 ] 
-            -play -noTimeline
-    
-where 
-- `port` is the port number for the tcp socket and should 
-match the port set in `src/point_model2d_naf_main.py`, 
-- `num` sets the number of muscles in the model,
-- `demoType` defines the dimensionality of the model and support 2 (for 2D)
-and 3 (for 3D) models. In the 3D model. When `demoType` is set to 3 (3D),
-`num` is ignored and the model is predefined to have 8 muscles.
-- `MuscleOptLen` defines the optimal lengths of muscles at which the apply
-no force on the particle.
-- `radius` defines the radius of the circle on the perimeter of which
-the muscles are arranged.
-- `play` hints artisynth to play immediately after loading the model.
-- `noTimeline` removes the timeline from artisynth as it has no use for our
-reinforcement learning cause.
-
   
-### Step 2 - Training
-Run `src/point_model2d_naf_main.py` with the same environment parameters 
-such as `NUM_MUSCLES`, `PORT`, and `DOF_OBSERVATIONS`. 
 
 Training results and logs are stored in 4 directories, namely
 
@@ -133,16 +122,12 @@ The above 4 directories are created in the parent directory of where
 assumed that the main file is executed from inside the `src` folder and
 the 4 directories are made in the artisynth_rl root.   
 
-### Step 3 - Testing
-Once the model was successfully trained (the agent was constantly reaching
-the success state), call the `main` function in  `src/point_model2d_naf_main.py`
-with `'test'` as input instead of `'train'` and see the results. 
+### Testing
 
-## Results
-
-Once the training is complete, the model (agent) will be able to move the 
-particle by finding the correct muscle activations to reach its destination.
+To test a trained model, set the `--load-path` to the saved model
+and set `--test=true`. 
   
+#### Sample demos
 [![Point to point tracking video](https://img.youtube.com/vi/UqHt4KbsaII/0.jpg)](https://www.youtube.com/watch?v=UqHt4KbsaII) 
 
 [![Out of domain tracking](https://img.youtube.com/vi/PQHBK3C28Q8/0.jpg)](https://www.youtube.com/watch?v=PQHBK3C28Q8)
