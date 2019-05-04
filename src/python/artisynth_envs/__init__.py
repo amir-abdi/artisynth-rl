@@ -5,3 +5,9 @@ register(
     entry_point='artisynth_envs.envs:SpineEnvV0',
     nondeterministic=False
 )
+
+register(
+    id='Point2PointEnv-v0',
+    entry_point='artisynth_envs.envs:Point2PointEnvV0',
+    nondeterministic=False
+)

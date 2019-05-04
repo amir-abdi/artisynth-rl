@@ -1,16 +1,14 @@
 import logging
-import os
 import time
 
-import gym
 import numpy as np
 import torch
 from gym import spaces
 from gym.utils import seeding
 
 from common import constants as c
-from common.rest_client import RestClient
 from common.utilities import Bunch
+from artisynth_envs.artisynth_base_env import ArtisynthBase
 
 logger = logging.getLogger()
 
@@ -21,30 +19,23 @@ PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
 NUM_TARGETS = len(COMPS_TARGET)
 
 
-class SpineEnvV0(gym.Env):
+class SpineEnvV0(ArtisynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
                  init_artisynth, include_current_pos, **kwargs):
 
-        self.prev_exc = None
         self.args = Bunch(kwargs)
+        super().__init__(ip, port, init_artisynth, self.args.artisynth_model)
+
+        self.prev_exc = None
         self.episode_counter = 0
         self.reset_step = reset_step
         self.eval_mode = eval_mode
         self.wait_action = wait_action
         self.include_current_pos = include_current_pos
-        self.ip = ip
-        self.port = port
 
         self.action_size = 0
         self.obs_size = 0
-        self.observation_space = None
-        self.action_space = None
 
-        if init_artisynth:
-            logger.info('Running artisynth')
-            self.run_artisynth(ip, port)
-
-        self.net = RestClient(ip, port)
         self.init_spaces()
 
     def init_spaces(self):
@@ -56,43 +47,9 @@ class SpineEnvV0(gym.Env):
         self.observation_space = spaces.Box(low=-0.2, high=+0.2,
                                             shape=[self.obs_size], dtype=np.float32)
         self.observation_space.shape = (self.obs_size,)
-        # init action space
         self.action_space = spaces.Box(low=c.LOW_EXCITATION, high=c.HIGH_EXCITATION,
                                        shape=(self.action_size,),
                                        dtype=np.float32)
-
-    def run_artisynth(self, ip, port):
-        if ip != 'localhost' and ip != '0.0.0.0' and ip != '127.0.0.1':
-            raise NotImplementedError('Can\'t initialize ArtiSynth on a remote system.')
-
-        if RestClient.server_is_alive(self.ip, self.port):
-            return
-
-        command = 'artisynth -model artisynth.models.rl.RlLumbarSpineModel ' + \
-                  '[ -port {} ] -play -noTimeline'. \
-                      format(port)
-        command_list = command.split(' ')
-
-        import subprocess
-        FNULL = open(os.devnull, 'w')
-        subprocess.Popen(command_list, stdout=FNULL, stderr=subprocess.STDOUT)
-        while not RestClient.server_is_alive(self.ip, self.port):
-            logger.info("Waiting for ArtiSynth to launch")
-            time.sleep(3)
-
-    def get_state_dict(self):
-        state_dict = self.net.get_post(request_type=c.GET_STR, message=c.STATE_STR)
-        return state_dict
-
-    def get_state_size(self):
-        rec_dict = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
-        logger.info('State size: {}'.format(rec_dict[c.STATE_SIZE_STR]))
-        return rec_dict[c.STATE_SIZE_STR]
-
-    def get_action_size(self):
-        action_size = self.net.get_post(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
-        logger.info('Action size: {}'.format(action_size))
-        return action_size
 
     def state_dict2tensor(self, state):
         return torch.tensor(self.state_dic_to_array(state))
@@ -100,10 +57,6 @@ class SpineEnvV0(gym.Env):
     def get_state_tensor(self):
         state_dict = self.get_state_dict()
         return self.state_dict2tensor(state_dict)
-
-    def take_action(self, action):
-        action = np.clip(action, c.LOW_EXCITATION, c.HIGH_EXCITATION)
-        self.net.get_post({c.EXCITATIONS_STR: action.tolist()}, request_type=c.POST_STR, message=c.EXCITATIONS_STR)
 
     phi_r_episode = []
 
@@ -166,6 +119,7 @@ class SpineEnvV0(gym.Env):
 
         logger.debug('action:{}'.format(action))
         self.take_action(action)
+
         time.sleep(self.wait_action)
         state = self.get_state_dict()
 
@@ -193,20 +147,18 @@ class SpineEnvV0(gym.Env):
         return state_array, reward, done, info
 
     def reset(self):
-        self.net.get_post(request_type=c.GET_STR, message=c.RESET_STR)
-        state_dict = self.get_state_dict()
         self.prev_exc = None
         self.episode_counter = 0
 
-        return self.state_dic_to_array(state_dict)
+        return super().reset()
 
     def seed(self, seed=None):
-        self.np_random, seed = seeding.np_random(seed)
+        np_random, seed = seeding.np_random(seed)
         return [seed]
 
     def state_dic_to_array(self, js):
         logger.debug('state json: %s', str(js))
-        observation = js['observation']
+        observation = js[c.OBSERVATION_STR]
         observation_vector = np.array([])  # np.zeros(self.obs_size)
 
         # only include orientation
@@ -220,7 +172,6 @@ class SpineEnvV0(gym.Env):
         for target_object in COMPS_TARGET:
             t = observation[target_object]
             observation_vector = np.append(observation_vector, t[PROPS[props_idx_include]])
-            # print('observation_vector ', observation_vector)
 
         # todo: include excitations in the observation vector
 

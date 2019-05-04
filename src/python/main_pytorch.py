@@ -13,8 +13,10 @@ from a2c_ppo_acktr.storage import RolloutStorage
 from a2c_ppo_acktr.utils import update_linear_schedule
 from a2c_ppo_acktr.visualize import visdom_plot
 from artisynth_envs.make_env import make_vec_envs
+
 from common import config
 from common.arguments import get_args
+from common.utilities import setup_logger
 
 args = get_args()
 
@@ -24,34 +26,14 @@ assert args.algo in ['a2c', 'ppo', 'acktr']
 if args.recurrent_policy:
     assert args.algo in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
 
-num_updates = int(args.num_env_steps) // args.num_steps // args.num_processes
-
-
-def setup_logger(level, name):
-    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-
-    file_handler = logging.FileHandler("{0}/{1}.log".format(config.log_directory, name))
-    file_handler.setFormatter(log_formatter)
-    logger.addHandler(file_handler)
-
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(log_formatter)
-    logger.addHandler(console_handler)
-
-    logger.setLevel(level=level)
-    logger.info('Log level: %i', level)
-
 
 def main():
     if args.test:
         args.num_processes = 1
         args.use_wandb = False
         args.vis = False
-        # todo: hard coded for 10 episodes of test
-        args.num_steps_eval = 100000
-        args.reset_step = 10
 
-    setup_logger(args.verbose, args.model_name)
+    setup_logger(logger, args.verbose, args.model_name)
     torch.set_num_threads(1)
     device = torch.device("cuda:0" if args.cuda else "cpu")
 
@@ -74,6 +56,7 @@ def main():
 
     envs = make_vec_envs(args.env_name, seed, args.num_processes,
                          args.gamma, config.log_directory, device,
+                         start_port=args.port,
                          allow_early_resets=True, num_frame_stack=None, args=args)
 
     actor_critic = Policy(envs.observation_space.shape, envs.action_space,
@@ -114,6 +97,7 @@ def main():
     episode_phi_r = deque(maxlen=20)
 
     # --------------------- train ----------------------------
+    num_updates = int(args.num_env_steps) // args.num_steps // args.num_processes
     start = time.time()
     for epoch in range(num_updates):
         logger.info('Training {}/{} updates'.format(epoch, num_updates))
@@ -222,7 +206,8 @@ def main():
 
             eval_envs = make_vec_envs(args.env_name, seed, 1,  # args.num_processes,
                                       args.gamma, config.log_directory,
-                                      device, allow_early_resets=True, num_frame_stack=None,
+                                      device, start_port=args.port,
+                                      allow_early_resets=True, num_frame_stack=None,
                                       eval_mode=True, args=args)
 
             eval_episode_rewards = []
@@ -295,7 +280,8 @@ def main():
 
         eval_envs = make_vec_envs(args.env_name, seed, 1,
                                   args.gamma, config.log_directory,
-                                  device, allow_early_resets=True, num_frame_stack=None,
+                                  device, start_port=args.port,
+                                  allow_early_resets=True, num_frame_stack=None,
                                   eval_mode=True, args=args)
 
         eval_episode_rewards = []

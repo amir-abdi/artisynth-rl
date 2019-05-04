@@ -170,6 +170,8 @@ public class RlController extends ControllerBase
 		} else if (source instanceof Frame) {
 			target = addTargetFrame((RigidBody) source);
 		}
+		else 
+			throw new NotImplementedException();
 		return target;
 	}
 
@@ -269,10 +271,9 @@ public class RlController extends ControllerBase
 		targetRenderProps.setPointColor(Color.CYAN);
 		targetRenderProps.setPointStyle(PointStyle.SPHERE);
 		// set target point radius explicitly
-		targetRenderProps.setPointRadius(0.01);
+		targetRenderProps.setPointRadius(0.3);
 		targetRenderProps.setVisible(true);
-		;
-
+		
 		targetPoints.setRenderProps(targetRenderProps);
 		targetFrames.setRenderProps(targetRenderProps);
 	}

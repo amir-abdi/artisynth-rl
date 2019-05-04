@@ -2,6 +2,7 @@ import os
 import pprint
 import numpy as np
 import time
+import logging
 
 from rl.agents.dqn import NAFAgent
 from rl.random import OrnsteinUhlenbeckProcess
@@ -9,28 +10,21 @@ from rl.callbacks import RlTensorBoard
 from rl.memory import SequentialMemory
 
 import keras
+from keras import backend as K
 from keras.utils.generic_utils import get_custom_objects
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, Concatenate
 from keras.optimizers import Adam
 
-from python.artisynth_envs.envs.point_model2d_env import PointModel2dEnv, PointModel2dProcessor
-from python.common import config as c
+from artisynth_envs.envs.point2point_env import Point2PointEnvV0, PointModel2dProcessor
+from common import config as c
+from common.arguments import get_args
+from common.utilities import setup_tensorflow
+import common.config as config
+from common.utilities import setup_logger
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-
-# logging parameters
-VERBOSITY = 4
-HISTOGRAM_FREQ = 1
-
-# Port number
-PORT = 7024
-
-# Constants of the environment
-NUM_MUSCLES = 6
-SUCCESS_THRESHOLD = 0.5
-DOF_OBSERVATIONS = 3
+args = get_args()
+logger = logging.getLogger()
 
 # Noise parameters
 THETA = .35
@@ -124,35 +118,25 @@ class MuscleNAFAgent(NAFAgent):
 
 
 def main(train_test_flag='train'):
-    get_custom_objects().update(
-        {'SmoothLogistic': Activation(smooth_logistic)})
-    model_name = '2,2,3x32Net_r4_lr{}_th{}_[t{}s{}]_nAnn[{},{}]_{}'. \
-        format(LR,
-               SUCCESS_THRESHOLD,
-               THETA,
-               SIGMA,
-               SIGMA_MIN,
-               NUM_STEPS_ANNEALING,
-               NUM_MUSCLES)
-    muscle_labels = ["m" + str(i) for i in np.array(range(NUM_MUSCLES))]
+    setup_tensorflow()
+    setup_logger(logger, args.verbose, args.model_name)
 
-    training = False
-    weight_filename = os.path.join(c.trained_directory, '{}_weights.h5f'.format(model_name))
-    log_file_name = begin_time + '_' + model_name
+    get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
 
-    while True:
-        try:
-            env = PointModel2dEnv(verbose=0, success_thres=SUCCESS_THRESHOLD,
-                                  dof_observation=DOF_OBSERVATIONS,
-                                  include_follow=False, port=PORT,
-                                  muscle_labels=muscle_labels,
-                                  log_file=log_file_name)
-            break
-        except ConnectionRefusedError as e:
-            print("Server not started: ", e)
-            time.sleep(10)
+    model_name = args.model_name
+    log_file_name = args.model_name
+    save_path = os.path.join(config.trained_directory,
+                             args.algo + "-" + args.env_name + ".pt")
+
+    if args.env_name == 'Point2PointEnv-v0':
+        env = Point2PointEnvV0(verbose=0, success_thres=args.goal_threshold,
+                               include_current_pos=False, port=args.port,
+                               init_artisynth=args.init_artisynth, artisynth_model=args.artisynth_model)
+    else:
+        raise NotImplementedError("No solution is implemneted for the environment {} in keras-rl.")
+    env.seed(123)
+
     try:
-        env.seed(123)
         nb_actions = env.action_space.shape[0]
         memory = SequentialMemory(limit=MEMORY_SIZE, window_length=1)
 
@@ -169,7 +153,7 @@ def main(train_test_flag='train'):
             sigma_min=SIGMA_MIN,
             n_steps_annealing=NUM_STEPS_ANNEALING
         )
-        # random_process = None
+
         processor = PointModel2dProcessor()
         agent = MuscleNAFAgent(nb_actions=nb_actions, V_model=v_model,
                                L_model=l_model, mu_model=mu_model,
@@ -184,11 +168,13 @@ def main(train_test_flag='train'):
         agent.compile(Adam(lr=LR), metrics=['mse'])
         env.agent = agent
         pprint.pprint(agent.get_config(False))
-        load_weights(agent, weight_filename)
+
+        if args.load_path is not None:
+            agent.load_weights(args.load_path)
 
         tensorboard = RlTensorBoard(
             log_dir=os.path.join(c.tensorboard_log_directory, log_file_name),
-            histogram_freq=HISTOGRAM_FREQ,
+            histogram_freq=1,
             batch_size=BATCH_SIZE,
             write_graph=True,
             write_grads=True, write_images=False, embeddings_freq=0,
@@ -204,11 +190,11 @@ def main(train_test_flag='train'):
             agent.fit(env,
                       nb_steps=NUM_TRAINING_STEPS,
                       visualize=False,
-                      verbose=VERBOSITY,
+                      verbose=args.verbose,
                       nb_max_episode_steps=NUM_MAX_EPISODE_STEPS,
                       callbacks=[tensorboard, csv_logger])
             print('Training complete')
-            save_weights(agent, weight_filename)
+            agent.save_weights(save_path)
         elif train_test_flag == 'test':
             # test code
             training = False
@@ -222,9 +208,8 @@ def main(train_test_flag='train'):
 
     except Exception as e:
         if training:
-            save_weights(agent, weight_filename)
+            agent.save_weights(save_path)
         print("Error in main code:", str(e))
-        env.net.sock.close()
         raise e
 
 

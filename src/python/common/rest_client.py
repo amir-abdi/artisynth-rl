@@ -23,14 +23,9 @@ class RestClient:
         url = RestClient.get_url(ip, port, '')
         try:
             response = requests.get(url)
-        # except ConnectionRefusedError as err:
         except requests.exceptions.ConnectionError:
             logger.log(msg='ArtiSynth server is not live at {}'.format(url), level=logging.INFO)
             return False
-
-        # if not response.ok:
-        #     logger.log(msg='ArtiSynth server is not live at {}'.format(url), level=logging.INFO)
-        #     return False
         if response.ok:
             return True
         else:

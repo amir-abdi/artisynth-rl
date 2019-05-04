@@ -1,63 +1,49 @@
 import numpy as np
-import os
+import logging
 
-from rl.core import Env
 from rl.core import Space
 from rl.core import Processor
 
-from python.common import begin_time
-from python.common import config as config
-from python.common import constants as c
-from python.common import Net
+from common import constants as c
+from artisynth_envs.artisynth_base_env import ArtisynthBase
 
-EPSILON = 1E-12
+logger = logging.getLogger()
+
+COMPS_REAL = ['point']
+COMPS_TARGET = ['point_ref']
+PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
 
 
-class PointModel2dEnv(Env):
-    def __init__(self, muscle_labels=None, dof_observation=6, success_thres=0.1,
-                 verbose=2, log_to_file=True, log_file='log', agent=None,
-                 include_follow=True, ip='localhost', port=6006):
-        self.net = Net(ip, port)
+class Point2PointEnvV0(ArtisynthBase):
+    def __init__(self, success_thres=0.1,
+                 verbose=2, agent=None,
+                 include_current_pos=True, ip='localhost', port=6006,
+                 init_artisynth=False, artisynth_model=None):
+
+        super().__init__(ip, port, init_artisynth, artisynth_model)
 
         self.verbose = verbose
         self.success_thres = success_thres
         self.ref_pos = None
 
-        self.action_space = type(self).ActionSpace(muscle_labels)
-        self.observation_space = type(self).ObservationSpace(
-            dof_observation)  # np.random.rand(dof_observation)
-        self.log_to_file = log_to_file
-        self.log_file_name = log_file
-        if log_to_file:
-            self.logfile, path = type(self).create_log_file(log_file)
-            self.log('Logging into file: ' + path, verbose=1)
         self.agent = agent
-        self.include_follow = include_follow
+        self.include_current_pos = include_current_pos
         self.port = port
         self.prev_distance = None
-        self.muscle_labels = muscle_labels
 
-    @staticmethod
-    def create_log_file(log_file):
-        log_folder = config.env_log_directory
-        path = os.path.join(log_folder, (log_file + begin_time))
-        return open(str(path), "w"), str(path)
+        self.action_size = 0
+        self.obs_size = 0
 
-    def log(self, obj, verbose=2, same_line=False):
-        if self.log_to_file and not self.logfile.closed:
-            self.logfile.writelines(str(obj))
-            self.logfile.write("\n")
+        self.init_spaces()
 
-        if same_line:
-            print(obj, sep=' ', end='\r',
-                  flush=True) if verbose <= self.verbose else lambda: None
-            print(obj, sep=' ', end=' ',
-                  flush=True) if verbose <= self.verbose else lambda: None
-        else:
-            print(obj) if verbose <= self.verbose else lambda: None
+    def init_spaces(self):
+        self.action_size = self.get_action_size()
+        obs = self.reset()
+        self.obs_size = obs.shape[0]
+        logger.info('State size: {}   action_size: {}'.format(obs.shape, self.action_size))
 
-    def augment_action(self, action):
-        return dict(zip(self.muscle_labels, np.nan_to_num(action)))
+        self.observation_space = type(self).ObservationSpace(self.obs_size)  # np.random.rand(dof_observation)
+        self.action_space = type(self).ActionSpace(self.action_size)
 
     def set_state(self, state):
         self.set_state(state[:3], state[4:])
@@ -66,28 +52,31 @@ class PointModel2dEnv(Env):
         self.ref_pos = ref_pos
         self.follower_pos = follower_pos
 
-    @staticmethod
-    def parse_state(state_dict: dict):
-        state = {'ref_pos': np.array(
-            [float(s) for s in state_dict['ref_pos'].split(" ")]),
-            'follow_pos': np.array(
-                [float(s) for s in state_dict['follow_pos'].split(" ")])}
-        return state
+    def state_dic_to_array(self, state_dict: dict):
+        print(state_dict)
+        observation = state_dict[c.OBSERVATION_STR]
+        observation_vector = np.array([])  # np.zeros(self.obs_size)
 
-    def state_json_to_array(self, state_dict: dict):
-        state_arr = np.asarray(state_dict['ref_pos'])
-        if self.include_follow:
-            state_arr = np.concatenate((state_arr, state_dict['follow_pos']))
-        return state_arr
+        # only include position
+        props_idx_include = 0
+
+        if self.include_current_pos:
+            for real_object in COMPS_REAL:
+                t = observation[real_object]
+                observation_vector = np.append(observation_vector, t[PROPS[props_idx_include]])
+
+        for target_object in COMPS_TARGET:
+            t = observation[target_object]
+            observation_vector = np.append(observation_vector, t[PROPS[props_idx_include]])
+
+        return np.asarray(observation_vector)
 
     def reset(self):
-        self.net.get_post(request_type=c.RESET_STR)
         self.ref_pos = None
         self.prev_distance = None
-        self.log('Reset', verbose=0)
-        state_dict = self.get_state_dict()
-        state = self.state_json_to_array(state_dict)
-        return state
+        logger.info('Reset')
+
+        return super().reset()
 
     def render(self, mode='human', close=False):
         # our environment does not need rendering
@@ -108,27 +97,21 @@ class PointModel2dEnv(Env):
             if exp:
                 return constant * np.exp(-distance) - 50, False
             else:
-                return constant / (distance + EPSILON), False
-
-    def get_state_dict(self):
-        self.net.get_post(request_type=c.GET_STATE_STR)
-        state_dict = self.net.receive_message(c.STATE_STR, retry_type=c.GET_STATE_STR)
-        return state_dict
+                return constant / (distance + c.EPSILON), False
 
     @staticmethod
     def calculate_distance(a, b):
         return np.sqrt(np.sum((b - a) ** 2))
 
     def step(self, action):
-        action = self.augment_action(action)
-        # self.net.send(action, 'excitations')
-        self.net.get_post({'excitations': action}, request_type='setExcitations')
+        logger.debug('action:{}'.format(action))
+        self.take_action(action)
 
-        # time.sleep(0.3)
         state = self.get_state_dict()
+        obs = state[c.OBSERVATION_STR]
         if state is not None:
-            new_ref_pos = np.asarray(state['ref_pos'])
-            new_follower_pos = np.asarray(state['follow_pos'])
+            new_ref_pos = np.asarray(obs[COMPS_TARGET[0]][PROPS[0]])
+            new_follower_pos = np.asarray(obs[COMPS_REAL[0]][PROPS[0]])
 
             distance = self.calculate_distance(new_ref_pos, new_follower_pos)
             if self.prev_distance is not None:
@@ -138,10 +121,10 @@ class PointModel2dEnv(Env):
                 reward, done = (0, False)
             self.prev_distance = distance
             if done:
-                self.log('Achieved done state', verbose=0)
-            self.log('Reward: ' + str(reward), verbose=1, same_line=True)
+                logger.info('Achieved done state')
+            logger.info('Reward: ' + str(reward))
 
-            state_arr = self.state_json_to_array(state)
+            state_arr = self.state_dic_to_array(state)
             info = {'distance': distance}
 
         return state_arr, reward, done, info
@@ -211,16 +194,15 @@ class PointModel2dEnv(Env):
                 return -1, False
 
     class ActionSpace(Space):
-        def __init__(self, muscle_labels):
-            self.dof_action = len(muscle_labels)
+        def __init__(self, num_muscles):
+            self.dof_action = num_muscles
             self.shape = (self.dof_action,)
-            self.muscle_labels = muscle_labels
 
         def sample(self, seed=None):
             if seed is not None:
                 np.random.seed(seed)
             values = np.random.rand(self.dof_action)
-            return dict(zip(self.muscle_labels, values))
+            return values
 
         def contains(self, x):
             if x.ndim != 1:
@@ -250,6 +232,7 @@ class PointModel2dEnv(Env):
             if np.max(x) > self.radius or np.min(x) < -self.radius:
                 return False
             return True
+
 
 class PointModel2dProcessor(Processor):
     """Abstract base class for implementing processors.

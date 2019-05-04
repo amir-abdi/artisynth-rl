@@ -51,20 +51,21 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 
 ## Installation
 
-- Install the [Eclipse IDE](https://www.eclipse.org/downloads/)
+1- Install the [Eclipse IDE](https://www.eclipse.org/downloads/)
 
-- Install *ArtiSynth* following its [installation guide](https://www.artisynth.org/Documentation/InstallGuide)
-and import the `artisynth_core` project into Eclipse.
+2- Install *ArtiSynth* following its [installation guide](https://www.artisynth.org/Documentation/InstallGuide).
 
-- Import the `artisynth_rl_models` and `artisynth_rl_restapi` projects
+3- Import the `artisynth_core` project (from step 2) into Eclipse.
+
+4- Import the `artisynth_rl_models` and `artisynth_rl_restapi` projects (from this repository)
  into Eclipse.
 
-- Set the environment variable `$ARTISYNTH_HOME` to the 
+5- Set the environment variable `$ARTISYNTH_HOME` to the 
 `artisynth_core` directory.
 
-- Install Maven2: `sudo apt-get install maven2`   
+6- Install Maven2: `sudo apt-get install maven2`   
 
-- Run the command:    `source setup.sh`
+7- Run the command:    `source setup.sh`
 
 - If you used any of the third-party python libraries 
 (keras-rl, pytorch-a2c-ppo-acktr-gail, etc), make sure to include them in your PYTHONPATH.

@@ -54,6 +54,9 @@ def get_args():
 
     parser.add_argument('--algo', default='ppo',
                         help='algorithm to use: a2c | ppo | acktr')
+    parser.add_argument('--artisynth-model', default='RlPoint2PointModel',
+                        help='Name of the artisynth model to run. The model is expected to be inside the '
+                             'package artisynth.models.rl')
     parser.add_argument('--lr', type=float, default=7e-4,
                         help='learning rate (default: 7e-4)')
     parser.add_argument('--eps', type=float, default=1e-5,
@@ -119,6 +122,8 @@ def get_args():
                         help='To stop the episode if target goal was reached.')
     parser.add_argument('--goal-reward', type=float, default=1,
                         help='The reward to give if goal was reached.')
+
+
 
     args = parser.parse_args()
 

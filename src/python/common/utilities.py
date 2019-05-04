@@ -1,9 +1,10 @@
 from datetime import datetime
 from pathlib import Path
+import logging
 
-import tensorflow as tf
-from keras import backend as K
-from keras.backend.tensorflow_backend import set_session
+import common.config as config
+
+start_time = str(datetime.now().strftime('%y-%m-%d_%H-%M'))
 
 
 def load_weights(agent, weight_filename):
@@ -30,16 +31,35 @@ def save_weights(agent, weight_filename, ask=True):
 
 
 def mylogistic(x):
+    from keras import backend as K
     return 1 / (1 + K.exp(-0.1 * x))
 
 
-begin_time = str(datetime.now().strftime('%y-%m-%d_%H-%M'))
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-config.gpu_options.visible_device_list = "0"
-set_session(tf.Session(config=config))
+def setup_tensorflow():
+    import tensorflow as tf
+    from keras.backend.tensorflow_backend import set_session
+    tf_config = tf.ConfigProto()
+    tf_config.gpu_options.allow_growth = True
+    tf_config.gpu_options.visible_device_list = "0"
+    set_session(tf.Session(config=tf_config))
 
 
 class Bunch(object):
     def __init__(self, adict):
         self.__dict__.update(adict)
+
+
+def setup_logger(logger, level, name):
+    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+
+    file_handler = logging.FileHandler("{0}/{1}.log".format(config.log_directory, name))
+    file_handler.setFormatter(log_formatter)
+    logger.addHandler(file_handler)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    logger.addHandler(console_handler)
+
+    logger.setLevel(level=level)
+    logger.info('Log level: %i', level)
+

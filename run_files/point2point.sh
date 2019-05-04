@@ -1,34 +1,15 @@
 #!/bin/bash
 
-python3 src/python/main_pytorch.py \
---env-name=SpineEnv-v0 \
---model-name=lumbarspine_ppo \
---log-interval=1 \
---num-steps=32 \
---save-interval=4 \
---wait-action=0.1 \
---eval-interval=1 \
---num-steps-eval=5 \
---ppo-epoch=4 \
---algo=ppo \
+python3 src/python/main_keras.py \
+--env-name=Point2PointEnv-v0 \
+--model-name=point2point-naf \
+--algo=naf \
 --num-processes=1 \
 --port=8080 \
---use-wandb=false \
---num-env-steps=80000 \
---num-mini-batch=16 \
---reset-step=30 \
---entropy-coef=0.0001 \
---lr=1e-8 \
---clip-param=0.2 \
---hidden-layer-size=256 \
---use-linear-lr-decay=true \
---use-linear-clip-decay=true \
---w_u=1.0 \
---w_d=0.0001 \
---w_r=0.01 \
---goal-reward=0 \
 --verbose=20 \
 --init-artisynth=true \
+--artisynth-model=RlPoint2PointModel \
+
 
 
 
