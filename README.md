@@ -10,6 +10,10 @@ This repository also holds sample RL model for ArtiSynth (in Java) and
 The environments follow the protocols of Gym environments and gives you the 
 flexibility to implement the agent with any deep framework of your choice.
 
+**Researchers are free to use `artisynth_rl_restapi` in their work with 
+proper credits to the author(s). 
+Please contact authors for details.** 
+
 ## Dependencies
 
 - **ArtiSynth**: [ArtiSynth](https://www.artisynth.org/Main/HomePage) is a 
