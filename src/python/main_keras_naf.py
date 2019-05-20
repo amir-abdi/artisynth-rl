@@ -124,7 +124,7 @@ def main():
 
     log_file_name = args.model_name
     save_path = os.path.join(config.trained_directory,
-                             args.algo + "-" + args.env_name + ".pt")
+                             args.algo + "-" + args.env_name + ".h5f")
 
     if args.env_name == 'Point2PointEnv-v0':
         env = Point2PointEnvV0(verbose=0, success_thres=args.goal_threshold,
@@ -133,7 +133,7 @@ def main():
                                init_artisynth=args.init_artisynth, artisynth_model=args.artisynth_model,
                                artisynth_args=args.artisynth_args)
     else:
-        raise NotImplementedError("No solution is implemneted for the environment {} in keras-rl.")
+        raise NotImplementedError("No solution is implemented for the environment {} in keras-rl.".format(args.env_name))
     env.seed(123)
 
     try:

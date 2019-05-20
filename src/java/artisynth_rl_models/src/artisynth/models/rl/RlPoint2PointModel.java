@@ -286,10 +286,10 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 
 	}
 
-	public void add1dMuscles() {
+	public void add1dMuscles(String[] labels) {
 		Log.log("add1dMuscles");
-		boolean[] dyn = new boolean[] { false, true, false };
-		int[] x = new int[] { -1, 0, 1 };
+		boolean[] dyn = new boolean[] { false, false };
+		int[] x = new int[] { -1, 1 };
 
 		ArrayList<Point> pts = new ArrayList<Point>(x.length);
 		for (int i = 0; i < x.length; i++) {
@@ -302,23 +302,16 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 			pt.setDynamic(dyn[i]);
 			mech.addParticle(pt);
 			pts.add(pt);
-
-			if (x[i] == 0) {
-				// center = pt;
+			addMuscle(pt);
+		}
+		int k = 0;
+		for (AxialSpring m : mech.axialSprings()) {
+			if (m instanceof Muscle) {
+				m.setName(labels[k]);
+				k += 1;
 			}
 		}
-
-		for (int i = 1; i < pts.size(); i++) {
-			AxialSpring m;
-			Point p0 = pts.get(i - 1);
-			Point p1 = pts.get(i);
-			// if (p0==center || p1==center)
-			// m = addAxialSpring(p0, p1);
-			// else
-			m = addMuscle(p0, p1);
-			m.setName("m" + Integer.toString(m.getNumber()));
-		}
-
+				
 	}
 
 	public void addMuscles() {
