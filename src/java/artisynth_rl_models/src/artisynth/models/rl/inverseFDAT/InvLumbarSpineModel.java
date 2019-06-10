@@ -505,7 +505,7 @@ public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 
 	public class RandomTargetController extends SimpleTargetController {
 		public Boolean reset = false;
-		public Boolean trialRun = true;
+		public Boolean trialRun = false;
 		private double MAX_FLEX_EXTEND = 30;
 		Random r = new Random();
 		private int time_pos_updated = -1;
@@ -520,7 +520,6 @@ public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 		}
 
 		public void apply(double t0, double t1) {
-			// Neutral with Crate
 			if (t0 > -1) {
 
 				// TODO: make reset random configurable

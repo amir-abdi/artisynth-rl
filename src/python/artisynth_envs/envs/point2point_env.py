@@ -49,9 +49,9 @@ class Point2PointEnvV0(ArtisynthBase):
         self.action_space = type(self).ActionSpace(self.action_size)
 
     def set_state(self, state):
-        self.set_state(state[:3], state[4:])
+        self._set_state(state[:3], state[4:])
 
-    def set_state(self, ref_pos, follower_pos):
+    def _set_state(self, ref_pos, follower_pos):
         self.ref_pos = ref_pos
         self.follower_pos = follower_pos
 
@@ -118,7 +118,7 @@ class Point2PointEnvV0(ArtisynthBase):
 
             distance = self.calculate_distance(new_ref_pos, new_follower_pos)
             if self.prev_distance is not None:
-                reward, done = self.calcualte_reward_time_5(distance,
+                reward, done = self.calculate_reward_time_5(distance,
                                                             self.prev_distance)  # r4
             else:
                 reward, done = (0, False)
@@ -132,7 +132,7 @@ class Point2PointEnvV0(ArtisynthBase):
 
         return state_arr, reward, done, info
 
-    def calcualte_reward_move(self, ref_pos, prev_follow_pos,
+    def calculate_reward_move(self, ref_pos, prev_follow_pos,
                               new_follow_pos):  # r1
         prev_dist = type(self).calculate_distance(ref_pos, prev_follow_pos)
 
@@ -156,7 +156,7 @@ class Point2PointEnvV0(ArtisynthBase):
                     False,
                     10), False
 
-    def calcualte_reward_time_n5(self, new_dist, prev_dist):  # r2
+    def calculate_reward_time_n5(self, new_dist, prev_dist):  # r2
         if new_dist < self.success_thres:
             # achieved done state
             return 5 / self.agent.episode_step, True
@@ -166,7 +166,7 @@ class Point2PointEnvV0(ArtisynthBase):
             else:
                 return -1, False
 
-    def calcualte_reward_time_dist_n5(self, new_dist, prev_dist):  # r3
+    def calculate_reward_time_dist_n5(self, new_dist, prev_dist):  # r3
         if new_dist < self.success_thres:
             # achieved done state
             return 5 / self.agent.episode_step, True
@@ -176,7 +176,7 @@ class Point2PointEnvV0(ArtisynthBase):
             else:
                 return -1, False
 
-    def calcualte_reward_time_5(self, new_dist, prev_dist):  # r4
+    def calculate_reward_time_5(self, new_dist, prev_dist):  # r4
         if new_dist < self.success_thres:
             # achieved done state
             return 5, True
@@ -186,7 +186,7 @@ class Point2PointEnvV0(ArtisynthBase):
             else:
                 return -1, False
 
-    def calcualte_reward_time_dist_nn5(self, new_dist, prev_dist):  # r5
+    def calculate_reward_time_dist_nn5(self, new_dist, prev_dist):  # r5
         if new_dist < self.success_thres:
             # achieved done state
             return 5 / (self.agent.episode_step * new_dist), True

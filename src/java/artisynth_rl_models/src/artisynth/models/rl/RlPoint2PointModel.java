@@ -12,7 +12,6 @@ import artisynth.core.inverse.ForceTargetTerm;
 import artisynth.core.inverse.TrackingController;
 import artisynth.core.materials.LinearAxialMuscle;
 import artisynth.core.mechmodels.AxialSpring;
-import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.FrameMarker;
 import artisynth.core.mechmodels.MechModel;
 import artisynth.core.mechmodels.MechSystemSolver.Integrator;
@@ -54,7 +53,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	RandomTargetController targetMotionController;
 	RlController rlTrack;
 
-	String[] muscleLabels;
 	int numMuscles = 12;
 
 	// TODO: configure POINT_GENERATE_RADIUS through flags
@@ -123,19 +121,20 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		System.out.println("myType = " + myDemoType.toString());
 	}
 	
-	public void generateMuscleLabels() {
-		muscleLabels = new String[numMuscles];
+	public String[] generateMuscleLabels() {
+		String[] muscleLabels = new String[numMuscles];
 		for (int m = 0; m < numMuscles; ++m)
 			muscleLabels[m] = "m" + Integer.toString(m);
+		return muscleLabels;
 	}
 
 	public void createModel(DemoType demoType) {
-		generateMuscleLabels();
+		String[] muscleLabels = generateMuscleLabels();
 		
 		switch (demoType) {
 		case Point1d: {
 			addCenter();
-			add1dMuscles();
+			add1dMuscles(muscleLabels);
 			break;
 		}
 		case Point2d: {
@@ -279,8 +278,8 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 					Particle endPt = new Particle(mass, pnt);
 					endPt.setDynamic(false);
 					mech.addParticle(endPt);
+					
 					Muscle m = addMuscle(endPt);
-					// m.setName(String.format("x%dy%dz%d",x[i],y[j],z[k]));
 					m.setName("m" + Integer.toString(muscleCount++));
 					RenderProps.setLineColor(m, Color.RED);
 				}
@@ -289,39 +288,31 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 
 	}
 
-	public void add1dMuscles() {
+	public void add1dMuscles(String[] labels) {
 		Log.log("add1dMuscles");
-		boolean[] dyn = new boolean[] { false, true, false };
-		int[] x = new int[] { -1, 0, 1 };
+		boolean[] dyn = new boolean[] { false, false };
+		int[] x = new int[] { -1, 1 };
 
 		ArrayList<Point> pts = new ArrayList<Point>(x.length);
 		for (int i = 0; i < x.length; i++) {
 			Point3d pnt = new Point3d(x[i], 0, 0);
 
-			// pnt.normalize();
 			pnt.scale(len);
 			Particle pt = new Particle(mass, pnt);
 			pt.setPointDamping(pointDamping);
 			pt.setDynamic(dyn[i]);
 			mech.addParticle(pt);
 			pts.add(pt);
-
-			if (x[i] == 0) {
-				// center = pt;
+			addMuscle(pt);
+		}
+		int k = 0;
+		for (AxialSpring m : mech.axialSprings()) {
+			if (m instanceof Muscle) {
+				m.setName(labels[k]);
+				k += 1;
 			}
 		}
-
-		for (int i = 1; i < pts.size(); i++) {
-			AxialSpring m;
-			Point p0 = pts.get(i - 1);
-			Point p1 = pts.get(i);
-			// if (p0==center || p1==center)
-			// m = addAxialSpring(p0, p1);
-			// else
-			m = addMuscle(p0, p1);
-			m.setName("m" + Integer.toString(m.getNumber()));
-		}
-
+				
 	}
 
 	public void addMuscles() {
@@ -526,7 +517,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		}
 
 		public void apply(double t0, double t1) {
-			// Neutral with Crate
 			if (t0 > -1) {
 
 				// TODO: make reset random configurable
