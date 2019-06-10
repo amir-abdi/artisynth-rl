@@ -57,9 +57,10 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	String[] muscleLabels;
 	int numMuscles = 12;
 
-	// maximum position in each direction with the current settings for max muscle
-	// excitations
+	// TODO: configure POINT_GENERATE_RADIUS through flags
+	// maximum position in each direction with the current settings for max muscle excitations
 	static double POINT_GENERATE_RADIUS = 4.11;
+	
 	public static final Vector3d zero = new Vector3d();
 	Vector3d disturbance = new Vector3d();
 	boolean applyDisturbance = false;
@@ -225,8 +226,10 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 
 		if (myDemoType == DemoType.Point2d || myDemoType == DemoType.NonSym)
 			targetVec.y = 0;
-		if (myDemoType == DemoType.Point1d)
+		if (myDemoType == DemoType.Point1d) {
+			targetVec.y = 0;
 			targetVec.z = 0;
+		}
 
 		Point3d targetPnt = new Point3d(targetVec.x, targetVec.y, targetVec.z);
 		return targetPnt;
@@ -508,7 +511,7 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	
 	public class RandomTargetController extends ControllerBase{
 		public Boolean reset = false;
-		public Boolean trialRun = false;
+		public Boolean trialRun = true;
 		Random r = new Random();
 		private int time_pos_updated = -1;
 		ArrayList<MotionTargetComponent> motionTargetComponents;
