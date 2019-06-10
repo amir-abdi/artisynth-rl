@@ -139,7 +139,7 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		}
 		case Point2d: {
 			addCenter();
-			add2dLabeledMuscles(muscleLabels);
+			add2dMuscles(muscleLabels);
 			break;
 		}
 		case Point3d: {
@@ -247,7 +247,7 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		}
 	}
 
-	public void add2dLabeledMuscles(String[] labels) {
+	public void add2dMuscles(String[] labels) {
 		addMuscles(new RigidTransform3d(), labels.length, 0.0);
 		int i = 0;
 		for (AxialSpring s : mech.axialSprings()) {
@@ -353,7 +353,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 			Particle fixed = new Particle(mass, pnt);
 			fixed.setDynamic(false);
 			mech.addParticle(fixed);
-			// System.out.println (pnt);
 
 			addMuscle(fixed);
 		}
