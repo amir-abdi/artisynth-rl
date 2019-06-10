@@ -54,7 +54,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 	RandomTargetController targetMotionController;
 	RlController rlTrack;
 
-	String[] muscleLabels;
 	int numMuscles = 12;
 
 	// maximum position in each direction with the current settings for max muscle
@@ -122,19 +121,20 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		System.out.println("myType = " + myDemoType.toString());
 	}
 	
-	public void generateMuscleLabels() {
-		muscleLabels = new String[numMuscles];
+	public String[] generateMuscleLabels() {
+		String[] muscleLabels = new String[numMuscles];
 		for (int m = 0; m < numMuscles; ++m)
 			muscleLabels[m] = "m" + Integer.toString(m);
+		return muscleLabels;
 	}
 
 	public void createModel(DemoType demoType) {
-		generateMuscleLabels();
+		String[] muscleLabels = generateMuscleLabels();
 		
 		switch (demoType) {
 		case Point1d: {
 			addCenter();
-			add1dMuscles();
+			add1dMuscles(muscleLabels);
 			break;
 		}
 		case Point2d: {
@@ -295,7 +295,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		for (int i = 0; i < x.length; i++) {
 			Point3d pnt = new Point3d(x[i], 0, 0);
 
-			// pnt.normalize();
 			pnt.scale(len);
 			Particle pt = new Particle(mass, pnt);
 			pt.setPointDamping(pointDamping);
