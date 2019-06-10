@@ -12,7 +12,6 @@ import artisynth.core.inverse.ForceTargetTerm;
 import artisynth.core.inverse.TrackingController;
 import artisynth.core.materials.LinearAxialMuscle;
 import artisynth.core.mechmodels.AxialSpring;
-import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.FrameMarker;
 import artisynth.core.mechmodels.MechModel;
 import artisynth.core.mechmodels.MechSystemSolver.Integrator;
@@ -276,8 +275,8 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 					Particle endPt = new Particle(mass, pnt);
 					endPt.setDynamic(false);
 					mech.addParticle(endPt);
+					
 					Muscle m = addMuscle(endPt);
-					// m.setName(String.format("x%dy%dz%d",x[i],y[j],z[k]));
 					m.setName("m" + Integer.toString(muscleCount++));
 					RenderProps.setLineColor(m, Color.RED);
 				}
@@ -516,7 +515,6 @@ public class RlPoint2PointModel extends RootModel implements RlModelInterface {
 		}
 
 		public void apply(double t0, double t1) {
-			// Neutral with Crate
 			if (t0 > -1) {
 
 				// TODO: make reset random configurable
