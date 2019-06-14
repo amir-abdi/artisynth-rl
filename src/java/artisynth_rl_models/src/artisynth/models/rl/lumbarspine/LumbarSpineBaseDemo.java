@@ -1,4 +1,4 @@
-package artisynth.models.rl.base.lumbarSpine;
+package artisynth.models.rl.lumbarspine;
 
 import java.awt.Color;
 import java.awt.event.ItemEvent;
@@ -67,12 +67,10 @@ import artisynth.core.util.ArtisynthPath;
 import artisynth.core.workspace.DriverInterface;
 import artisynth.core.workspace.PullController;
 import artisynth.core.workspace.RootModel;
-import artisynth.models.rl.inverseFDAT.MuscleParser;
-import artisynth.models.rl.inverseFDAT.PointForceController;
-import artisynth.models.rl.inverseFDAT.MuscleParser.MuscleInfo;
-import artisynth.models.rl.inverseFDAT.MuscleParser.MusclePoint;
+import artisynth.models.rl.lumbarspine.MuscleParser.MuscleInfo;
+import artisynth.models.rl.lumbarspine.MuscleParser.MusclePoint;
 
-public class LumbarSpineBaseModel extends RootModel implements ItemListener {
+public class LumbarSpineBaseDemo extends RootModel implements ItemListener {
 
 	protected MechModel mech;
 	protected double forceByIAP = 0.060; //
@@ -116,7 +114,7 @@ public class LumbarSpineBaseModel extends RootModel implements ItemListener {
 	public RenderProps fmRenderPropsMuscle;
 	public RenderProps fmRenderPropsCOF;
 
-	public LumbarSpineBaseModel(String name) {
+	public LumbarSpineBaseDemo(String name) {
 
 		super(name);
 
@@ -210,7 +208,7 @@ public class LumbarSpineBaseModel extends RootModel implements ItemListener {
 	// ******************* Adding Control Panels **************
 	// ********************************************************
 	// Properties
-	public static PropertyList myProps = new PropertyList(LumbarSpineBaseModel.class, RootModel.class);
+	public static PropertyList myProps = new PropertyList(LumbarSpineBaseDemo.class, RootModel.class);
 
 	public PropertyList getAllPropertyInfo() {
 		return myProps;
@@ -686,7 +684,7 @@ public class LumbarSpineBaseModel extends RootModel implements ItemListener {
 	}
 
 	protected String getMeshesPath() {		
-		return ArtisynthPath.getSrcRelativePath(LumbarSpineBaseModel.class, "geometry/");
+		return ArtisynthPath.getSrcRelativePath(LumbarSpineBaseDemo.class, "geometry/");
 	}
 
 	public void addBone(String name, String fileName) {

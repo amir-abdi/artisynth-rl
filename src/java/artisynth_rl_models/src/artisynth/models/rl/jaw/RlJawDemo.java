@@ -1,4 +1,4 @@
-package artisynth.models.rl.base.jaw;
+package artisynth.models.rl.jaw;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
@@ -45,7 +45,7 @@ import maspack.render.Renderer.LineStyle;
 import maspack.render.Renderer.PointStyle;
 import artisynth.core.femmodels.FemModel3d;
 
-public class JawBaseDemo extends RootModel {
+public class RlJawDemo extends RootModel {
 	JawFemModel myJawModel;
 	TrackingController myTrackingController;
 	ArrayList<String> MuscleAbbreviation = new ArrayList<String>();
@@ -55,10 +55,10 @@ public class JawBaseDemo extends RootModel {
 
 	double t = 0.75; // 0.5 prot; 0.75 open; 0.7 brux
 
-	public JawBaseDemo() {		
+	public RlJawDemo() {		
 	}
 
-	public JawBaseDemo(String name) {
+	public RlJawDemo(String name) {
 		super(null);
 	}
 
@@ -101,7 +101,7 @@ public class JawBaseDemo extends RootModel {
 		if (workingDirname == null)
 			return;
 		// set default working directory to repository location
-		File workingDir = new File(ArtisynthPath.getSrcRelativePath(JawBaseDemo.class, workingDirname));
+		File workingDir = new File(ArtisynthPath.getSrcRelativePath(RlJawDemo.class, workingDirname));
 		ArtisynthPath.setWorkingDir(workingDir);
 	}
 

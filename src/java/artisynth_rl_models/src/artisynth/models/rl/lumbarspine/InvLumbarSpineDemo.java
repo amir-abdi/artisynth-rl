@@ -1,4 +1,4 @@
-package artisynth.models.rl.inverseFDAT;
+package artisynth.models.rl.lumbarspine;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,9 +23,8 @@ import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.modelbase.ControllerBase;
 import artisynth.core.rl.Log;
 import artisynth.core.workspace.DriverInterface;
-import artisynth.models.rl.base.lumbarSpine.LumbarSpineBaseModel;
 
-public class InvLumbarSpineModel extends LumbarSpineBaseModel {
+public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 
 	protected double flexAll;
 	protected double flexThorax;
@@ -56,7 +55,7 @@ public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 
 	protected String[] sourceRigidBodies = { "thorax", "L1", "L2", "L3", "L4", "L5" };	
 
-	public static PropertyList myProps = new PropertyList(InvLumbarSpineModel.class, LumbarSpineBaseModel.class);
+	public static PropertyList myProps = new PropertyList(InvLumbarSpineDemo.class, LumbarSpineBaseDemo.class);
 
 	public PropertyList getAllPropertyInfo() {
 		return myProps;
@@ -86,7 +85,7 @@ public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 		myProps.addReadOnly("L5Orientation_ref *", "reference (prescribed) orientation of L5 in the model");
 	}
 
-	public InvLumbarSpineModel(String name) {
+	public InvLumbarSpineDemo(String name) {
 		this(name, true);
 	}
 
@@ -133,7 +132,7 @@ public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 //		motionRealComponents.add(rb);
 	}
 
-	public InvLumbarSpineModel(String name, Boolean inverseSolver) {
+	public InvLumbarSpineDemo(String name, Boolean inverseSolver) {
 		super(name);
 		addMonitors();
 		setPositions();

@@ -1,4 +1,4 @@
-package artisynth.models.rl;
+package artisynth.models.rl.point2point;
 
 import java.awt.Color;
 import java.lang.Math;
@@ -44,7 +44,7 @@ import maspack.render.Renderer.LineStyle;
 import maspack.render.Renderer.Shading;
 import maspack.spatialmotion.SpatialInertia;
 
-public class RlPoint2PointModel extends RootModel implements RlModelInterface {
+public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 
 	protected int port = 8080;
 

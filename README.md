@@ -96,7 +96,7 @@ Change the `artisynth-args` argument to initiate different models.
 
 You can also run ArtiSynth separately by executing the command: 
 
-    artisynth -model artisynth.models.rl.RlPoint2PointModel \
+    artisynth -model artisynth.models.rl.point2point.RlPoint2PointDemo \
         [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
         -play -noTimeline
 
@@ -108,7 +108,7 @@ You can train the LumbarSpine model by running `bash run_files/lumbarspine.sh`.
 Similarly, ArtiSynth can be independently initiated with the 
 LumbarSpine model by running:
 
-    artisynth -model artisynth.models.rl.RlLumbarSpineModel \
+    artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo \
         [ -port 8080  ] \
         -play -noTimeline
   

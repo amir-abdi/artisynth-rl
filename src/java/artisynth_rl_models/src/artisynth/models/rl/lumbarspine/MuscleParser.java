@@ -1,4 +1,4 @@
-package artisynth.models.rl.inverseFDAT;
+package artisynth.models.rl.lumbarspine;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package artisynth.models.rl;
+package artisynth.models.rl.lumbarspine;
 
 import java.io.IOException;
 
@@ -7,20 +7,18 @@ import artisynth.core.rl.RlModelInterface;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.Log;
 
-import artisynth.models.rl.inverseFDAT.InvLumbarSpineModel;
-
-public class RlLumbarSpineModel extends InvLumbarSpineModel implements RlModelInterface {
+public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInterface {
 
 	protected int port = 8080;
 
 	RandomTargetController targetMotionController;
 	RlController rlTrack;
 
-	public RlLumbarSpineModel() {
+	public RlLumbarSpineDemo() {
 		this("RlLumbarSpineAngular");
 	}
 
-	public RlLumbarSpineModel(String name) {
+	public RlLumbarSpineDemo(String name) {
 		super(name, false);
 	}
 

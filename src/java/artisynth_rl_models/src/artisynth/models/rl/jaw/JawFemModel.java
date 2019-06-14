@@ -1,4 +1,4 @@
-package artisynth.models.rl.base.jaw;
+package artisynth.models.rl.jaw;
 
 import java.awt.Color;
 import java.io.BufferedReader;

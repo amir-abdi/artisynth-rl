@@ -1,4 +1,4 @@
-package artisynth.models.rl.inverseFDAT;
+package artisynth.models.rl.lumbarspine;
 
 import maspack.function.Function1x3;
 import artisynth.core.mechmodels.PointForce;
