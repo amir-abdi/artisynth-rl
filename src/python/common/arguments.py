@@ -45,8 +45,8 @@ def get_args():
                         help='Only evaluate a trained model.')
     parser.add_argument('--use-wandb', type=str2bool,  default=False,
                         help='Use wandb for train logging.')
-    parser.add_argument('--resume-wandb', type=str2bool,  default=False,
-                        help='Resume the wandb training log.')
+    parser.add_argument('--wandb_resume_id', default=None, type=str,
+                        help='resume previous wandb run with id')
     parser.add_argument('--reset-step', type=int, default=-1,
                         help='Reset envs every n iters.')
     parser.add_argument('--hidden-layer-size', type=int, default=64,

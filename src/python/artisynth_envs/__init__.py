@@ -11,3 +11,9 @@ register(
     entry_point='artisynth_envs.envs:Point2PointEnvV0',
     nondeterministic=False
 )
+
+register(
+    id='JawEnv-v0',
+    entry_point='artisynth_envs.envs:JawEnvV0',
+    nondeterministic=False
+)

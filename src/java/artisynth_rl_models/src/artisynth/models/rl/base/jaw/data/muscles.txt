@@ -1,0 +1,99 @@
+PointList
+[ name="frameMarkers"
+  shortName="k"
+  [ attachment=[ 
+      point="frameMarkers/temporalis_posterior"
+      frame="rigidBodies/skull"
+      loc=[ -66.804404 29.22987 16.152534 ]
+    ]
+    name="temporalis_posterior"
+    renderProps=maspack.render.PointRenderProps [ 
+      pointStyle=SPHERE
+      pointColor=[ 0.600 0.600 1.000 ]
+      pointSize=1
+      pointRadius=1.9
+    ]
+    position=[ -66.804404 29.22987 16.152534 ]
+    refPos=[ -66.804404 29.22987 16.152534 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/3"
+      frame="rigidBodies/skull"
+      loc=[ -68.872862 1.838932 37.688185 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -68.872862 1.838932 37.688185 ]
+    refPos=[ -68.872862 1.838932 37.688185 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/4"
+      frame="rigidBodies/skull"
+      loc=[ -46.904481 -44.46901 26.867731 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -46.904481 -44.46901 26.867731 ]
+    refPos=[ -46.904481 -44.46901 26.867731 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/5"
+      frame="rigidBodies/skull"
+      loc=[ -58.265911 -25.220062 -11.886269 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -58.265911 -25.220062 -11.886269 ]
+    refPos=[ -58.265911 -25.220062 -11.886269 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/6"
+      frame="rigidBodies/skull"
+      loc=[ -52.358897 -43.234258 -20.50393 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -52.358897 -43.234258 -20.50393 ]
+    refPos=[ -52.358897 -43.234258 -20.50393 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/7"
+      frame="rigidBodies/mandible_closed"
+      loc=[ -39.643516 -17.667653 -65.231306 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -39.643516 -17.667653 -65.231306 ]
+    refPos=[ -39.643516 -17.667653 -65.231306 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/8"
+      frame="rigidBodies/mandible_closed"
+      loc=[ -41.836459 -19.174078 -42.726573 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -41.836459 -19.174078 -42.726573 ]
+    refPos=[ -41.836459 -19.174078 -42.726573 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/9"
+      frame="rigidBodies/mandible_closed"
+      loc=[ -34.714278 -13.725005 -61.630545 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -34.714278 -13.725005 -61.630545 ]
+    refPos=[ -34.714278 -13.725005 -61.630545 ]
+  ]
+  [ attachment=[ 
+      point="frameMarkers/10"
+      frame="rigidBodies/skull"
+      loc=[ -18.821768 -24.029988 -23.010803 ]
+    ]
+    renderProps=maspack.render.PointRenderProps [ 
+    ]
+    position=[ -18.821768 -24.029988 -23.010803 ]
+    refPos=[ -18.821768 -24.029988 -23.010803 ]
+  ]
+]

@@ -1,0 +1,2 @@
+disc_left "disc_left.obj"
+disc_right "disc_right_v2.obj"

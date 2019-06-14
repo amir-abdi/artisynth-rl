@@ -5,7 +5,6 @@ from collections import deque
 
 import numpy as np
 import torch
-import wandb
 
 from a2c_ppo_acktr import algo
 from a2c_ppo_acktr.model import Policy
