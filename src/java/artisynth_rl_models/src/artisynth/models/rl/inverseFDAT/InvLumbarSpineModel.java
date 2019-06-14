@@ -23,7 +23,7 @@ import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.modelbase.ControllerBase;
 import artisynth.core.rl.Log;
 import artisynth.core.workspace.DriverInterface;
-import artisynth.models.rl.base.LumbarSpineBaseModel;
+import artisynth.models.rl.base.lumbarSpine.LumbarSpineBaseModel;
 
 public class InvLumbarSpineModel extends LumbarSpineBaseModel {
 

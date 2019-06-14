@@ -49,10 +49,9 @@ def main():
         win = None
 
     if args.use_wandb:
-        wandb.init(project='LumbarSpine', config=args, group=args.model_name,
-                   resume=args.resume_wandb)
-        if wandb.run.resumed:
-            logger.info('Wandb resumed!')
+        import wandb
+        resume_wandb = True if args.wandb_resume_id is not None else False
+        wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl')
 
     envs = make_vec_envs(args.env_name, seed, args.num_processes,
                          args.gamma, config.log_directory, device,

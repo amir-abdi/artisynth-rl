@@ -1,4 +1,4 @@
-package artisynth.models.rl.base;
+package artisynth.models.rl.base.lumbarSpine;
 
 import java.awt.Color;
 import java.awt.event.ItemEvent;
@@ -98,7 +98,7 @@ public class LumbarSpineBaseModel extends RootModel implements ItemListener {
 			EO = new ArrayList<ArrayList<String>>(), IO = new ArrayList<ArrayList<String>>();
 
 	// Geometries
-	protected String meshesPath = "../../../../../meshes/lumbarSpine/";
+	//protected String meshesPath = "../../../../../../data/lumbarSpine/";
 	public final String[] muscleGroupNames = { "Latissimus_Dorsi", "Rectus_Abdominis", "Int_Oblique", "Ext_Oblique",
 			"Multifidus", "Psoas_major", "quadratus_lumborum", "longissimus_thoracis_pars_lumborum",
 			"longissimus_thoracis_pars_thoracis", "iliocostalis_lumborum_pars_lumborum",
@@ -682,11 +682,11 @@ public class LumbarSpineBaseModel extends RootModel implements ItemListener {
 	}
 
 	protected String getGeometriesPath() {
-		return getMeshesPath() + "geometry/";
+		return getMeshesPath();
 	}
 
 	protected String getMeshesPath() {		
-		return ArtisynthPath.getSrcRelativePath(LumbarSpineBaseModel.class, meshesPath);
+		return ArtisynthPath.getSrcRelativePath(LumbarSpineBaseModel.class, "geometry/");
 	}
 
 	public void addBone(String name, String fileName) {
