@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2019, by the Authors: Amir Abdi (UBC)
+ * Based on the TrackingController by Ian Stavness (UBC)
  *
  * This software is freely available under a 2-clause BSD license. Please see
  * the LICENSE file in the ArtiSynth distribution directory for details.
@@ -7,9 +8,16 @@
 package artisynth.core.rl;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+import java.lang.Math;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -36,7 +44,7 @@ import artisynth.core.modelbase.ModelComponent;
 import artisynth.core.modelbase.ReferenceList;
 import artisynth.core.modelbase.RenderableComponent;
 import artisynth.core.modelbase.RenderableComponentList;
-
+import jogamp.opengl.awt.Java2D;
 import maspack.geometry.PolygonalMesh;
 import maspack.properties.PropertyList;
 import maspack.render.RenderList;
@@ -407,6 +415,29 @@ public class RlController extends ControllerBase
 		cp.addWidget("Targets Line Width", this, "targetsLineWidth");
 
 		cp.addWidget(new JSeparator());
+		cp.addWidget(new JLabel("Control"));
+		JButton resetStateButton = new JButton("Reset State");
+		resetStateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resetState();
+			}
+		});
+
+		JButton randomActionButton = new JButton("Random Action");
+		randomActionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setRandomExcitations();
+			}
+		});
+
+		javax.swing.JPanel panel = new JPanel();
+		panel.add(resetStateButton);
+		panel.add(randomActionButton);
+		cp.addWidget(panel);
+		
+		cp.addWidget(new JSeparator());
 		cp.addWidget("Debug", this, "debug");
 
 		return cp;
@@ -559,6 +590,14 @@ public class RlController extends ControllerBase
 		for (int i = 0; i < excitations.size(); i++) {
 			exciters.get(i).setExcitation(excitations.get(i));
 		}
+	}
+
+	public void setRandomExcitations() {
+		Random random = new Random();
+		for (int i = 0; i < exciters.size(); ++i) {
+			exciters.get(i).setExcitation(random.nextDouble());
+		}
+		
 	}
 
 	@Override

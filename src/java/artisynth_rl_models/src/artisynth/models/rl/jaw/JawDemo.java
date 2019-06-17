@@ -67,7 +67,7 @@ public class JawDemo extends RootModel {
 		super.build(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel");
+		myJawModel = new JawFemModel("jawmodel", true);
 		addModel(myJawModel);
 		getRoot(this).setMaxStepSize(0.001);
 

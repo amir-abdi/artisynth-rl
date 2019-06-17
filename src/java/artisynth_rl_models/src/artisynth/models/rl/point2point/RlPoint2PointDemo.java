@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.Math;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 import artisynth.core.gui.ControlPanel;
@@ -29,8 +30,10 @@ import artisynth.core.modelbase.StepAdjustment;
 import artisynth.core.rl.Log;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.RlModelInterface;
+import artisynth.core.rl.RlTargetControllerInterface;
 import artisynth.core.util.ArtisynthIO;
 import artisynth.core.util.ArtisynthPath;
+import artisynth.core.utils.Utils;
 import artisynth.core.workspace.DriverInterface;
 import artisynth.core.workspace.PullController;
 import artisynth.core.workspace.RootModel;
@@ -49,16 +52,17 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	protected int port = 8080;
 
 	String point_name = "point";
-	
+
 	RandomTargetController targetMotionController;
 	RlController rlTrack;
 
 	int numMuscles = 12;
 
 	// TODO: configure POINT_GENERATE_RADIUS through flags
-	// maximum position in each direction with the current settings for max muscle excitations
-	static double POINT_GENERATE_RADIUS = 4.11;
-	
+	// maximum position in each direction with the current settings for max muscle
+	// excitations
+	static double pointGenerateRadius = 4.11;
+
 	public static final Vector3d zero = new Vector3d();
 	Vector3d disturbance = new Vector3d();
 	boolean applyDisturbance = false;
@@ -109,7 +113,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 
 	private void addMuscleExciters() {
 		for (AxialSpring spring : mech.axialSprings()) {
-			Muscle muscle = (Muscle)spring;
+			Muscle muscle = (Muscle) spring;
 			MuscleExciter m = new MuscleExciter(muscle.getName() + 'e');
 			m.addTarget(muscle, 1.0);
 			mex.add(m);
@@ -120,7 +124,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	public void printType() {
 		System.out.println("myType = " + myDemoType.toString());
 	}
-	
+
 	public String[] generateMuscleLabels() {
 		String[] muscleLabels = new String[numMuscles];
 		for (int m = 0; m < numMuscles; ++m)
@@ -130,7 +134,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 
 	public void createModel(DemoType demoType) {
 		String[] muscleLabels = generateMuscleLabels();
-		
+
 		switch (demoType) {
 		case Point1d: {
 			addCenter();
@@ -200,14 +204,14 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		props.setPointColor(Color.BLUE);
 		props.setFaceColor(Color.BLUE);
 		props.setEdgeColor(Color.BLUE);
-		center.setRenderProps(props);	
-		
+		center.setRenderProps(props);
+
 		RigidBody body = new RigidBody(point_name);
 		body.setInertia(SpatialInertia.createSphereInertia(mass, len / 25));
 		mech.addRigidBody(body);
 		RenderProps.setVisible(body, true);
 
-		mech.addFrameMarker(center, body, Point3d.ZERO);		
+		mech.addFrameMarker(center, body, Point3d.ZERO);
 	}
 
 	public Point3d getRandomTarget(Point3d center, double radius) {
@@ -278,7 +282,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 					Particle endPt = new Particle(mass, pnt);
 					endPt.setDynamic(false);
 					mech.addParticle(endPt);
-					
+
 					Muscle m = addMuscle(endPt);
 					m.setName("m" + Integer.toString(muscleCount++));
 					RenderProps.setLineColor(m, Color.RED);
@@ -312,7 +316,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 				k += 1;
 			}
 		}
-				
+
 	}
 
 	public void addMuscles() {
@@ -439,42 +443,36 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		}
 	}
 
-	private void parseArgs(String[] args) {
-		for (int i = 0; i < args.length; i += 2) {
-			if (args[i].equals("-demoType")) {
-				switch (args[i + 1]) {
-				case "1d":
-					myDemoType = DemoType.Point1d;
-					break;
-				case "2d":
-					myDemoType = DemoType.Point2d;
-					break;
-				case "3d":
-					myDemoType = DemoType.Point3d;
-					break;
-				case "nonSym":
-					myDemoType = DemoType.NonSym;
-					break;									
-				default:
-					myDemoType = DemoType.Point1d;
-					break;
-				}
-				Log.log("Demo type" + myDemoType);
-				args[i] = "";
-				args[i + 1] = "";
-			} else if (args[i].equals("-num")) {
-				numMuscles = Integer.parseInt(args[i + 1]);								
-				args[i] = "";
-				args[i + 1] = "";
-			} else if (args[i].equals("-port")) {
-				port = Integer.parseInt(args[i + 1]);
-			} else if (args[i].equals("-muscleOptLen")) {
-				muscleOptLen = Double.parseDouble(args[i + 1]);
-			} else if (args[i].equals("-radius")) {
-				POINT_GENERATE_RADIUS = Double.parseDouble(args[i + 1]);
-			}
+	@Override
+	public void parseArgs(String[] args) {
+		Map<String, String> dictionary = Utils.parseArgs(args);
+		if (dictionary.containsKey("-port"))
+			this.port = Integer.parseInt(dictionary.get("-port"));
+		if (dictionary.containsKey("-num"))
+			numMuscles = Integer.parseInt(dictionary.get("-num"));
+		if (dictionary.containsKey("-muscleOptLen"))
+			muscleOptLen = Double.parseDouble(dictionary.get("-muscleOptLen"));
+		if (dictionary.containsKey("-radius"))
+			pointGenerateRadius = Double.parseDouble(dictionary.get("-radius"));
 
-		}
+		if (dictionary.containsKey("-demoType"))
+			switch (dictionary.get("-demoType")) {
+			case "1d":
+				myDemoType = DemoType.Point1d;
+				break;
+			case "2d":
+				myDemoType = DemoType.Point2d;
+				break;
+			case "3d":
+				myDemoType = DemoType.Point3d;
+				break;
+			case "nonSym":
+				myDemoType = DemoType.NonSym;
+				break;
+			default:
+				myDemoType = DemoType.Point1d;
+				break;
+			}
 	}
 
 	@Override
@@ -489,7 +487,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(mech.frameMarkers().get(point_name));
 
 		for (MuscleExciter m : mex) {
-			Log.log("Add exciter "+ m.getName());
+			Log.log("Add exciter " + m.getName());
 			rlTrack.addExciter(m);
 		}
 
@@ -499,10 +497,10 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		addController(rlTrack);
 		addControlPanel(rlTrack.getRlControlPanel());
 	}
-	
-	public class RandomTargetController extends ControllerBase{
+
+	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
 		public Boolean reset = false;
-		public Boolean trialRun = true;
+		public Boolean trialRun = false;
 		Random r = new Random();
 		private int time_pos_updated = -1;
 		ArrayList<MotionTargetComponent> motionTargetComponents;
@@ -521,24 +519,29 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 
 				// TODO: make reset random configurable
 				if (trialRun) {
-					if ((int) t0 != time_pos_updated && (int) t0 % 3 == 1) {					
+					if ((int) t0 != time_pos_updated && (int) t0 % 3 == 1) {
 						time_pos_updated = (int) t0;
 						resetRefPosition();
 					}
 				} else if (reset) {
-					reset = false;		
+					reset = false;
 					resetRefPosition();
 				}
 
 			}
 
 		}
-		
+
 		private void resetRefPosition() {
-			Point point_ref = (Point)motionTargetComponents.get(0);
-			Point3d pos = getRandomTarget(new Point3d(0, 0, 0), POINT_GENERATE_RADIUS);
+			Point point_ref = (Point) motionTargetComponents.get(0);
+			Point3d pos = getRandomTarget(new Point3d(0, 0, 0), pointGenerateRadius);
 			point_ref.setPosition(pos);
 		}
+	}
+
+	@Override
+	public RlTargetControllerInterface getTargetMotionController() {		
+		return targetMotionController;
 	}
 
 }

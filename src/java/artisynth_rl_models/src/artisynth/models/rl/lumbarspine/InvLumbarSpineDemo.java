@@ -22,6 +22,7 @@ import artisynth.core.mechmodels.MuscleExciter;
 import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.modelbase.ControllerBase;
 import artisynth.core.rl.Log;
+import artisynth.core.rl.RlTargetControllerInterface;
 import artisynth.core.workspace.DriverInterface;
 
 public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
@@ -462,7 +463,7 @@ public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 		addTrackingRotationMonitors(invTrack.getMotionTargets());
 	}
 
-	public class SimpleTargetController extends ControllerBase {
+	public class SimpleTargetController extends ControllerBase  {
 
 		ArrayList<MotionTargetComponent> motionTargetComponents;
 		RigidTransform3d ipos;
@@ -502,7 +503,7 @@ public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 		}
 	}
 
-	public class RandomTargetController extends SimpleTargetController {
+	public class RandomTargetController extends SimpleTargetController implements RlTargetControllerInterface {
 		public Boolean reset = false;
 		public Boolean trialRun = false;
 		private double MAX_FLEX_EXTEND = 30;

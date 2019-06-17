@@ -1,9 +1,12 @@
 package artisynth.models.rl.lumbarspine;
 
 import java.io.IOException;
+import java.util.Map;
 
 import artisynth.core.mechmodels.MuscleExciter;
 import artisynth.core.rl.RlModelInterface;
+import artisynth.core.rl.RlTargetControllerInterface;
+import artisynth.core.utils.Utils;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.Log;
 
@@ -29,17 +32,11 @@ public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInte
 		addRlController();
 	}
 
-	private void parseArgs(String[] args) {
-		try {
-			for (int i = 0; i < args.length; i += 2) {
-				System.out.print(args[i] + " " + args[i + 1] + "\n");
-				if (args[i].equals("-port")) {
-					this.port = Integer.parseInt(args[i + 1]);
-				}
-			}
-		} catch (Exception e) {
-			Log.log("Args not properly parsed");
-		}
+	@Override
+	public void parseArgs(String[] args) {
+		Map<String, String> dictionary = Utils.parseArgs(args);
+		if (dictionary.containsKey("-port"))
+			this.port = Integer.parseInt(dictionary.get("-port"));		
 	}
 
 	// ------------ Implement RlModelInterface -------------
@@ -67,6 +64,11 @@ public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInte
 	@Override
 	public void resetState() {
 		targetMotionController.reset();
+	}
+
+	@Override
+	public RlTargetControllerInterface getTargetMotionController() {
+		return this.targetMotionController;
 	}
 
 }
