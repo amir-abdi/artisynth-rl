@@ -80,7 +80,7 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 - Check that ArtiSynth runs successfully by executing the command: `artisynth`
 
 - Run ArtiSynth with one of the RL environments, e.g.: 
-`artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel`
+`artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo`
 
 
 ## Run and Train

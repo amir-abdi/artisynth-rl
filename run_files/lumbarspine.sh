@@ -28,8 +28,8 @@ python3 src/python/main_pytorch_a2c_ppo_acktr.py \
 --w_r=0.01 \
 --goal-reward=0 \
 --verbose=20 \
---init-artisynth=false \
---artisynth-model=RlLumbarSpineModel \
+--init-artisynth=true \
+--artisynth-model=lumbarspine.RlLumbarSpineDemo \
 --test=false \
 
 
