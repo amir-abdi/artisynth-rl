@@ -49,7 +49,8 @@ The library is forked slightly extended by our team
 [here](https://github.com/amir-abdi/keras-rl).
 
 - **pytorch-a2c-ppo-acktr-gail**: PyTorch implementation of some RL algorithms.
-The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail).
+The repository fork which is tested with the current framework 
+can be cloned from [here](https://github.com/amir-abdi/pytorch-a2c-ppo-acktr-gail).
 
 
 
