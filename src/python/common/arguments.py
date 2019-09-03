@@ -23,8 +23,8 @@ def get_args():
                         help='IP of server')
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
-    parser.add_argument('--env-name', default='PongNoFrameskip-v4',
-                        help='environment to train on (default: PongNoFrameskip-v4)')
+    parser.add_argument('--env-name', default='Point2PointEnv-v0',
+                        help='environment to train on (default: Point2PointEnv-v0)')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
@@ -53,7 +53,7 @@ def get_args():
                         help='Number of neurons in all hidden layers.')
 
     parser.add_argument('--algo', default='ppo',
-                        help='algorithm to use: a2c | ppo | acktr')
+                        help='algorithm to use: a2c | ppo | acktr | mpc')
     parser.add_argument('--lr', type=float, default=7e-4,
                         help='learning rate (default: 7e-4)')
     parser.add_argument('--eps', type=float, default=1e-5,
@@ -120,6 +120,14 @@ def get_args():
                         help='To stop the episode if target goal was reached.')
     parser.add_argument('--goal-reward', type=float, default=1,
                         help='The reward to give if goal was reached.')
+
+    # PETS MPC args
+    parser.add_argument('-ca', '--ctrl_arg', action='append', nargs=2, default=[],
+                        help='Controller arguments, see https://github.com/kchua/handful-of-trials#controller-arguments')
+    parser.add_argument('-o', '--override', action='append', nargs=2, default=[],
+                        help='Override default parameters, see https://github.com/kchua/handful-of-trials#overrides')
+    parser.add_argument('-logdir', type=str, default='log',
+                        help='Directory to which results will be logged (default: ./results)')
 
     # initialize artisynth
     parser.add_argument('--init-artisynth', type=str2bool, default=False,

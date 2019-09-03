@@ -13,14 +13,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.lang.Math;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
 import artisynth.core.inverse.TargetPoint;
@@ -44,7 +41,6 @@ import artisynth.core.modelbase.ModelComponent;
 import artisynth.core.modelbase.ReferenceList;
 import artisynth.core.modelbase.RenderableComponent;
 import artisynth.core.modelbase.RenderableComponentList;
-import jogamp.opengl.awt.Java2D;
 import maspack.geometry.PolygonalMesh;
 import maspack.properties.PropertyList;
 import maspack.render.RenderList;
@@ -436,7 +432,7 @@ public class RlController extends ControllerBase
 		panel.add(resetStateButton);
 		panel.add(randomActionButton);
 		cp.addWidget(panel);
-		
+
 		cp.addWidget(new JSeparator());
 		cp.addWidget("Debug", this, "debug");
 
@@ -517,7 +513,7 @@ public class RlController extends ControllerBase
 	}
 
 	// --------------- Implement RlControllerInterface ---------
-	public int getStateSize() {
+	public int getObservationSize() {
 		return getState().size();
 	}
 
@@ -526,8 +522,6 @@ public class RlController extends ControllerBase
 	}
 
 	public RlState getState() {
-		Log.log("Get State");
-
 		// real current position
 		ArrayList<MotionTargetComponent> sources = getSources();
 
@@ -538,8 +532,10 @@ public class RlController extends ControllerBase
 		RlState rlState = new RlState();
 		rlState.addAll(getRlComponents(sources));
 		rlState.addAll(getRlComponents(targets));
+		
+		rlState.setRlExcitations(getExcitations());
 
-		Log.log("state.size = " + rlState.numComponents());
+		Log.log("Get State state.size = " + rlState.numComponents());
 		return rlState;
 	}
 
@@ -597,7 +593,7 @@ public class RlController extends ControllerBase
 		for (int i = 0; i < exciters.size(); ++i) {
 			exciters.get(i).setExcitation(random.nextDouble());
 		}
-		
+
 	}
 
 	@Override

@@ -1,3 +1,8 @@
+log
+wandb
+results
+*legacy*
+
 # Compiled class file
 *.class
 
@@ -38,8 +43,3 @@ src/wandb
 .ipynb_checkpoints/
 *.pyc
 
-wandb
-
-results
-
-*legacy*

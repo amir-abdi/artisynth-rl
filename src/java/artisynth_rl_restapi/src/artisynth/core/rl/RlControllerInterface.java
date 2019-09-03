@@ -6,7 +6,7 @@ public interface RlControllerInterface {
 
 	RlState getState();
 	int getActionSize();
-	int getStateSize();
+	int getObservationSize();
 	String resetState();
 	void setExcitations(ArrayList<Double> excitations);
 	ArrayList<Double> getExcitations();

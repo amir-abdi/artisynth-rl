@@ -56,6 +56,10 @@ class ArtisynthBase(gym.Env):
         state_dict = self.net.get_post(request_type=c.GET_STR, message=c.STATE_STR)
         return state_dict
 
+    def get_excitations_dict(self):
+        state_dict = self.net.get_post(request_type=c.GET_STR, message=c.EXCITATIONS_STR)
+        return state_dict
+
     def step(self, action):
         pass
 

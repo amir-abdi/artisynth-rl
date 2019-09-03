@@ -14,12 +14,14 @@ public class RlStateSerializer<T> implements JsonSerializer<Object> {
 		Gson gson = new Gson();
 
 		JsonObject array_jo = new JsonObject();
-		for (RlComponent comp : object.getState()) {
+		for (RlComponent comp : object.getRlComponents()) {
 			array_jo.add(comp.getName(), gson.toJsonTree(comp));
 		}
-
+		
 		JsonObject result = new JsonObject();
-		result.add("observation", array_jo);
+		result.add("observation", array_jo);		
+		result.add("excitations", gson.toJsonTree(object.getRlExcitations()));
+		
 		return result;
 	}
 

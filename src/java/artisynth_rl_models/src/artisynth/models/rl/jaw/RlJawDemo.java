@@ -61,6 +61,8 @@ import maspack.render.Renderer.PointStyle;
 import artisynth.core.femmodels.FemModel3d;
 
 public class RlJawDemo extends RootModel implements RlModelInterface {
+	RlController rlTrack;
+	RandomTargetController targetMotionController;
 	JawFemModel myJawModel;
 
 	ArrayList<String> MuscleAbbreviation = new ArrayList<String>();
@@ -80,6 +82,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	@Override
 	public void build(String[] args) throws IOException {
 		super.build(args);
+		parseArgs(args);
 		setWorkingDir();
 
 		myJawModel = new JawFemModel("jawmodel", true);
@@ -125,9 +128,6 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		s.close();
 		return names;
 	}
-
-	RlController rlTrack;
-	RandomTargetController targetMotionController;
 
 	@Override
 	public void addRlController() {

@@ -22,7 +22,7 @@ public class RlRestApi {
 		spark.Spark.get("/reset", (request, response) -> rlController.resetState(), json());
 		
 		spark.Spark.get("/state", (request, response) -> rlController.getState(), json());		
-		spark.Spark.get("/stateSize", (request, response) -> rlController.getStateSize(), json());
+		spark.Spark.get("/obsSize", (request, response) -> rlController.getObservationSize(), json());
 		spark.Spark.get("/actionSize", (request, response) -> rlController.getActionSize(), json());
 		
 		spark.Spark.get("/excitations", (request, response) -> rlController.getExcitations(), json());
@@ -40,7 +40,7 @@ public class RlRestApi {
 	}
 	
 	public Route setExcitations = (Request request, Response response) -> {
-        Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
+        Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());       
         Gson gson = new Gson();
         RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
         Log.log(rlExcitations.getExcitations());
@@ -48,5 +48,13 @@ public class RlRestApi {
         return 0;
     };
 
-
+//    public Route getState = (Request request, Response response) -> {
+//    	boolean includeExc = request.attribute("includeExcitations");
+//        Log.log("getState length:" + request.contentLength() + 
+//        		" includeExcitations: " + includeExc);       
+//        rlController.getState();
+//        Gson gson = new Gson();
+//        
+//        return 0;
+//    };
 }

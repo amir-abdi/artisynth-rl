@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 src/python/main_pytorch.py \
+python3 src/python/main_pytorch_a2c_ppo_acktr.py \
 --env-name=SpineEnv-v0 \
 --model-name=lumbarspine_ppo \
 --log-interval=1 \
@@ -12,7 +12,7 @@ python3 src/python/main_pytorch.py \
 --ppo-epoch=4 \
 --algo=ppo \
 --num-processes=1 \
---port=9556 \
+--port=8080 \
 --use-wandb=false \
 --num-env-steps=80000 \
 --num-mini-batch=16 \
@@ -28,7 +28,7 @@ python3 src/python/main_pytorch.py \
 --w_r=0.01 \
 --goal-reward=0 \
 --verbose=20 \
---init-artisynth=true \
+--init-artisynth=false \
 --artisynth-model=RlLumbarSpineModel \
 --test=false \
 

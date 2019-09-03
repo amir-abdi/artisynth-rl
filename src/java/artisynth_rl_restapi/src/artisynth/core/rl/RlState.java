@@ -3,14 +3,24 @@ package artisynth.core.rl;
 import java.util.ArrayList;
 
 public class RlState {
-	private ArrayList<RlComponent> rlComponents;	
+	private ArrayList<RlComponent> rlComponents;
+	private RlExcitations rlExcitations;
 	
 	public RlState() {
 		rlComponents = new ArrayList<RlComponent>();
+		rlExcitations = new RlExcitations();
 	}
 
-	public ArrayList<RlComponent> getState() {
+	public ArrayList<RlComponent> getRlComponents() {
 		return rlComponents;
+	}
+	
+	public ArrayList<Double> getRlExcitations() {
+		return rlExcitations.getExcitations();
+	}
+	
+	public void setRlExcitations(ArrayList<Double> exc) {
+		rlExcitations.setExcitations(exc);
 	}
 
 	public void setState(ArrayList<RlComponent> list) {
