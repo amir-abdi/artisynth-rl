@@ -8,7 +8,7 @@ from gym.utils import seeding
 
 from common import constants as c
 from common.utilities import Bunch
-from artisynth_envs.artisynth_base_env import ArtisynthBase
+from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
 logger = logging.getLogger()
 
@@ -19,7 +19,7 @@ PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
 NUM_TARGETS = len(COMPS_TARGET)
 
 
-class SpineEnvV0(ArtisynthBase):
+class SpineEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
                  init_artisynth, include_current_pos, **kwargs):
 

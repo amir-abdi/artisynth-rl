@@ -10,7 +10,7 @@ import common.constants as c
 logger = logging.getLogger()
 
 
-class ArtisynthBase(gym.Env):
+class ArtiSynthBase(gym.Env):
     def __init__(self, ip, port, init_artisynth, artisynth_model, artisynth_args=''):
         self.observation_space = None
         self.action_space = None

@@ -6,7 +6,7 @@ from rl.core import Space
 from rl.core import Processor
 
 from common import constants as c
-from artisynth_envs.artisynth_base_env import ArtisynthBase
+from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
 logger = logging.getLogger()
 
@@ -15,7 +15,7 @@ COMPS_TARGET = ['point_ref']
 PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
 
 
-class Point2PointEnvV0(ArtisynthBase):
+class Point2PointEnvV0(ArtiSynthBase):
     def __init__(self, success_thres=0.1,
                  verbose=2, agent=None,
                  include_current_pos=True, wait_action=0,
