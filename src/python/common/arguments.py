@@ -1,7 +1,5 @@
 import argparse
 
-import torch
-
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -12,8 +10,11 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
-def get_args():
-    parser = argparse.ArgumentParser(description='RL')
+def get_parser(parser=None):
+    if parser is None:
+        parser = argparse.ArgumentParser(description='RL')
+    else:
+        parser.conflict_handler = 'resolve'
 
     parser.add_argument('--w_u', type=float, default=1)
     parser.add_argument('--w_d', type=float, default=0.00005)
@@ -53,7 +54,6 @@ def get_args():
                         help='Reset envs every n iters.')
     parser.add_argument('--hidden-layer-size', type=int, default=64,
                         help='Number of neurons in all hidden layers.')
-
     parser.add_argument('--algo', default='ppo',
                         help='algorithm to use: a2c | ppo | acktr | mpc')
     parser.add_argument('--lr', type=float, default=7e-4,
@@ -74,8 +74,9 @@ def get_args():
                         help='value loss coefficient (default: 0.5)')
     parser.add_argument('--max-grad-norm', type=float, default=0.5,
                         help='max norm of gradients (default: 0.5)')
-    parser.add_argument('--seed', type=int, default=1,
-                        help='random seed (default: 1)')
+
+    # parser.add_argument('--seed', type=int, default=1,
+    #                     help='random seed (default: 1)')
     parser.add_argument('--num-processes', type=int, default=1,
                         help='how many training CPU processes to use (default: 16)')
     parser.add_argument('--num-steps', type=int, default=5,
@@ -141,8 +142,8 @@ def get_args():
                         help='Arguments used in artisynth model initialization.')
 
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
+    # args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-    args.cuda = not args.no_cuda and torch.cuda.is_available()
+    return parser
 
-    return args

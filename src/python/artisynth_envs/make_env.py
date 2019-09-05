@@ -1,6 +1,7 @@
 import os
 
 import gym
+from gym import wrappers
 
 from a2c_ppo_acktr.envs import VecPyTorch, VecPyTorchFrameStack
 from baselines import bench
@@ -13,10 +14,15 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets, **kwargs):
     def _thunk():
         env = gym.make(env_id, **kwargs)
         env.seed(seed + rank)
-
         if log_dir is not None:
-            env = bench.Monitor(env, os.path.join(log_dir, str(rank)),
-                                allow_early_resets=allow_early_resets)
+            env = bench.Monitor(env, os.path.join(log_dir, str(rank)), allow_early_resets=allow_early_resets)
+
+        env.seed(seed + rank if seed is not None else None)
+
+        # assuming flatten_dict_observations to be always true (not using her!)
+        keys = env.observation_space.spaces.keys()
+        env = gym.wrappers.FlattenDictWrapper(env, dict_keys=list(keys))
+
         return env
 
     return _thunk
@@ -24,7 +30,8 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets, **kwargs):
 
 def make_vec_envs(env_name, seed, num_processes, gamma, log_dir,
                   device, allow_early_resets, num_frame_stack=None,
-                  start_port=8080, **kwargs):
+                  start_port=8080, rl_library='pytorch', **kwargs):
+    rl_library = rl_library.lower()
     ports = range(start_port, start_port + num_processes)
 
     envs = []
@@ -38,16 +45,27 @@ def make_vec_envs(env_name, seed, num_processes, gamma, log_dir,
         envs = DummyVecEnv(envs)
 
     if len(envs.observation_space.shape) == 1:
+        use_tf = True if rl_library == 'tf' else False
         if gamma is None:
-            envs = VecNormalize(envs, ret=False)
+            envs = VecNormalize(envs, ret=False, use_tf=use_tf)
         else:
-            envs = VecNormalize(envs, gamma=gamma)
+            envs = VecNormalize(envs, gamma=gamma, use_tf=use_tf)
 
-    envs = VecPyTorch(envs, device)
+    if rl_library == 'pytorch':
+        envs = VecPyTorch(envs, device)
+        if num_frame_stack is not None:
+            envs = VecPyTorchFrameStack(envs, num_frame_stack, device)
+        elif len(envs.observation_space.shape) == 3:
+            envs = VecPyTorchFrameStack(envs, 2, device)
 
-    if num_frame_stack is not None:
-        envs = VecPyTorchFrameStack(envs, num_frame_stack, device)
-    elif len(envs.observation_space.shape) == 3:
-        envs = VecPyTorchFrameStack(envs, 2, device)
+    elif rl_library == 'tf':
+        import tensorflow as tf
+        from baselines.common.tf_util import get_session
+        # from baselines.common.cmd_util import make_vec_env
+        config = tf.ConfigProto(allow_soft_placement=True,
+                                intra_op_parallelism_threads=1,
+                                inter_op_parallelism_threads=1)
+        config.gpu_options.allow_growth = True
+        get_session(config=config)
 
     return envs

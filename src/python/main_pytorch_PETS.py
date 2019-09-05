@@ -18,7 +18,7 @@ from artisynth_envs.make_config import create_config
 import artisynth_envs
 
 
-from common.arguments import get_args
+from common.arguments import get_parser
 
 
 def set_global_seeds(seed):
@@ -52,5 +52,5 @@ def main(args, env, ctrl_type, ctrl_args, overrides, logdir):
 
 
 if __name__ == "__main__":
-    args = get_args()
+    args = get_parser()
     main(args, args.env_name, "MPC", args.ctrl_arg, args.override, args.logdir)

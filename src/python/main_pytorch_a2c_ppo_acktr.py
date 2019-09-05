@@ -14,10 +14,10 @@ from a2c_ppo_acktr.utils import update_linear_schedule
 from artisynth_envs.make_env import make_vec_envs
 
 from common import config
-from common.arguments import get_args
+from common.arguments import get_parser
 from common.utilities import setup_logger
 
-args = get_args()
+args = get_parser()
 
 logger = logging.getLogger()
 

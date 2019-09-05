@@ -18,7 +18,7 @@ python3 src/python/main_pytorch_a2c_ppo_acktr.py \
 --num-mini-batch=16 \
 --reset-step=30 \
 --entropy-coef=0.0001 \
---lr=1e-8 \
+--lr=7e-3 \
 --clip-param=0.2 \
 --hidden-layer-size=256 \
 --use-linear-lr-decay=true \

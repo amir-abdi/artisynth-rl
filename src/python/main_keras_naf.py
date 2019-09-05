@@ -17,12 +17,12 @@ from keras.optimizers import Adam
 
 from artisynth_envs.envs.point2point_env import Point2PointEnvV0, PointModel2dProcessor
 from common import config as c
-from common.arguments import get_args
+from common.arguments import get_parser
 from common.utilities import setup_tensorflow
 import common.config as config
 from common.utilities import setup_logger
 
-args = get_args()
+args = get_parser()
 logger = logging.getLogger()
 
 # Noise parameters

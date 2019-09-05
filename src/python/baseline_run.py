@@ -14,29 +14,14 @@ from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
 
-# from artisynth_envs.make_env import make_vec_envs, make_env
+import artisynth_envs
+import common.arguments
+import common.config
 
-# for now lets not include
 try:
     from mpi4py import MPI
 except ImportError:
     MPI = None
-
-try:
-    import pybullet_envs
-except ImportError:
-    pybullet_envs = None
-
-try:
-    import roboschool
-except ImportError:
-    roboschool = None
-
-try:
-    import artisynth_envs
-except ImportError:
-    artisynth_envs = None
-
 
 _game_envs = defaultdict(set)
 for env in gym.envs.registry.all():
@@ -59,6 +44,58 @@ _game_envs['retro'] = {
     'SpaceInvaders-Snes',
 }
 
+
+def main(args):
+    # configure logger, disable logging in child MPI processes (with rank > 0)
+
+    arg_parser = common_arg_parser()
+    arg_parser = common.arguments.get_parser(arg_parser)
+    args, unknown_args = arg_parser.parse_known_args(args)
+    extra_args = parse_cmdline_kwargs(unknown_args)
+
+    common.config.set_config(args)
+
+    if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
+        rank = 0
+        configure_logger(args.log_path)
+    else:
+        rank = MPI.COMM_WORLD.Get_rank()
+        configure_logger(args.log_path, format_strs=[])
+
+    model, env = train(args, extra_args)
+
+    if args.save_path is not None and rank == 0:
+        save_path = osp.expanduser(args.save_path)
+        model.save(save_path)
+
+    if args.play:
+        logger.log("Running trained model")
+        obs = env.reset()
+
+        state = model.initial_state if hasattr(model, 'initial_state') else None
+        dones = np.zeros((1,))
+
+        episode_rew = 0
+        while True:
+            if state is not None:
+                actions, _, state, _ = model.step(obs, S=state, M=dones)
+            else:
+                actions, _, _, _ = model.step(obs)
+
+            obs, rew, done, _ = env.step(actions)
+            episode_rew += rew[0] if isinstance(env, VecEnv) else rew
+            env.render()
+            done = done.any() if isinstance(done, np.ndarray) else done
+            if done:
+                print('episode_rew={}'.format(episode_rew))
+                episode_rew = 0
+                obs = env.reset()
+
+    env.close()
+
+    return model
+
+
 def train(args, extra_args):
     env_type, env_id = get_env_type(args)
     print('env_type: {}'.format(env_type))
@@ -73,7 +110,9 @@ def train(args, extra_args):
     env = build_env(args)
     print('build_env returns:', env)
     if args.save_video_interval != 0:
-        env = VecVideoRecorder(env, osp.join(logger.get_dir(), "videos"), record_video_trigger=lambda x: x % args.save_video_interval == 0, video_length=args.save_video_length)
+        env = VecVideoRecorder(env, osp.join(logger.get_dir(), "videos"),
+                               record_video_trigger=lambda x: x % args.save_video_interval == 0,
+                               video_length=args.save_video_length)
 
     if args.network:
         alg_kwargs['network'] = args.network
@@ -91,6 +130,7 @@ def train(args, extra_args):
     )
 
     return model, env
+
 
 def build_env(args):
     ncpu = multiprocessing.cpu_count()
@@ -113,18 +153,20 @@ def build_env(args):
 
     else:
         config = tf.ConfigProto(allow_soft_placement=True,
-                               intra_op_parallelism_threads=1,
-                               inter_op_parallelism_threads=1)
+                                intra_op_parallelism_threads=1,
+                                inter_op_parallelism_threads=1)
         config.gpu_options.allow_growth = True
         get_session(config=config)
 
         flatten_dict_observations = alg not in {'her'}
-        env = make_vec_env(env_id, env_type, args.num_env or 1, seed, reward_scale=args.reward_scale, flatten_dict_observations=flatten_dict_observations)
+        env = make_vec_env(env_id, env_type, args.num_env or 1, seed, reward_scale=args.reward_scale,
+                           flatten_dict_observations=flatten_dict_observations)
 
         if env_type == 'mujoco':
             env = VecNormalize(env, use_tf=True)
 
     return env
+
 
 def get_env_type(args):
     env_id = args.env
@@ -160,6 +202,7 @@ def get_default_network(env_type):
     else:
         return 'mlp'
 
+
 def get_alg_module(alg, submodule=None):
     submodule = submodule or alg
     try:
@@ -185,11 +228,11 @@ def get_learn_function_defaults(alg, env_type):
     return kwargs
 
 
-
 def parse_cmdline_kwargs(args):
     '''
     convert a list of '='-spaced command-line arguments to a dictionary, evaluating python objects when possible
     '''
+
     def parse(v):
 
         assert isinstance(v, str)
@@ -198,7 +241,7 @@ def parse_cmdline_kwargs(args):
         except (NameError, SyntaxError):
             return v
 
-    return {k: parse(v) for k,v in parse_unknown_args(args).items()}
+    return {k: parse(v) for k, v in parse_unknown_args(args).items()}
 
 
 def configure_logger(log_path, **kwargs):
@@ -207,53 +250,6 @@ def configure_logger(log_path, **kwargs):
     else:
         logger.configure(**kwargs)
 
-
-def main(args):
-    # configure logger, disable logging in child MPI processes (with rank > 0)
-
-    arg_parser = common_arg_parser()
-    args, unknown_args = arg_parser.parse_known_args(args)
-    extra_args = parse_cmdline_kwargs(unknown_args)
-
-    if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
-        rank = 0
-        configure_logger(args.log_path)
-    else:
-        rank = MPI.COMM_WORLD.Get_rank()
-        configure_logger(args.log_path, format_strs=[])
-
-    model, env = train(args, extra_args)
-
-    if args.save_path is not None and rank == 0:
-        save_path = osp.expanduser(args.save_path)
-        model.save(save_path)
-
-    if args.play:
-        logger.log("Running trained model")
-        obs = env.reset()
-
-        state = model.initial_state if hasattr(model, 'initial_state') else None
-        dones = np.zeros((1,))
-
-        episode_rew = 0
-        while True:
-            if state is not None:
-                actions, _, state, _ = model.step(obs,S=state, M=dones)
-            else:
-                actions, _, _, _ = model.step(obs)
-
-            obs, rew, done, _ = env.step(actions)
-            episode_rew += rew[0] if isinstance(env, VecEnv) else rew
-            env.render()
-            done = done.any() if isinstance(done, np.ndarray) else done
-            if done:
-                print('episode_rew={}'.format(episode_rew))
-                episode_rew = 0
-                obs = env.reset()
-
-    env.close()
-
-    return model
 
 if __name__ == '__main__':
     main(sys.argv)
