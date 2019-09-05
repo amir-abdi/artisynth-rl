@@ -24,6 +24,7 @@ def get_parser(parser=None):
                         help='IP of server')
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
+    # todo: fix the following comments
     # parser.add_argument('--env-name', default='Point2PointEnv-v0',
     #                     help='environment to train on (default: Point2PointEnv-v0)')
     # parser.add_argument('--env-type', default='artisynth_envs',
@@ -74,7 +75,7 @@ def get_parser(parser=None):
                         help='value loss coefficient (default: 0.5)')
     parser.add_argument('--max-grad-norm', type=float, default=0.5,
                         help='max norm of gradients (default: 0.5)')
-
+    # todo: fix the following conflict
     # parser.add_argument('--seed', type=int, default=1,
     #                     help='random seed (default: 1)')
     parser.add_argument('--num-processes', type=int, default=1,

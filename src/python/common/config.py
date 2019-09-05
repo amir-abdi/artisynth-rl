@@ -15,7 +15,7 @@ from pathlib import Path
 
 def set_config(args):
     env_name = args.env  # args.env_name
-    model_name = args.model
+    model_name = args.model_name
 
     root_path = str(Path.cwd() / 'results')
     model_path = str(Path(root_path) / env_name / model_name)
