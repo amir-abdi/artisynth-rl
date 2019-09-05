@@ -10,7 +10,7 @@ from a2c_ppo_acktr import algo
 from a2c_ppo_acktr.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 from a2c_ppo_acktr.utils import update_linear_schedule
-from a2c_ppo_acktr.visualize import visdom_plot
+# from a2c_ppo_acktr.visualize import visdom_plot
 from artisynth_envs.make_env import make_vec_envs
 
 from common import config
@@ -258,14 +258,14 @@ def main():
                 'eval_average_distance': np.mean(eval_distances)
             })
 
-        if args.vis and epoch % args.vis_interval == 0:
-            try:
-                # Sometimes monitor doesn't properly flush the outputs
-                logger.info("Visdom log update")
-                win = visdom_plot(viz, win, config.visdom_log_directory, args.env_name,
-                                  args.algo, args.num_env_steps)
-            except IOError:
-                pass
+        # if args.vis and epoch % args.vis_interval == 0:
+        #     try:
+        #         # Sometimes monitor doesn't properly flush the outputs
+        #         logger.info("Visdom log update")
+        #         win = visdom_plot(viz, win, config.visdom_log_directory, args.env_name,
+        #                           args.algo, args.num_env_steps)
+        #     except IOError:
+        #         pass
 
         if epoch % args.log_interval == 0:
             logger.info('{}:{}  {}'.format(epoch, num_updates, log_info))

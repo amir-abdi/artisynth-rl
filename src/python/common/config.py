@@ -1,10 +1,16 @@
 import os
 from pathlib import Path
-from common.arguments import get_args
+# from common.arguments import get_args
+from baselines.common.cmd_util import common_arg_parser, parse_unknown_args
+import sys
 
-args = get_args()
-env_name = args.env_name
-model_name = args.model_name
+args = sys.argv   #get_args()
+arg_parser = common_arg_parser()
+args, unknown_args = arg_parser.parse_known_args(args)
+print('arguments are:', args)
+print('model name is', args.model)
+env_name = args.env    # args.env_name
+model_name = args.model
 
 root_path = str(Path.cwd() / 'results')
 model_path = str(Path(root_path) / env_name / model_name)

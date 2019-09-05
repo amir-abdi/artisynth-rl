@@ -20,7 +20,8 @@ class Point2PointEnvV0(ArtiSynthBase):
                  verbose=2, agent=None,
                  include_current_pos=True, wait_action=0,
                  ip='localhost', port=6006,
-                 init_artisynth=False, artisynth_model=None, artisynth_args=''):
+                 init_artisynth=True, artisynth_model='point2point.RlPoint2PointDemo',
+                 artisynth_args='-num 6 -demoType 2d -muscleOptLen 0.1 -radius 5'):
 
         super().__init__(ip, port, init_artisynth, artisynth_model, artisynth_args=artisynth_args)
 

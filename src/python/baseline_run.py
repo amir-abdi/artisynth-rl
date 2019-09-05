@@ -14,51 +14,50 @@ from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
 
-from artisynth_envs.make_env import make_vec_envs
+# from artisynth_envs.make_env import make_vec_envs, make_env
 
-
-
-# todo: check if MPI is working out of the box or artisynth needs to be extended...
+# for now lets not include
 try:
     from mpi4py import MPI
 except ImportError:
     MPI = None
 
+try:
+    import pybullet_envs
+except ImportError:
+    pybullet_envs = None
 
-def get_env_type(args):
-    env_id = args.env
+try:
+    import roboschool
+except ImportError:
+    roboschool = None
 
-    if args.env_type is not None:
-        return args.env_type, env_id
-    else:
-        raise NotImplementedError
+try:
+    import artisynth_envs
+except ImportError:
+    artisynth_envs = None
 
 
-def build_env(args):
-    ncpu = multiprocessing.cpu_count()
-    if sys.platform == 'darwin': ncpu //= 2
-    nenv = args.num_env or ncpu
-    alg = args.alg
-    seed = args.seed
+_game_envs = defaultdict(set)
+for env in gym.envs.registry.all():
+    # TODO: solve this with regexes
+    env_type = env.entry_point.split(':')[0].split('.')[-1]
+    _game_envs[env_type].add(env.id)
+# print('Game Envs are:', _game_envs.keys())
 
-    env_type, env_id = get_env_type(args)
-    print('ID, TYPE', env_id, env_type)
-
-    config = tf.ConfigProto(allow_soft_placement=True,
-                            intra_op_parallelism_threads=1,
-                            inter_op_parallelism_threads=1)
-    config.gpu_options.allow_growth = True
-    get_session(config=config)
-
-    flatten_dict_observations = alg not in {'her'}
-    env = make_vec_env(env_id, env_type, args.num_env or 1, seed, reward_scale=args.reward_scale,
-                       flatten_dict_observations=flatten_dict_observations)
-
-    if env_type == 'mujoco':
-        env = VecNormalize(env, use_tf=True)
-
-    return env
-
+# reading benchmark names directly from retro requires
+# importing retro here, and for some reason that crashes tensorflow
+# in ubuntu
+_game_envs['retro'] = {
+    'BubbleBobble-Nes',
+    'SuperMarioBros-Nes',
+    'TwinBee3PokoPokoDaimaou-Nes',
+    'SpaceHarrier-Nes',
+    'SonicTheHedgehog-Genesis',
+    'Vectorman-Genesis',
+    'FinalFight-Snes',
+    'SpaceInvaders-Snes',
+}
 
 def train(args, extra_args):
     env_type, env_id = get_env_type(args)
@@ -72,6 +71,9 @@ def train(args, extra_args):
     alg_kwargs.update(extra_args)
 
     env = build_env(args)
+    print('build_env returns:', env)
+    if args.save_video_interval != 0:
+        env = VecVideoRecorder(env, osp.join(logger.get_dir(), "videos"), record_video_trigger=lambda x: x % args.save_video_interval == 0, video_length=args.save_video_length)
 
     if args.network:
         alg_kwargs['network'] = args.network
@@ -90,13 +92,73 @@ def train(args, extra_args):
 
     return model, env
 
+def build_env(args):
+    ncpu = multiprocessing.cpu_count()
+    if sys.platform == 'darwin': ncpu //= 2
+    nenv = args.num_env or ncpu
+    alg = args.alg
+    seed = args.seed
+
+    env_type, env_id = get_env_type(args)
+
+    if env_type in {'atari', 'retro'}:
+        if alg == 'deepq':
+            env = make_env(env_id, env_type, seed=seed, wrapper_kwargs={'frame_stack': True})
+        elif alg == 'trpo_mpi':
+            env = make_env(env_id, env_type, seed=seed)
+        else:
+            frame_stack_size = 4
+            env = make_vec_env(env_id, env_type, nenv, seed, gamestate=args.gamestate, reward_scale=args.reward_scale)
+            env = VecFrameStack(env, frame_stack_size)
+
+    else:
+        config = tf.ConfigProto(allow_soft_placement=True,
+                               intra_op_parallelism_threads=1,
+                               inter_op_parallelism_threads=1)
+        config.gpu_options.allow_growth = True
+        get_session(config=config)
+
+        flatten_dict_observations = alg not in {'her'}
+        env = make_vec_env(env_id, env_type, args.num_env or 1, seed, reward_scale=args.reward_scale, flatten_dict_observations=flatten_dict_observations)
+
+        if env_type == 'mujoco':
+            env = VecNormalize(env, use_tf=True)
+
+    return env
+
+def get_env_type(args):
+    env_id = args.env
+    # print('Name of the environment is:', env_id)
+    if args.env_type is not None:
+        return args.env_type, env_id
+
+    # Re-parse the gym registry, since we could have new envs since last time.
+    for env in gym.envs.registry.all():
+        env_type = env.entry_point.split(':')[0].split('.')[-1]
+        _game_envs[env_type].add(env.id)  # This is a set so add is idempotent
+
+    if env_id in _game_envs.keys():
+        env_type = env_id
+        env_id = [g for g in _game_envs[env_type]][0]
+
+    else:
+        env_type = None
+        for g, e in _game_envs.items():
+            if env_id in e:
+                env_type = g
+                break
+        if ':' in env_id:
+            env_type = re.sub(r':.*', '', env_id)
+        assert env_type is not None, 'env_id {} is not recognized in env types'.format(env_id, _game_envs.keys())
+
+    return env_type, env_id
+
 
 def get_default_network(env_type):
     if env_type in {'atari', 'retro'}:
         return 'cnn'
     else:
         return 'mlp'
-
 
 def get_alg_module(alg, submodule=None):
     submodule = submodule or alg
@@ -123,11 +185,11 @@ def get_learn_function_defaults(alg, env_type):
     return kwargs
 
 
+
 def parse_cmdline_kwargs(args):
     '''
     convert a list of '='-spaced command-line arguments to a dictionary, evaluating python objects when possible
     '''
-
     def parse(v):
 
         assert isinstance(v, str)
@@ -136,7 +198,7 @@ def parse_cmdline_kwargs(args):
         except (NameError, SyntaxError):
             return v
 
-    return {k: parse(v) for k, v in parse_unknown_args(args).items()}
+    return {k: parse(v) for k,v in parse_unknown_args(args).items()}
 
 
 def configure_logger(log_path, **kwargs):
@@ -160,8 +222,6 @@ def main(args):
         rank = MPI.COMM_WORLD.Get_rank()
         configure_logger(args.log_path, format_strs=[])
 
-    print('arguments are: ', args)
-
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
@@ -178,7 +238,7 @@ def main(args):
         episode_rew = 0
         while True:
             if state is not None:
-                actions, _, state, _ = model.step(obs, S=state, M=dones)
+                actions, _, state, _ = model.step(obs,S=state, M=dones)
             else:
                 actions, _, _, _ = model.step(obs)
 
@@ -194,7 +254,6 @@ def main(args):
     env.close()
 
     return model
-
 
 if __name__ == '__main__':
     main(sys.argv)

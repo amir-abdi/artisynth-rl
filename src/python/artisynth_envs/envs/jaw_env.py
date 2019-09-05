@@ -21,7 +21,7 @@ NUM_TARGETS = len(COMPS_TARGET)
 
 class JawEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
-                 init_artisynth, include_current_pos, **kwargs):
+                 include_current_pos, init_artisynth=True, **kwargs, ):
         self.args = Bunch(kwargs)
         super().__init__(ip, port, init_artisynth, self.args.artisynth_model)
 

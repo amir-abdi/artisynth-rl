@@ -23,8 +23,10 @@ def get_args():
                         help='IP of server')
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
-    parser.add_argument('--env-name', default='Point2PointEnv-v0',
-                        help='environment to train on (default: Point2PointEnv-v0)')
+    # parser.add_argument('--env-name', default='Point2PointEnv-v0',
+    #                     help='environment to train on (default: Point2PointEnv-v0)')
+    # parser.add_argument('--env-type', default='artisynth_envs',
+    #                     help='Type of environment to train on (default: ArtiSynth)')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
