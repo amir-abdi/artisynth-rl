@@ -4,9 +4,8 @@ import os.path as osp
 import tensorflow as tf
 import numpy as np
 
-from baselines.common.vec_env import VecFrameStack, VecNormalize, VecEnv
-from baselines.common.vec_env.vec_video_recorder import VecVideoRecorder
-from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env, make_env
+from baselines.common.vec_env import VecEnv
+from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env
 from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
@@ -83,16 +82,12 @@ def train(args, extra_args):
 
     env = build_env(args)
     print('build_env returns:', env)
-    if args.save_video_interval != 0:
-        env = VecVideoRecorder(env, osp.join(logger.get_dir(), "videos"),
-                               record_video_trigger=lambda x: x % args.save_video_interval == 0,
-                               video_length=args.save_video_length)
 
     if args.network:
         alg_kwargs['network'] = args.network
     else:
         if alg_kwargs.get('network') is None:
-            alg_kwargs['network'] = get_default_network(env_type)
+            alg_kwargs['network'] = get_default_network()
 
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
 
@@ -115,40 +110,23 @@ def build_env(args):
 
     env_type, env_id = common.utilities.get_env_type(args)
 
-    if env_type in {'atari', 'retro'}:
-        if alg == 'deepq':
-            env = make_env(env_id, env_type, seed=seed, wrapper_kwargs={'frame_stack': True})
-        elif alg == 'trpo_mpi':
-            env = make_env(env_id, env_type, seed=seed)
-        else:
-            frame_stack_size = 4
-            env = make_vec_env(env_id, env_type, nenv, seed, gamestate=args.gamestate, reward_scale=args.reward_scale)
-            env = VecFrameStack(env, frame_stack_size)
+    config = tf.ConfigProto(allow_soft_placement=True,
+                            intra_op_parallelism_threads=1,
+                            inter_op_parallelism_threads=1)
+    config.gpu_options.allow_growth = True
+    get_session(config=config)
 
-    else:
-        config = tf.ConfigProto(allow_soft_placement=True,
-                                intra_op_parallelism_threads=1,
-                                inter_op_parallelism_threads=1)
-        config.gpu_options.allow_growth = True
-        get_session(config=config)
-
-        flatten_dict_observations = alg not in {'her'}
-        env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
-                           env_kwargs=vars(args),
-                           reward_scale=args.reward_scale,
-                           flatten_dict_observations=flatten_dict_observations)
-
-        if env_type == 'mujoco':
-            env = VecNormalize(env, use_tf=True)
+    flatten_dict_observations = alg not in {'her'}
+    env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
+                       env_kwargs=vars(args),
+                       reward_scale=args.reward_scale,
+                       flatten_dict_observations=flatten_dict_observations)
 
     return env
 
 
-def get_default_network(env_type):
-    if env_type in {'atari', 'retro'}:
-        return 'cnn'
-    else:
-        return 'mlp'
+def get_default_network():
+    return 'mlp'
 
 
 def get_alg_module(alg, submodule=None):

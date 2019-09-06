@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 src/python/baseline_run.py \
+python3 src/python/main_baselines.py \
 --env=JawEnv-v0 \
 --algo=ppo \
 --verbose=20 \
