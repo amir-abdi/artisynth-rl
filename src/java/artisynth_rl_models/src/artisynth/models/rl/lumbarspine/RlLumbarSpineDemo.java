@@ -57,7 +57,8 @@ public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInte
 		addController(targetMotionController);
 		addController(rlTrack);
 		addControlPanel(rlTrack.getRlControlPanel());
-
+		addControlPanel(rlTrack.getMuscleControlPanel());
+		
 		addTrackingRotationMonitors(rlTrack.getMotionTargets());
 	}
 

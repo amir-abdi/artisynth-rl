@@ -439,6 +439,16 @@ public class RlController extends ControllerBase
 		return cp;
 	}
 
+	public ControlPanel getMuscleControlPanel() {
+		ControlPanel cp = new ControlPanel("MuscleControlPanel");
+
+		for (ExcitationComponent ex : exciters) {
+			cp.addWidget(ex.getName(), ex, "excitation");
+		}
+
+		return cp;
+	}
+
 	/**
 	 * Show or hide the sources
 	 */
@@ -532,7 +542,7 @@ public class RlController extends ControllerBase
 		RlState rlState = new RlState();
 		rlState.addAll(getRlComponents(sources));
 		rlState.addAll(getRlComponents(targets));
-		
+
 		rlState.setRlExcitations(getExcitations());
 
 		Log.log("Get State state.size = " + rlState.numComponents());

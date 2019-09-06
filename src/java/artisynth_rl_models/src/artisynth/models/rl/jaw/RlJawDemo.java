@@ -151,6 +151,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		addController(targetMotionController);
 		addController(rlTrack);
 		addControlPanel(rlTrack.getRlControlPanel());
+		addControlPanel(rlTrack.getMuscleControlPanel());
 	}
 
 	private int port;

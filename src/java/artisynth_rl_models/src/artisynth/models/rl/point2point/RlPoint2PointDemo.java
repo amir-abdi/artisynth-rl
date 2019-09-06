@@ -496,6 +496,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		addController(targetMotionController);
 		addController(rlTrack);
 		addControlPanel(rlTrack.getRlControlPanel());
+		addControlPanel(rlTrack.getMuscleControlPanel());
 	}
 
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
