@@ -11,10 +11,8 @@ def str2bool(v):
 
 
 def get_parser(parser=None):
-    if parser is None:
-        parser = argparse.ArgumentParser(description='RL')
-    else:
-        parser.conflict_handler = 'resolve'
+    parser = parser or argparse.ArgumentParser(description='RL')
+    parser.conflict_handler = 'resolve'
 
     parser.add_argument('--w_u', type=float, default=1)
     parser.add_argument('--w_d', type=float, default=0.00005)
@@ -24,11 +22,13 @@ def get_parser(parser=None):
                         help='IP of server')
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
-    # todo: fix the following comments
-    print('***', parser.conflict_handler)
-    print(parser._get_handler)
-    parser.add_argument('--env', default='Point2PointEnv-v0', 
-                        help='environment to train on (default: Point2PointEnv-v0)')
+    # todo: remove the following try except
+    try:
+        parser.add_argument('--env', default='Point2PointEnv-v0',
+                            help='environment to train on (default: Point2PointEnv-v0)')
+    except argparse.ArgumentError:
+        pass
+
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
@@ -76,8 +76,11 @@ def get_parser(parser=None):
     parser.add_argument('--max-grad-norm', type=float, default=0.5,
                         help='max norm of gradients (default: 0.5)')
     # todo: fix the following conflict
-    parser.add_argument('--seed', type=int, default=1,
-                        help='random seed (default: 1)')
+    try:
+        parser.add_argument('--seed', type=int, default=1,
+                            help='random seed (default: 1)')
+    except argparse.ArgumentError:
+        pass
     parser.add_argument('--num-processes', type=int, default=1,
                         help='how many training CPU processes to use (default: 16)')
     parser.add_argument('--num-steps', type=int, default=5,
