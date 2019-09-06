@@ -14,7 +14,7 @@ from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
 
-from artisynth_envs.make_env import make_vec_envs
+from artisynth_envs.make_env_pytorch import make_vec_envs
 
 
 

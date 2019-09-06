@@ -1,7 +1,7 @@
 #!/bin/bash
 
-python3 src/python/main_pytorch_a2c_ppo_acktr.py \
---env-name=JawEnv-v0 \
+python3 src/python/main_pytorch.py \
+--env=JawEnv-v0 \
 --model-name=jaw_ppo \
 --log-interval=1 \
 --num-steps=32 \

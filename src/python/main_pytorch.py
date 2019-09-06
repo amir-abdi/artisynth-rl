@@ -10,31 +10,31 @@ from a2c_ppo_acktr import algo
 from a2c_ppo_acktr.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 from a2c_ppo_acktr.utils import update_linear_schedule
-# from a2c_ppo_acktr.visualize import visdom_plot
-from artisynth_envs.make_env import make_vec_envs
+from artisynth_envs.make_env_pytorch import make_vec_envs
+from a2c_ppo_acktr.visualize import visdom_plot
 
-from common import config
+import common.config
 from common.arguments import get_parser
-from common.utilities import setup_logger
-
-args = get_parser()
+from common.config import setup_logger
 
 logger = logging.getLogger()
 
-assert args.algo in ['a2c', 'ppo', 'acktr']
-if args.recurrent_policy:
-    assert args.algo in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
-
 
 def main():
+    args = get_parser().parse_args()
+    configs = common.config.get_config(args)
+    assert args.algo in ['a2c', 'ppo', 'acktr']
+    if args.recurrent_policy:
+        assert args.algo in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
+
     if args.test:
         args.num_processes = 1
         args.use_wandb = False
         args.vis = False
 
-    setup_logger(logger, args.verbose, args.model_name)
+    setup_logger(logger, args.verbose, args.model_name, configs.log_directory)
     torch.set_num_threads(1)
-    device = torch.device("cuda:0" if args.cuda else "cpu")
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     # set seed values
     seed = args.seed
@@ -52,8 +52,8 @@ def main():
         resume_wandb = True if args.wandb_resume_id is not None else False
         wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl')
 
-    envs = make_vec_envs(args.env_name, seed, args.num_processes,
-                         args.gamma, config.log_directory, device,
+    envs = make_vec_envs(args.env, seed, args.num_processes,
+                         args.gamma, configs.log_directory, device,
                          start_port=args.port,
                          allow_early_resets=True, num_frame_stack=None, args=args)
 
@@ -156,8 +156,8 @@ def main():
 
         # save for every interval-th episode or for the last epoch
         if epoch % args.save_interval == 0 or epoch == num_updates - 1:
-            save_path = os.path.join(config.trained_directory,
-                                     args.algo + "-" + args.env_name + ".pt")
+            save_path = os.path.join(configs.trained_directory,
+                                     args.algo + "-" + args.env + ".pt")
             logger.info("Saving model: {}".format(save_path))
             torch.save(actor_critic, save_path)
 
@@ -202,8 +202,8 @@ def main():
         if args.eval_interval is not None and epoch % args.eval_interval == 0:
             logger.info('Evaluate')
 
-            eval_envs = make_vec_envs(args.env_name, seed, 1,  # args.num_processes,
-                                      args.gamma, config.log_directory,
+            eval_envs = make_vec_envs(args.env, seed, 1,  # args.num_processes,
+                                      args.gamma, configs.log_directory,
                                       device, start_port=args.port,
                                       allow_early_resets=True, num_frame_stack=None,
                                       eval_mode=True, args=args)
@@ -258,14 +258,14 @@ def main():
                 'eval_average_distance': np.mean(eval_distances)
             })
 
-        # if args.vis and epoch % args.vis_interval == 0:
-        #     try:
-        #         # Sometimes monitor doesn't properly flush the outputs
-        #         logger.info("Visdom log update")
-        #         win = visdom_plot(viz, win, config.visdom_log_directory, args.env_name,
-        #                           args.algo, args.num_env_steps)
-        #     except IOError:
-        #         pass
+        if args.vis and epoch % args.vis_interval == 0:
+            try:
+                # Sometimes monitor doesn't properly flush the outputs
+                logger.info("Visdom log update")
+                win = visdom_plot(viz, win, configs.visdom_log_directory, args.env,
+                                  args.algo, args.num_env_steps)
+            except IOError:
+                pass
 
         if epoch % args.log_interval == 0:
             logger.info('{}:{}  {}'.format(epoch, num_updates, log_info))
@@ -276,8 +276,8 @@ def main():
     if args.test:
         logger.info('Evaluate')
 
-        eval_envs = make_vec_envs(args.env_name, seed, 1,
-                                  args.gamma, config.log_directory,
+        eval_envs = make_vec_envs(args.env, seed, 1,
+                                  args.gamma, configs.log_directory,
                                   device, start_port=args.port,
                                   allow_early_resets=True, num_frame_stack=None,
                                   eval_mode=True, args=args)

@@ -25,10 +25,10 @@ def get_parser(parser=None):
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
     # todo: fix the following comments
-    # parser.add_argument('--env-name', default='Point2PointEnv-v0',
-    #                     help='environment to train on (default: Point2PointEnv-v0)')
-    # parser.add_argument('--env-type', default='artisynth_envs',
-    #                     help='Type of environment to train on (default: ArtiSynth)')
+    print('***', parser.conflict_handler)
+    print(parser._get_handler)
+    parser.add_argument('--env', default='Point2PointEnv-v0', 
+                        help='environment to train on (default: Point2PointEnv-v0)')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
@@ -76,8 +76,8 @@ def get_parser(parser=None):
     parser.add_argument('--max-grad-norm', type=float, default=0.5,
                         help='max norm of gradients (default: 0.5)')
     # todo: fix the following conflict
-    # parser.add_argument('--seed', type=int, default=1,
-    #                     help='random seed (default: 1)')
+    parser.add_argument('--seed', type=int, default=1,
+                        help='random seed (default: 1)')
     parser.add_argument('--num-processes', type=int, default=1,
                         help='how many training CPU processes to use (default: 16)')
     parser.add_argument('--num-steps', type=int, default=5,

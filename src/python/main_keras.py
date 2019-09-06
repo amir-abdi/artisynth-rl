@@ -1,8 +1,8 @@
 import os
 import pprint
 import numpy as np
-import time
 import logging
+import argparse
 
 from rl.agents.dqn import NAFAgent
 from rl.random import OrnsteinUhlenbeckProcess
@@ -16,11 +16,10 @@ from keras.layers import Dense, Activation, Flatten, Input, Concatenate
 from keras.optimizers import Adam
 
 from artisynth_envs.envs.point2point_env import Point2PointEnvV0, PointModel2dProcessor
-from common import config as c
 from common.arguments import get_parser
 from common.utilities import setup_tensorflow
-import common.config as config
-from common.utilities import setup_logger
+import common.config
+from common.config import setup_logger
 
 args = get_parser()
 logger = logging.getLogger()
@@ -117,16 +116,18 @@ class MuscleNAFAgent(NAFAgent):
 
 
 def main():
+    args = common.arguments.get_parser().parse_args()
+    configs = common.config.get_config(args)
     setup_tensorflow()
-    setup_logger(logger, args.verbose, args.model_name)
+    setup_logger(logger, args.verbose, args.model_name, configs.log_directory)
 
     get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
-
     log_file_name = args.model_name
-    save_path = os.path.join(config.trained_directory,
-                             args.algo + "-" + args.env_name + ".h5f")
 
-    if args.env_name == 'Point2PointEnv-v0':
+    save_path = os.path.join(configs.trained_directory,
+                             args.algo + "-" + args.env + ".h5f")
+
+    if args.env == 'Point2PointEnv-v0':
         env = Point2PointEnvV0(verbose=0, success_thres=args.goal_threshold,
                                include_current_pos=False, wait_action=args.wait_action,
                                port=args.port,
@@ -176,7 +177,7 @@ def main():
         if args.use_tensorboard:
             from rl.callbacks import RlTensorBoard
             tensorboard = RlTensorBoard(
-                log_dir=os.path.join(c.tensorboard_log_directory, log_file_name),
+                log_dir=os.path.join(configs.tensorboard_log_directory, log_file_name),
                 histogram_freq=1,
                 batch_size=BATCH_SIZE,
                 write_graph=True,
@@ -186,7 +187,7 @@ def main():
             callbacks.append(tensorboard)
         if args.use_csvlogger:
             csv_logger = keras.callbacks.CSVLogger(
-                os.path.join(c.agent_log_directory, log_file_name),
+                os.path.join(configs.agent_log_directory, log_file_name),
                 append=False, separator=',')
             callbacks.append(csv_logger)
 

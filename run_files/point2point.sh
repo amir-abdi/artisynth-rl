@@ -1,13 +1,13 @@
 #!/bin/bash
 
-python3 src/python/main_keras_naf.py \
---env-name=Point2PointEnv-v0 \
+python3 src/python/main_keras.py \
+--env=Point2PointEnv-v0 \
 --model-name=point2point-naf \
 --algo=naf \
 --port=8080 \
 --verbose=20 \
 --init-artisynth=true \
---artisynth-model=RlPoint2PointModel \
+--artisynth-model=point2point.RlPoint2PointDemo \
 --artisynth-args="-num 8 -demoType 2d -muscleOptLen 0.1 -radius 5" \
 --wait-action=0.1 \
 --test=false \

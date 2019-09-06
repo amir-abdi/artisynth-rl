@@ -1,7 +1,7 @@
 #!/bin/bash
 
-python3 src/python/main_pytorch_a2c_ppo_acktr.py \
---env-name=SpineEnv-v0 \
+python3 src/python/main_pytorch.py \
+--env=SpineEnv-v0 \
 --model-name=lumbarspine_ppo \
 --log-interval=1 \
 --num-steps=32 \

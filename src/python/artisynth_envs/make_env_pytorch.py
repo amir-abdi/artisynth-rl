@@ -18,11 +18,6 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets, **kwargs):
             env = bench.Monitor(env, os.path.join(log_dir, str(rank)), allow_early_resets=allow_early_resets)
 
         env.seed(seed + rank if seed is not None else None)
-
-        # assuming flatten_dict_observations to be always true (not using her!)
-        keys = env.observation_space.spaces.keys()
-        env = gym.wrappers.FlattenDictWrapper(env, dict_keys=list(keys))
-
         return env
 
     return _thunk
