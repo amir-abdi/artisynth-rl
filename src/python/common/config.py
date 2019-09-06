@@ -32,7 +32,8 @@ def get_config(args):
     return Bunch(configs)
 
 
-def setup_logger(logger, level, name, log_directory):
+def setup_logger(level, name, log_directory):
+    logger = logging.getLogger()
     log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 
     file_handler = logging.FileHandler("{0}/{1}.log".format(log_directory, name))
@@ -45,3 +46,4 @@ def setup_logger(logger, level, name, log_directory):
 
     logger.setLevel(level=level)
     logger.info('Log level: %i', level)
+    return logger

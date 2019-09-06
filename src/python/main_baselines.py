@@ -1,9 +1,6 @@
 import sys
-import re
 import multiprocessing
 import os.path as osp
-import gym
-from collections import defaultdict
 import tensorflow as tf
 import numpy as np
 
@@ -14,54 +11,31 @@ from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
 
-import artisynth_envs
 import common.arguments
 import common.config
+import common.utilities
+import artisynth_envs
 
 try:
     from mpi4py import MPI
 except ImportError:
     MPI = None
 
-_game_envs = defaultdict(set)
-for env in gym.envs.registry.all():
-    # TODO: solve this with regexes
-    env_type = env.entry_point.split(':')[0].split('.')[-1]
-    _game_envs[env_type].add(env.id)
-# print('Game Envs are:', _game_envs.keys())
-
-# reading benchmark names directly from retro requires
-# importing retro here, and for some reason that crashes tensorflow
-# in ubuntu
-_game_envs['retro'] = {
-    'BubbleBobble-Nes',
-    'SuperMarioBros-Nes',
-    'TwinBee3PokoPokoDaimaou-Nes',
-    'SpaceHarrier-Nes',
-    'SonicTheHedgehog-Genesis',
-    'Vectorman-Genesis',
-    'FinalFight-Snes',
-    'SpaceInvaders-Snes',
-}
-
 
 def main(args):
     # configure logger, disable logging in child MPI processes (with rank > 0)
-
     arg_parser = common_arg_parser()
     arg_parser = common.arguments.get_parser(arg_parser)
     args, unknown_args = arg_parser.parse_known_args(args)
     extra_args = parse_cmdline_kwargs(unknown_args)
-
     configs = common.config.get_config(args)
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
-        configure_logger(args.log_path)
     else:
         rank = MPI.COMM_WORLD.Get_rank()
-        configure_logger(args.log_path, format_strs=[])
 
+    common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
@@ -97,7 +71,7 @@ def main(args):
 
 
 def train(args, extra_args):
-    env_type, env_id = get_env_type(args)
+    env_type, env_id = common.utilities.get_env_type(args)
     print('env_type: {}'.format(env_type))
 
     total_timesteps = int(args.num_timesteps)
@@ -139,7 +113,7 @@ def build_env(args):
     alg = args.alg
     seed = args.seed
 
-    env_type, env_id = get_env_type(args)
+    env_type, env_id = common.utilities.get_env_type(args)
 
     if env_type in {'atari', 'retro'}:
         if alg == 'deepq':
@@ -168,34 +142,6 @@ def build_env(args):
             env = VecNormalize(env, use_tf=True)
 
     return env
-
-
-def get_env_type(args):
-    env_id = args.env
-    # print('Name of the environment is:', env_id)
-    if args.env_type is not None:
-        return args.env_type, env_id
-
-    # Re-parse the gym registry, since we could have new envs since last time.
-    for env in gym.envs.registry.all():
-        env_type = env.entry_point.split(':')[0].split('.')[-1]
-        _game_envs[env_type].add(env.id)  # This is a set so add is idempotent
-
-    if env_id in _game_envs.keys():
-        env_type = env_id
-        env_id = [g for g in _game_envs[env_type]][0]
-
-    else:
-        env_type = None
-        for g, e in _game_envs.items():
-            if env_id in e:
-                env_type = g
-                break
-        if ':' in env_id:
-            env_type = re.sub(r':.*', '', env_id)
-        assert env_type is not None, 'env_id {} is not recognized in env types'.format(env_id, _game_envs.keys())
-
-    return env_type, env_id
 
 
 def get_default_network(env_type):
@@ -244,13 +190,6 @@ def parse_cmdline_kwargs(args):
             return v
 
     return {k: parse(v) for k, v in parse_unknown_args(args).items()}
-
-
-def configure_logger(log_path, **kwargs):
-    if log_path is not None:
-        logger.configure(log_path)
-    else:
-        logger.configure(**kwargs)
 
 
 if __name__ == '__main__':

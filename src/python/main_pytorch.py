@@ -17,8 +17,6 @@ import common.config
 from common.arguments import get_parser
 from common.config import setup_logger
 
-logger = logging.getLogger()
-
 
 def main():
     args = get_parser().parse_args()
@@ -32,7 +30,7 @@ def main():
         args.use_wandb = False
         args.vis = False
 
-    setup_logger(logger, args.verbose, args.model_name, configs.log_directory)
+    logger = setup_logger(args.verbose, args.model_name, configs.log_directory)
     torch.set_num_threads(1)
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 

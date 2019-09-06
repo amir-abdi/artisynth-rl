@@ -46,3 +46,5 @@ class Bunch(object):
         self.__dict__.update(adict)
 
 
+def get_env_type(args):
+    return 'artisynth', args.env

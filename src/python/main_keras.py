@@ -22,7 +22,6 @@ import common.config
 from common.config import setup_logger
 
 args = get_parser()
-logger = logging.getLogger()
 
 # Noise parameters
 THETA = .35
@@ -119,7 +118,7 @@ def main():
     args = common.arguments.get_parser().parse_args()
     configs = common.config.get_config(args)
     setup_tensorflow()
-    setup_logger(logger, args.verbose, args.model_name, configs.log_directory)
+    logger = setup_logger(args.verbose, args.model_name, configs.log_directory)
 
     get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
     log_file_name = args.model_name
