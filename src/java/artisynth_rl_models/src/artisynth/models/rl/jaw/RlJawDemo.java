@@ -25,6 +25,7 @@ import artisynth.core.mechmodels.CollidableBody;
 import artisynth.core.mechmodels.ExcitationComponent;
 import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.FrameMarker;
+import artisynth.core.mechmodels.MechModel;
 import artisynth.core.mechmodels.MotionTargetComponent;
 import artisynth.core.mechmodels.MultiPointMuscle;
 import artisynth.core.mechmodels.Muscle;
@@ -58,7 +59,9 @@ import maspack.matrix.VectorNd;
 import maspack.properties.Property;
 import maspack.render.Renderer.LineStyle;
 import maspack.render.Renderer.PointStyle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import artisynth.core.femmodels.FemModel3d;
+import artisynth.core.rl.Log;
 
 public class RlJawDemo extends RootModel implements RlModelInterface {
 	RlController rlTrack;
@@ -131,9 +134,14 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 	@Override
 	public void addRlController() {
+		Log.log("------------test");
+		
 		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "InvTracker", this.port);
 
-		rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
+		//rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
+		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
+		
+		Point t = myJawModel.frameMarkers().get("lowerincisor_ref");
 		
 		for (String name : MuscleAbbreviation)
         {
@@ -169,10 +177,19 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		Random r = new Random();
 		private int time_pos_updated = -1;
 		
-		Frame mandible;
+		Frame mandible = null;
+		Point lowerincisor = null;
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
-			mandible = (Frame)list.get(0);
+			Log.log("***** get(0)");
+			Log.log(list.get(0).getName());
+			if (list.get(0) instanceof Frame) {
+				mandible = (Frame)list.get(0);
+			}
+			else if (list.get(0) instanceof Point) {
+				Log.log("lower incisor initiated");
+				lowerincisor = (Point)list.get(0);
+			} 
 			r.setSeed(123);
 		}
 
@@ -187,12 +204,14 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				if (trialRun) {
 					if ((int) t0 != time_pos_updated && (int) t0 % 3 == 1) {
 						time_pos_updated = (int) t0;
-						resetRefPosition();
+						resetRefPosition(false);
 					}
 				} else if (reset) {
 					reset = false;
-					resetRefPosition();
+					resetRefPosition(false);
 				}
+				
+				Log.log(lowerincisor.getPosition());
 
 			}
 
@@ -202,13 +221,28 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			return (r.nextDouble() - 0.5) * radius;
 		}
 			
-		private void resetRefPosition() {
+		private void resetRefPosition(Boolean random) {
 			// TODO: complete the reset pos implementation
-			double radius = 5; 
-			Point3d posAdd = new Point3d(getRandom(radius), getRandom(radius), getRandom(radius));
-			Point3d currentPos = mandible.getPosition();
-			posAdd.add(currentPos);
-			mandible.setPosition(posAdd);						
+			if (mandible != null) {
+				if (random) {
+					double radius = 5; 
+					Point3d posAdd = new Point3d(getRandom(radius), getRandom(radius), getRandom(radius));
+					Point3d currentPos = mandible.getPosition();
+					posAdd.add(currentPos);
+					mandible.setPosition(posAdd);
+				}
+				else {
+					throw new NotImplementedException();
+				}
+			}
+			else if (lowerincisor != null) {
+				if (random) {
+					throw new NotImplementedException();
+				}
+				else {
+					// do nothing as we want the mount open point to be fixed for now... (simple!)
+				}
+			}
 		}
 	}
 
