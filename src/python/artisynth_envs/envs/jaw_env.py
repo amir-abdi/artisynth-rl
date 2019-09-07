@@ -12,9 +12,10 @@ from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
 logger = logging.getLogger()
 
-COMPS_REAL = ['jaw']
-COMPS_TARGET = ['jaw_ref']
-PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
+COMPS_REAL = ['lowerincisor']
+COMPS_TARGET = ['lowerincisor_ref']
+# PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
+PROPS = ['position', 'velocity']
 
 NUM_TARGETS = len(COMPS_TARGET)
 
@@ -66,7 +67,7 @@ class JawEnvV0(ArtiSynthBase):
         :return:
         '''
         observation = state['observation']
-        props_idx_include = 1
+        props_idx_include = 0
 
         thres = self.args.goal_threshold
         info = {'distance': 0,

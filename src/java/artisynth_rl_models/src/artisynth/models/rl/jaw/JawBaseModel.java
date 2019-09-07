@@ -489,7 +489,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			setLaryngealBodiesFixed();
 		}
 
-		//addFixedMarkers();
+		// addFixedMarkers();
 
 		showMeshFaces(true);
 		showMeshEdges(false);
@@ -2914,9 +2914,12 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	public static void assembleBilateralExcitors(ArrayList<String> muscleList, HashMap<String, MuscleInfo> muscleInfo,
 			HashMap<String, ExcitationComponent> myMuscles, HashMap<String, String> muscleAbbreviations) {
+		System.out.println("assembleBilateralExcitors");
 		for (int k = 0; k < muscleList.size(); k++) {
 			String name = muscleList.get(k);
+			System.out.println(name);
 			if (muscleInfo.get(muscleList.get(k)).isPaired()) {
+				System.out.println(name + " isPaired");
 				ExcitationComponent left = myMuscles.get("l" + name);
 				ExcitationComponent right = myMuscles.get("r" + name);
 				if (left != null && right != null) {
@@ -2932,11 +2935,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		}
 	}
 
-	public static HashMap<String, MuscleExciter> assembleMuscleGroups(MuscleGroupInfo info,
+	public static ArrayList<MuscleExciter> assembleMuscleGroups(MuscleGroupInfo info,
 			HashMap<String, ExcitationComponent> myMuscles, ComponentList<MuscleExciter> myMuscleExciters,
 			HashMap<String, String> muscleAbbreviations) {
-		HashMap<String, MuscleExciter> myExciters = new LinkedHashMap<>();
-
+		ArrayList<MuscleExciter> myExciters = new ArrayList<MuscleExciter>();
 		for (int i = 0; i < 2; i++) // add groups for left and right sides
 		{
 			String prefix = (i == 0 ? "l" : "r");
@@ -2953,25 +2955,39 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 				exciter.addTarget(c, 1.0);
 				muscleAbbreviations.put(prefix + info.name, fullPrefix + info.fullName);
 			}
-			myExciters.put(exciter.getName(), exciter);
+			myExciters.add(exciter);
 		}
+		return myExciters;
+	}
+
+	public static ArrayList<MuscleExciter> assembleIndividualExciters(HashMap<String, ExcitationComponent> myMuscles,
+			ComponentList<MuscleExciter> myMuscleExciters) {
+		ArrayList<MuscleExciter> myExciters = new ArrayList<MuscleExciter>();
+		for (ExcitationComponent c : myMuscles.values()) {
+			
+			MuscleExciter exciter = myMuscleExciters.get(c.getName());
+			if (exciter == null) {
+				// if the exciter is not already added
+				exciter = new MuscleExciter(c.getName());
+				exciter.addTarget(c, 1.0);
+				myExciters.add(exciter);
+			}
+		}		
 		return myExciters;
 	}
 
 	public static ArrayList<MuscleExciter> assemblebilateralMuscleGroups(ArrayList<MuscleGroupInfo> muscleGroupInfo,
 			ComponentList<MuscleExciter> mySingleExciters, HashMap<String, String> muscleAbbreviations) {
+		System.out.println("assemblebilateralMuscleGroups");
 		// bilateral excitor
 		ArrayList<MuscleExciter> myBilateralExciters = new ArrayList<>();
-		int j = 0;
-		for (int i = 0; i < mySingleExciters.size(); i = i + 2) {
-			MuscleExciter bilateral = new MuscleExciter("bi_" + muscleGroupInfo.get(j).name);
+		for (int j = 0; j < muscleGroupInfo.size(); j++) {
+			MuscleExciter bilateral = new MuscleExciter("bi_" + muscleGroupInfo.get(j).name);					
 			bilateral.addTarget(mySingleExciters.get("l" + muscleGroupInfo.get(j).name));
 			bilateral.addTarget(mySingleExciters.get("r" + muscleGroupInfo.get(j).name));
-
 			myBilateralExciters.add(bilateral);
 			muscleAbbreviations.put("bi_" + muscleGroupInfo.get(j).name,
 					"Bilateral " + muscleGroupInfo.get(j).fullName);
-			j++;
 		}
 		return myBilateralExciters;
 	}

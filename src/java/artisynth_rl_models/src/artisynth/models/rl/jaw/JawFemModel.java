@@ -20,6 +20,7 @@ import artisynth.core.materials.AxialMaterial;
 import artisynth.core.materials.AxialMuscleMaterial;
 import artisynth.core.materials.IncompressibleMaterial;
 import artisynth.core.materials.LigamentAxialMaterial;
+import artisynth.core.materials.LinearMaterial;
 import artisynth.core.materials.MooneyRivlinMaterial;
 import artisynth.core.materials.MuscleMaterial;
 import artisynth.core.femmodels.FemModel.SurfaceRender;
@@ -28,6 +29,7 @@ import artisynth.core.mechmodels.BodyConnector;
 import artisynth.core.mechmodels.Collidable;
 import artisynth.core.mechmodels.CollisionBehavior;
 import artisynth.core.mechmodels.FrameMarker;
+import artisynth.core.mechmodels.MechSystemSolver.Integrator;
 import artisynth.core.mechmodels.MultiPointMuscle;
 import artisynth.core.mechmodels.MultiPointSpring;
 import artisynth.core.mechmodels.Muscle;
@@ -49,7 +51,7 @@ import artisynth.core.mechmodels.CollisionManager.ColliderType;
 import artisynth.core.mechmodels.ExcitationComponent;
 import artisynth.core.util.AmiraLandmarkReader;
 import artisynth.core.util.ArtisynthPath;
-//import artisynth.models.fem_jaw.JawModel;
+//import artisynth.models.fem_jaw.JawBaseModel;
 //import artisynth.models.uwknee.ElasticFoundationForceBehavior;
 import maspack.geometry.PolygonalMesh;
 import maspack.matrix.AxisAngle;
@@ -75,9 +77,12 @@ import artisynth.core.util.ScalarRange;
 
 public class JawFemModel extends JawBaseModel {
 	boolean withDisc = true;
-	
+
 	public boolean debug = false; // set to true for debug printlns
 
+	public String[] muscleExciterCategoryNames = {"singleExciters", "groupExciters", "bilateralExciters"};
+	protected HashMap<String, ArrayList<MuscleExciter>> myMuscleExciterCategories = new HashMap<String, ArrayList<MuscleExciter>>();
+	
 	public static final String muscleListFilename = "muscleList.txt";
 
 	public static final String wrappedMuscleListFilename = "wrappedMuscleList.txt";
@@ -102,13 +107,12 @@ public class JawFemModel extends JawBaseModel {
 
 	protected RigidTransform3d amiraTranformation = new RigidTransform3d(new Vector3d(0, 0, 0),
 			new RotationMatrix3d(new AxisAngle(new Vector3d(0.975111, -0.20221, 0.0909384), Math.toRadians(-9.54211))));
-	// protected RigidTransform3d amiraTranformation = new RigidTransform3d ();
 
 	protected static MooneyRivlinMaterial defaultMooneyRivlinMaterial = new MooneyRivlinMaterial(
 			900000 / unitConversion, 900 / unitConversion, 0d, 0d, 0d, /* 90000000 */10 * 9000000 / unitConversion);
-	// protected static MooneyRivlinMaterial defaultMooneyRivlinMaterial = new
-	// MooneyRivlinMaterial (9000, 0.009, 0d, 0d, 0d,
-	// /*90000000*/10*9000000/unitConversion);
+	
+	protected double linearMaterialNu = 0.33;
+	protected double linearMaterialE = 5000.0;
 
 	protected double myParticleDamping = 40;
 
@@ -122,7 +126,8 @@ public class JawFemModel extends JawBaseModel {
 
 	protected static final double DEFAULT_Nu = 0.49;
 
-	protected boolean useMooneyRivlin = true;
+	protected boolean useMooneyRivlin = false;
+	protected boolean useBiteConstraints = true;
 
 	protected boolean useElasticFoundationContact = true;
 
@@ -208,7 +213,13 @@ public class JawFemModel extends JawBaseModel {
 			model.getElements().getRenderProps().setVisible(false);
 		}
 
-		setMooneyRivlinMaterial(model);
+		if (useMooneyRivlin) {
+			setMooneyRivlinMaterial(model);
+			setIntegrator(Integrator.FullBackwardEuler);
+		}
+		else
+			setLinearMaterial(model);
+		
 
 		return model;
 	}
@@ -241,6 +252,15 @@ public class JawFemModel extends JawBaseModel {
 		model.setParticleDamping(myParticleDamping);
 		model.setStiffnessDamping(myStiffnessDamping);
 	}
+	
+	public void setLinearMaterial(FemModel3d model) {
+		// Default material in ArtiSynth is linear		
+		LinearMaterial linearMaterial = new LinearMaterial(linearMaterialE, linearMaterialNu);
+		linearMaterial.setCorotated(true);
+		model.setMaterial(linearMaterial);
+		model.setParticleDamping(myParticleDamping);
+		model.setStiffnessDamping(myStiffnessDamping);
+	}
 
 	/**
 	 * used to translate the frames of each body to the center of the body and
@@ -248,7 +268,7 @@ public class JawFemModel extends JawBaseModel {
 	 */
 	public void translateFrame(RigidBody body) {
 		Vector3d centroid = new Vector3d();
-		body.getMesh().computeCentroid(centroid);
+		body.getSurfaceMesh().computeCentroid(centroid);
 		RigidTransform3d XComToBody = new RigidTransform3d();
 		XComToBody.p.set(centroid);
 
@@ -260,11 +280,11 @@ public class JawFemModel extends JawBaseModel {
 		body.setPose(XComToWorld);
 
 		RigidTransform3d XMeshToCom = new RigidTransform3d();
-		if (body.getMesh() != null) {
-			PolygonalMesh mesh = body.getMesh();
+		if (body.getSurfaceMesh() != null) {
+			PolygonalMesh mesh = body.getSurfaceMesh();
 			XMeshToCom.invert(XComToWorld);
 			mesh.transform(XMeshToCom);
-			body.setMesh(mesh, null);
+			body.setSurfaceMesh(mesh, null);
 		}
 
 		if (body.getName().equals("hyoid")) {
@@ -336,24 +356,6 @@ public class JawFemModel extends JawBaseModel {
 		rigidBodies().get("skull_cartilage_right").setMass(0);
 		rigidBodies().get("skull_cartilage_left").setMass(0);
 	}
-	
-	public void addInterBoneCollision() {
-		CollisionBehavior behav1 = new CollisionBehavior(true, 0);
-		
-		// TODO: try VERTEX_EDGE_PENETRATION VERTEX_PENETRATION_BILATERAL
-		behav1.setMethod(Method.VERTEX_EDGE_PENETRATION);
-		
-		if (useElasticFoundationContact == true) {
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E, DEFAULT_Nu,
-					DEFAULT_Damping, DEFAULT_Thickness);
-			behav1.setForceBehavior(EFContact);
-			getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
-		}
-
-		behav1.setMethod(Method.DEFAULT);
-		behav1.setName("mand_skull");
-		setCollisionBehavior(rigidBodies().get("jaw"), rigidBodies().get("skull"), behav1);		
-	}
 
 	protected void createBiteConstraints() {
 		Vector3d pCA = new Vector3d(-2.26103, -44.0217, 6.87158);
@@ -421,6 +423,9 @@ public class JawFemModel extends JawBaseModel {
 		addBodyConnector(con4);
 		addBodyConnector(con5);
 
+	}
+	
+	protected void addFrameMarkers() {
 		// create framemarkers for contact points of constraints
 		FrameMarker m1 = new FrameMarker(rigidBodies().get("skull"), new Point3d(2.4077531, -96.598413, -43.842046));
 		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));
@@ -789,11 +794,7 @@ public class JawFemModel extends JawBaseModel {
 		 */
 	}
 
-	private static Color createColor(int r, int g, int b) {
-		return new Color(r / 255.0f, g / 255.0f, b / 255.0f);
-	}
-
-// Creates and returns a ColorBar renderable object
+	// Creates and returns a ColorBar renderable object
 	public ColorBar createColorBar() {
 		ColorBar cbar = new ColorBar();
 		cbar.setName("colorBar");
@@ -842,8 +843,10 @@ public class JawFemModel extends JawBaseModel {
 			myMarkerInfo.put(marker.getName(), marker);
 		}
 
-		createBiteConstraints();
-
+		if (useBiteConstraints)
+			createBiteConstraints();
+		addFrameMarkers();
+		
 		ArrayList<Muscle> myAssembledMuscles = JawBaseModel.assembleandreturnMuscles();
 		ArrayList<Muscle> myAttachedMuscles = JawBaseModel.attachMuscles(muscleList, muscleInfo, myMarkerInfo,
 				myAssembledMuscles);
@@ -871,20 +874,46 @@ public class JawFemModel extends JawBaseModel {
 				readStringList(
 						ArtisynthPath.getSrcRelativePath(JawFemModel.class, "geometry/" + "closerMuscleList.txt")),
 				muscleInfo, myAttachedMuscles);
-		assembleBilateralExcitors(muscleList, muscleInfo, myMuscles, muscleAbbreviations);
-		HashMap<String, MuscleExciter> exciters = new LinkedHashMap<String, MuscleExciter>();
-		for (MuscleGroupInfo info : muscleGroupInfo) {
-			exciters = assembleMuscleGroups(info, myMuscles, getMuscleExciters(), muscleAbbreviations);
-			addMuscleExciter(exciters.get("l" + info.name));
-			addMuscleExciter(exciters.get("r" + info.name));
-		}
 
-		ArrayList<MuscleExciter> bilateral_exciters = new ArrayList<>();
-		bilateral_exciters = assemblebilateralMuscleGroups(muscleGroupInfo, getMuscleExciters(), muscleAbbreviations);
+		// the following line doesn't work!
+		// assembleBilateralExcitors(muscleList, muscleInfo, myMuscles,
+		// muscleAbbreviations);
 
-		for (MuscleExciter exciter : bilateral_exciters) {
+		// add individual excitors
+		System.out.println("Adding individual exciters");
+		ArrayList<MuscleExciter> singleExciters = assembleIndividualExciters(myMuscles, getMuscleExciters());
+		for (MuscleExciter exciter : singleExciters) {
 			addMuscleExciter(exciter);
 		}
+		myMuscleExciterCategories.put("singleExciters", singleExciters);
+		System.out.println("#excitors " + getMuscleExciters().size());
+
+		// add group exciters
+		System.out.println("Adding group exciters");
+		ArrayList<MuscleExciter> groupExciters = new ArrayList<MuscleExciter>();
+		for (MuscleGroupInfo info : muscleGroupInfo) {
+			System.out.println("MuscleGroupInfo" + info.fullName + " " + info.name);
+			ArrayList<MuscleExciter> exciters = assembleMuscleGroups(info, myMuscles, getMuscleExciters(),
+					muscleAbbreviations);
+			for (MuscleExciter mex : exciters) {
+				if (myExciterList.get(mex.getName()) == null) {
+					addMuscleExciter(mex);
+					groupExciters.add(mex);
+				}
+			}
+		}
+		myMuscleExciterCategories.put("groupExciters", groupExciters);
+		System.out.println("#excitors " + getMuscleExciters().size());
+
+		// add bilateral exciters
+		System.out.println("Adding bilateral exciters");
+		ArrayList<MuscleExciter> bilateralExciters = assemblebilateralMuscleGroups(muscleGroupInfo,
+				getMuscleExciters(), muscleAbbreviations);
+		for (MuscleExciter exciter : bilateralExciters) {
+			addMuscleExciter(exciter);
+		}
+		myMuscleExciterCategories.put("bilateralExciters", bilateralExciters);
+		System.out.println("#excitors " + getMuscleExciters().size());
 
 		JawBaseModel.updateMuscleLengthProps(myAttachedMuscles);
 
@@ -898,12 +927,29 @@ public class JawFemModel extends JawBaseModel {
 			cbar.setName("colorBar");
 			cbar.setColorMap(((FemModel3d) models().get(0)).getColorMap());
 			// addRenderable(cbar);
-		}
-		else {
+		} else {
 			addInterBoneCollision();
 		}
 
 		setupRenderProps();
+	}
+
+	public void addInterBoneCollision() {
+		CollisionBehavior behav1 = new CollisionBehavior(true, 0);
+
+		// TODO: try VERTEX_EDGE_PENETRATION VERTEX_PENETRATION_BILATERAL
+		behav1.setMethod(Method.VERTEX_EDGE_PENETRATION);
+
+		if (useElasticFoundationContact == true) {
+			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E, DEFAULT_Nu,
+					DEFAULT_Damping, DEFAULT_Thickness);
+			behav1.setForceBehavior(EFContact);
+			getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
+		}
+
+		behav1.setMethod(Method.DEFAULT);
+		behav1.setName("mand_skull");
+		setCollisionBehavior(rigidBodies().get("jaw"), rigidBodies().get("skull"), behav1);
 	}
 
 }

@@ -64,16 +64,26 @@ import artisynth.core.femmodels.FemModel3d;
 import artisynth.core.rl.Log;
 
 public class RlJawDemo extends RootModel implements RlModelInterface {
+
+	// Excitors' names:
+	// my: mylohyoid (pm (posterior mylohyoid) + am (anterior mylohyoid))
+	// lp: lateral pterygoid (sp, ip)
+	// t : temporalis (at, mt, pt)
+	// m: masseter (dm + sm)
+	// hopen: hyoid open (pm, am, ad (anterior digastric), gh (genio hyoid))
+	// pro: protrusive (sp, ip)
+	// open: hopen + pro
+	// close: t + dm + sm
+	// mp: medial pterygoid
+
 	RlController rlTrack;
 	RandomTargetController targetMotionController;
 	JawFemModel myJawModel;
 
-	ArrayList<String> MuscleAbbreviation = new ArrayList<String>();
-	String EXCITERS_PATH = "inv.txt";
-	protected String workingDirname = "data";
-	List<String> ForceTargetNames = Arrays.asList("Brux_M6"); // "CANINE" or "LBITE"
+	private int port;
+	private boolean withDisc = false;
 
-	double t = 0.75; // 0.5 prot; 0.75 open; 0.7 brux
+	protected String workingDirname = "data";
 
 	public RlJawDemo() {
 	}
@@ -88,12 +98,11 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		parseArgs(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel", true);
+		myJawModel = new JawFemModel("jawmodel", withDisc);
 		addModel(myJawModel);
 		// TODO: set back to 0.001 if became unstable --> it became unstable in 0.01
 		getRoot(this).setMaxStepSize(0.001);
-	
-		MuscleAbbreviation = getMuscleNames();
+
 		addRlController();
 	}
 
@@ -121,39 +130,20 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		targetMotionController.reset();
 	}
 
-	private ArrayList<String> getMuscleNames() throws FileNotFoundException {
-		Scanner s = new Scanner(
-				new FileReader(ArtisynthPath.getSrcRelativePath(RlJawDemo.class, "data/" + EXCITERS_PATH)));
-		ArrayList<String> names = new ArrayList<String>();
-		while (s.hasNext()) {
-			names.add(s.next());
-		}
-		s.close();
-		return names;
-	}
-
 	@Override
 	public void addRlController() {
-		Log.log("------------test");
-		
-		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "InvTracker", this.port);
+		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "RlTracker", this.port);
 
-		//rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
+		// rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
-		
-		Point t = myJawModel.frameMarkers().get("lowerincisor_ref");
-		
-		for (String name : MuscleAbbreviation)
-        {
-           Muscle m = (Muscle) myJawModel.axialSprings().get(name);
-           if (m==null){
-              MultiPointMuscle   mm = (MultiPointMuscle) myJawModel.multiPointSprings ().get (name);
-              rlTrack.addExciter(mm);              
-           }
-           else 
-        	   rlTrack.addExciter(m);
-        }	
-		
+
+		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
+			for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
+				Log.log("rlTrack Exciter> " + exCategoryName + ":"+ mex.getName());
+				rlTrack.addExciter(mex);
+			}
+		}
+
 		targetMotionController = new RandomTargetController(rlTrack.getMotionTargets());
 
 		addController(targetMotionController);
@@ -162,34 +152,31 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		addControlPanel(rlTrack.getMuscleControlPanel());
 	}
 
-	private int port;
-
 	@Override
 	public void parseArgs(String[] args) {
 		Map<String, String> dictionary = Utils.parseArgs(args);
 		if (dictionary.containsKey("-port"))
 			this.port = Integer.parseInt(dictionary.get("-port"));
+		if (dictionary.containsKey("-disc"))
+			this.withDisc = Boolean.parseBoolean(dictionary.get("-disc"));
 	}
-	
+
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
 		public Boolean reset = false;
 		public Boolean trialRun = false;
 		Random r = new Random();
 		private int time_pos_updated = -1;
-		
+
 		Frame mandible = null;
 		Point lowerincisor = null;
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
-			Log.log("***** get(0)");
 			Log.log(list.get(0).getName());
 			if (list.get(0) instanceof Frame) {
-				mandible = (Frame)list.get(0);
+				mandible = (Frame) list.get(0);
+			} else if (list.get(0) instanceof Point) {			
+				lowerincisor = (Point) list.get(0);
 			}
-			else if (list.get(0) instanceof Point) {
-				Log.log("lower incisor initiated");
-				lowerincisor = (Point)list.get(0);
-			} 
 			r.setSeed(123);
 		}
 
@@ -210,8 +197,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					reset = false;
 					resetRefPosition(false);
 				}
-				
-				Log.log(lowerincisor.getPosition());
+
+				// Log.log(lowerincisor.getPosition());
 
 			}
 
@@ -220,26 +207,23 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		private double getRandom(double radius) {
 			return (r.nextDouble() - 0.5) * radius;
 		}
-			
+
 		private void resetRefPosition(Boolean random) {
 			// TODO: complete the reset pos implementation
 			if (mandible != null) {
 				if (random) {
-					double radius = 5; 
+					double radius = 5;
 					Point3d posAdd = new Point3d(getRandom(radius), getRandom(radius), getRandom(radius));
 					Point3d currentPos = mandible.getPosition();
 					posAdd.add(currentPos);
 					mandible.setPosition(posAdd);
-				}
-				else {
+				} else {
 					throw new NotImplementedException();
 				}
-			}
-			else if (lowerincisor != null) {
+			} else if (lowerincisor != null) {
 				if (random) {
 					throw new NotImplementedException();
-				}
-				else {
+				} else {
 					// do nothing as we want the mount open point to be fixed for now... (simple!)
 				}
 			}
@@ -247,7 +231,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	}
 
 	@Override
-	public RlTargetControllerInterface getTargetMotionController() {		
+	public RlTargetControllerInterface getTargetMotionController() {
 		return targetMotionController;
 	}
 }
