@@ -435,6 +435,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	public JawBaseModel(String name, boolean fixedLaryngeal, boolean useComplexJoint, boolean useCurvJoint)
 			throws IOException {
+		// This constructor is not called for the child class: JawFemModel 
 		super(name);
 
 		setGravity(0, 0, -gravityVal * unitConversion);
@@ -509,7 +510,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		initCons();
 
-		for (PlanarConnector pc : con) {
+		for (PlanarConnector pc : con) {			
 			addBodyConnector(pc);
 		}
 
@@ -518,7 +519,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		bodyConnectors().get("RMED").setEnabled(false);
 		RenderProps.setVisible(bodyConnectors().get("LMED"), false);
 		RenderProps.setVisible(bodyConnectors().get("RMED"), false);
-
+		
 		// add cricothyroid revolute joint
 		if (!fixedLaryngeal) {
 			addCricothyroidJoint();
@@ -2022,7 +2023,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 				pc.setName(jp.name());
 			}
 			con.add(pc);
-
 		}
 
 		updateCons();

@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import artisynth.core.driver.Main;
@@ -29,6 +30,7 @@ import artisynth.core.modelbase.StepAdjustment;
 import artisynth.core.probes.NumericInputProbe;
 import artisynth.core.probes.NumericOutputProbe;
 import artisynth.core.util.ArtisynthPath;
+import artisynth.core.utils.Utils;
 import artisynth.core.workspace.DriverInterface;
 import artisynth.core.workspace.RootModel;
 //import artisynth.models.bruxism.Activation_Renderer;
@@ -52,7 +54,8 @@ public class JawDemo extends RootModel {
 	String excitersFile = "inv2.txt";
 	protected String workingDirname = "data";
 	List<String> ForceTargetNames = Arrays.asList("Brux_M6"); // "CANINE" or "LBITE"
-
+	Boolean withDisc = true;
+	
 	double t = 0.75; // 0.5 prot; 0.75 open; 0.7 brux
 
 	public JawDemo() {		
@@ -61,13 +64,20 @@ public class JawDemo extends RootModel {
 	public JawDemo(String name) {
 		super(null);
 	}
+		
+	public void parseArgs(String[] args) {
+		Map<String, String> dictionary = Utils.parseArgs(args);		
+		if (dictionary.containsKey("-disc"))
+			this.withDisc = Boolean.parseBoolean(dictionary.get("-disc"));
+	}
 
 	@Override
 	public void build(String[] args) throws IOException {
 		super.build(args);
+		parseArgs(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel", true);
+		myJawModel = new JawFemModel("jawmodel", withDisc);
 		addModel(myJawModel);
 		getRoot(this).setMaxStepSize(0.001);
 

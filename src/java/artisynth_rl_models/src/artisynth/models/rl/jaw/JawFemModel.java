@@ -875,6 +875,28 @@ public class JawFemModel extends JawBaseModel {
 						ArtisynthPath.getSrcRelativePath(JawFemModel.class, "geometry/" + "closerMuscleList.txt")),
 				muscleInfo, myAttachedMuscles);
 
+		addExciters(myMuscles);
+		
+		JawBaseModel.updateMuscleLengthProps(myAttachedMuscles);
+
+		if (withDisc) {
+			addCartilage();
+			attachLigaments();
+			// renderCollisionForces();
+
+			// Create a colorbar
+			ColorBar cbar = new ColorBar();
+			cbar.setName("colorBar");
+			cbar.setColorMap(((FemModel3d) models().get(0)).getColorMap());
+			// addRenderable(cbar);
+		} else {
+			addInterBoneCollision();
+		}
+
+		setupRenderProps();
+	}
+	
+	public void addExciters(HashMap<String, ExcitationComponent> myMuscles) {
 		// the following line doesn't work!
 		// assembleBilateralExcitors(muscleList, muscleInfo, myMuscles,
 		// muscleAbbreviations);
@@ -914,24 +936,6 @@ public class JawFemModel extends JawBaseModel {
 		}
 		myMuscleExciterCategories.put("bilateralExciters", bilateralExciters);
 		System.out.println("#excitors " + getMuscleExciters().size());
-
-		JawBaseModel.updateMuscleLengthProps(myAttachedMuscles);
-
-		if (withDisc) {
-			addCartilage();
-			attachLigaments();
-			// renderCollisionForces();
-
-			// Create a colorbar
-			ColorBar cbar = new ColorBar();
-			cbar.setName("colorBar");
-			cbar.setColorMap(((FemModel3d) models().get(0)).getColorMap());
-			// addRenderable(cbar);
-		} else {
-			addInterBoneCollision();
-		}
-
-		setupRenderProps();
 	}
 
 	public void addInterBoneCollision() {
