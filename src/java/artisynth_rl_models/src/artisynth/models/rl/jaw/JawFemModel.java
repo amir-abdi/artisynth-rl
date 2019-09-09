@@ -127,7 +127,7 @@ public class JawFemModel extends JawBaseModel {
 	protected static final double DEFAULT_Nu = 0.49;
 
 	protected boolean useMooneyRivlin = false;
-	protected boolean useBiteConstraints = true;
+	protected boolean useBiteConstraints = false;
 
 	protected boolean useElasticFoundationContact = true;
 
@@ -170,6 +170,11 @@ public class JawFemModel extends JawBaseModel {
 		frameMarkers().getRenderProps().setPointStyle(PointStyle.SPHERE);
 		frameMarkers().getRenderProps().setPointSize(1);
 		frameMarkers().getRenderProps().setPointColor(Color.PINK);
+		
+		// Planar connectors renderprops
+		for ( BodyConnector bc : bodyConnectors()) {
+			bc.getRenderProps().setVisible(true);
+		}
 	}
 
 	// read list of FEM models
@@ -356,8 +361,8 @@ public class JawFemModel extends JawBaseModel {
 		rigidBodies().get("skull_cartilage_right").setMass(0);
 		rigidBodies().get("skull_cartilage_left").setMass(0);
 	}
-
-	protected void createBiteConstraints() {
+	
+	protected void setBiteConstraints() {
 		Vector3d pCA = new Vector3d(-2.26103, -44.0217, 6.87158);
 		RigidTransform3d XPW = new RigidTransform3d(pCA, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
 		PlanarConnector con = new PlanarConnector(rigidBodies().get("jaw"), pCA, XPW);
@@ -425,10 +430,56 @@ public class JawFemModel extends JawBaseModel {
 
 	}
 	
+	protected void createTMJConstraints() {
+		Vector3d rtmj = new Vector3d(-51.18341, 43.8690455, 40.4896403);		
+		RigidTransform3d RTMJ = new RigidTransform3d(rtmj, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
+		
+		PlanarConnector con6 = new PlanarConnector(rigidBodies().get("jaw"), rtmj, RTMJ);
+		con6.setPlaneSize(20);
+		con6.getRenderProps().setAlpha(0.7);
+		con6.getRenderProps().setFaceColor(Color.RED);
+		con6.setUnilateral(false);
+		con6.setName("RTMJ");		
+		
+//		Vector3d rtmj_o = new Vector3d(-51.18341, 43.8690455, 40.4896403);
+//		RigidTransform3d RTMJ_O = new RigidTransform3d(rtmj_o, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
+//		RTMJ_O.mulRotation(new RotationMatrix3d(new AxisAngle(new Vector3d(0, 1, 0), Math.toRadians(-90))));
+//		PlanarConnector con8 = new PlanarConnector(rigidBodies().get("jaw"), rtmj_o, RTMJ_O);
+//		con8.setPlaneSize(20);
+//		con8.getRenderProps().setAlpha(0.7);
+//		con8.getRenderProps().setFaceColor(Color.RED);
+//		con8.setUnilateral(true);
+//		con8.setName("RTMJ_O");
+//		
+//		Vector3d ltmj = new Vector3d(51.18341, 43.8690455, 40.4896403);
+//		RigidTransform3d LTMJ = new RigidTransform3d(ltmj, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
+//		PlanarConnector con7 = new PlanarConnector(rigidBodies().get("jaw"), ltmj, LTMJ);
+//		con7.setPlaneSize(20);
+//		con7.getRenderProps().setAlpha(0.7);
+//		con7.getRenderProps().setFaceColor(Color.RED);
+//		con7.setUnilateral(true);
+//		con7.setName("LTMJ");
+//		
+//		Vector3d ltmj_o = new Vector3d(51.18341, 43.8690455, 40.4896403);
+//		RigidTransform3d LTMJ_O = new RigidTransform3d(ltmj_o, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
+//		LTMJ_O.mulRotation(new RotationMatrix3d(new AxisAngle(new Vector3d(0, 1, 0), Math.toRadians(-90))));
+//		PlanarConnector con9 = new PlanarConnector(rigidBodies().get("jaw"), ltmj_o, LTMJ_O);
+//		con9.setPlaneSize(20);
+//		con9.getRenderProps().setAlpha(0.7);
+//		con9.getRenderProps().setFaceColor(Color.RED);
+//		con9.setUnilateral(true);
+//		con9.setName("LTMJ_O");
+//
+		addBodyConnector(con6);
+//		addBodyConnector(con7);
+//		addBodyConnector(con8);
+//		addBodyConnector(con9);
+	}
+	
 	protected void addFrameMarkers() {
 		// create framemarkers for contact points of constraints
 		FrameMarker m1 = new FrameMarker(rigidBodies().get("skull"), new Point3d(2.4077531, -96.598413, -43.842046));
-		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));
+		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));		
 		FrameMarker m3 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(16.27707, -89.304763, -40.534119));
 		FrameMarker m4 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(29.397112, -67.681713, -41.787386));
 		FrameMarker m5 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(25.260763, -77.824013, -41.914129));
@@ -445,6 +496,14 @@ public class JawFemModel extends JawBaseModel {
 		addFrameMarker(m4);
 		addFrameMarker(m5);
 		addFrameMarker(m6);
+		
+		// Add TMJ frame markers
+		FrameMarker m7 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(-50.18341, -1.8690455, -6.4896403));
+		FrameMarker m8 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(57.18341, -1.8690455, -6.4896403));
+		m7.setName("rtmj");
+		m8.setName("ltmj");
+		addFrameMarker(m7);
+		addFrameMarker(m8);
 	}
 
 	protected void attachLigaments() throws IOException {
@@ -806,7 +865,7 @@ public class JawFemModel extends JawBaseModel {
 		return cbar;
 	}
 
-	public JawFemModel(String name, boolean withDisc) throws IOException {
+	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints) throws IOException {
 		super();
 		this.setName(name);
 		this.withDisc = withDisc;
@@ -844,7 +903,8 @@ public class JawFemModel extends JawBaseModel {
 		}
 
 		if (useBiteConstraints)
-			createBiteConstraints();
+			setBiteConstraints();
+		
 		addFrameMarkers();
 		
 		ArrayList<Muscle> myAssembledMuscles = JawBaseModel.assembleandreturnMuscles();
@@ -892,7 +952,13 @@ public class JawFemModel extends JawBaseModel {
 		} else {
 			addInterBoneCollision();
 		}
-
+		
+		if (condyleConstraints) {
+			Log.log("hasCondyleConstraints");
+			
+			setCondyleConstraints(false);
+		}
+		
 		setupRenderProps();
 	}
 	

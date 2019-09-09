@@ -46,12 +46,14 @@ import artisynth.core.mechmodels.BodyConnector;
 import artisynth.core.mechmodels.SegmentedPlanarConnector;
 import artisynth.core.mechmodels.MechSystemSolver.Integrator;
 import artisynth.core.modelbase.ComponentList;
+import artisynth.core.modelbase.RenderableComponentBase;
 import artisynth.core.modelbase.Traceable;
 import artisynth.core.probes.TracingProbe;
 import artisynth.core.probes.VectorTracingProbe;
 import artisynth.core.util.AmiraLandmarkReader;
 import artisynth.core.util.ArtisynthPath;
 import artisynth.core.util.ScalableUnits;
+import artisynth.core.rl.Log;
 
 public class JawBaseModel extends MechModel implements ScalableUnits, Traceable {
 
@@ -221,8 +223,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	public void createConstraintOrder() {
 		conOrder.add(JawPlanes.LTMJ);
 		conOrder.add(JawPlanes.RTMJ);
-		conOrder.add(JawPlanes.LBITE);
-		conOrder.add(JawPlanes.RBITE);
+//		conOrder.add(JawPlanes.LBITE);
+//		conOrder.add(JawPlanes.RBITE);
 		if (useComplexJoint) {
 			conOrder.add(JawPlanes.LMED);
 			conOrder.add(JawPlanes.RMED);
@@ -230,9 +232,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			conOrder.add(JawPlanes.RPOST);
 			conOrder.add(JawPlanes.LLTRL);
 			conOrder.add(JawPlanes.RLTRL);
-
 		}
-
 	}
 
 	public void createSimpleConstraintOrder() {
@@ -286,8 +286,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	int numSegments = 20;
 
 	public enum JawPlanes {
-		LTMJ("ltmj", false, 40.0), RTMJ("rtmj", false, 40.0), LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
-		LMED("ltmj", true, 25.0), RMED("rtmj", true, 25.0), LPOST("ltmj", true, 25.0), RPOST("rtmj", true, 25.0),
+		LTMJ("ltmj", true, 40.0), RTMJ("rtmj", true, 40.0), 
+		LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
+		LMED("ltmj", true, 25.0), RMED("rtmj", true, 25.0), 
+		LPOST("ltmj", true, 25.0), RPOST("rtmj", true, 25.0),
 		LLTRL("ltmj", true, 25.0), RLTRL("rtmj", true, 25.0);
 
 		String contactName;
@@ -435,7 +437,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	public JawBaseModel(String name, boolean fixedLaryngeal, boolean useComplexJoint, boolean useCurvJoint)
 			throws IOException {
-		// This constructor is not called for the child class: JawFemModel 
+		// This constructor is not called for the child class: JawFemModel
 		super(name);
 
 		setGravity(0, 0, -gravityVal * unitConversion);
@@ -501,6 +503,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		this.useComplexJoint = useComplexJoint;
 
+		setCondyleConstraints(fixedLaryngeal);
+	}
+
+	protected void setCondyleConstraints(Boolean fixedLaryngeal) {
 		constrainedBody = myRigidBodies.get("jaw");
 		if (constrainedBody == null) // no jaw body - error
 		{
@@ -510,7 +516,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		initCons();
 
-		for (PlanarConnector pc : con) {			
+		for (PlanarConnector pc : con) {
 			addBodyConnector(pc);
 		}
 
@@ -519,7 +525,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		bodyConnectors().get("RMED").setEnabled(false);
 		RenderProps.setVisible(bodyConnectors().get("LMED"), false);
 		RenderProps.setVisible(bodyConnectors().get("RMED"), false);
-		
+
 		// add cricothyroid revolute joint
 		if (!fixedLaryngeal) {
 			addCricothyroidJoint();
@@ -534,6 +540,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 			addCurvilinearTmjs();
 		}
+	
 	}
 
 	private void setupRenderProps() {
@@ -1579,7 +1586,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	public void setTransparency(boolean transparent) {
 		myTransparencyP = transparent;
 		for (RigidBody body : myRigidBodies) {
-			if (body.getMesh() == null) {
+			if (body.getSurfaceMesh() == null) {
 				continue;
 			}
 			RenderProps.setAlpha(body, transparent ? transparentAlpha : opaqueAlpha);
@@ -2005,6 +2012,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		// set initial marker position as origin for tmj planes
 		for (JawPlanes jp : conOrder) {
 			PlanarConnector pc;
+//			Log.log("jp.getContactName()");
+//			Log.log(jp.getContactName());
+//			Log.log("myFrameMarkers.get(jp.getContactName())");
+//			Log.log(myFrameMarkers.get(jp.getContactName()));
 			conPt.add(myFrameMarkers.get(jp.getContactName()));
 			conPose.add(new RigidTransform3d());
 			// try to find existing constraints
@@ -2020,8 +2031,13 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 					pc = new PlanarConnector();
 				}
 				pc.setPlaneSize(jp.getPlaneSize());
-				pc.setName(jp.name());
+				pc.setName(jp.name());				
 			}
+			
+//			RenderableComponentBase.setVisible(pc, true);
+//			Log.log("Adding PlanarConnector: " + pc.getName());
+//			RenderProps.setVisible(pc, true);
+//			Log.log(pc.getRenderProps().getProperty("visible").toString());
 			con.add(pc);
 		}
 
@@ -2031,13 +2047,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			RenderProps props = new RenderProps(myRenderProps);
 			props.setFaceStyle(Renderer.FaceStyle.FRONT_AND_BACK);
 			props.setAlpha(0.8);
-			pc.setRenderProps(props);
-			if (pc.getName().endsWith("BITE")) {
-				// pc.setRenderNormalReversed(true);
-				// pc.setPlaneSize(AmiraJaw.leftBiteLocation.x*2.0);
-			}
+			props.setVisible(true);
+			pc.setRenderProps(props);	
+			RenderProps.setVisible(pc, true);
 		}
-
 	}
 
 	public void addCricothyroidJoint() {
@@ -2139,6 +2152,13 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		Xpw.R.mulAxisAngle(0, 1, 0, Math.toRadians(condylarCant[conOrder.indexOf(plane)]));
 		// Xpw.R.mulAxisAngle(0,0,1,
 		// Math.toRadians(medWallAngle[conOrder.indexOf(plane)]));
+		Log.log("plane");
+		Log.log(plane);
+		Log.log("conPt");
+		Log.log(conPt);
+		Log.log("conOrder");
+		Log.log(conOrder);
+
 		Xpw.p.set(conPt.get(conOrder.indexOf(plane)).getPosition());
 		return Xpw;
 	}
@@ -2964,7 +2984,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			ComponentList<MuscleExciter> myMuscleExciters) {
 		ArrayList<MuscleExciter> myExciters = new ArrayList<MuscleExciter>();
 		for (ExcitationComponent c : myMuscles.values()) {
-			
+
 			MuscleExciter exciter = myMuscleExciters.get(c.getName());
 			if (exciter == null) {
 				// if the exciter is not already added
@@ -2972,7 +2992,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 				exciter.addTarget(c, 1.0);
 				myExciters.add(exciter);
 			}
-		}		
+		}
 		return myExciters;
 	}
 
@@ -2982,7 +3002,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		// bilateral excitor
 		ArrayList<MuscleExciter> myBilateralExciters = new ArrayList<>();
 		for (int j = 0; j < muscleGroupInfo.size(); j++) {
-			MuscleExciter bilateral = new MuscleExciter("bi_" + muscleGroupInfo.get(j).name);					
+			MuscleExciter bilateral = new MuscleExciter("bi_" + muscleGroupInfo.get(j).name);
 			bilateral.addTarget(mySingleExciters.get("l" + muscleGroupInfo.get(j).name));
 			bilateral.addTarget(mySingleExciters.get("r" + muscleGroupInfo.get(j).name));
 			myBilateralExciters.add(bilateral);

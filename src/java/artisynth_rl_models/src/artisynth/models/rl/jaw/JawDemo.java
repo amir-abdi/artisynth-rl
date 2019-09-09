@@ -55,6 +55,7 @@ public class JawDemo extends RootModel {
 	protected String workingDirname = "data";
 	List<String> ForceTargetNames = Arrays.asList("Brux_M6"); // "CANINE" or "LBITE"
 	Boolean withDisc = true;
+	Boolean condyleConstraints = true;
 	
 	double t = 0.75; // 0.5 prot; 0.75 open; 0.7 brux
 
@@ -69,6 +70,8 @@ public class JawDemo extends RootModel {
 		Map<String, String> dictionary = Utils.parseArgs(args);		
 		if (dictionary.containsKey("-disc"))
 			this.withDisc = Boolean.parseBoolean(dictionary.get("-disc"));
+		if (dictionary.containsKey("-condyleConstraints"))
+			this.condyleConstraints = Boolean.parseBoolean(dictionary.get("-condyleConstraints"));
 	}
 
 	@Override
@@ -77,7 +80,7 @@ public class JawDemo extends RootModel {
 		parseArgs(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel", withDisc);
+		myJawModel = new JawFemModel("jawmodel", withDisc, condyleConstraints);
 		addModel(myJawModel);
 		getRoot(this).setMaxStepSize(0.001);
 

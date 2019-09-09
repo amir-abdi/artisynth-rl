@@ -82,6 +82,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 	private int port;
 	private boolean withDisc = false;
+	private boolean condyleConstraints = false;
 
 	protected String workingDirname = "data";
 
@@ -98,7 +99,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		parseArgs(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel", withDisc);
+		myJawModel = new JawFemModel("jawmodel", withDisc, condyleConstraints);
 		addModel(myJawModel);
 		// TODO: set back to 0.001 if became unstable --> it became unstable in 0.01
 		getRoot(this).setMaxStepSize(0.001);
@@ -159,6 +160,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			this.port = Integer.parseInt(dictionary.get("-port"));
 		if (dictionary.containsKey("-disc"))
 			this.withDisc = Boolean.parseBoolean(dictionary.get("-disc"));
+		if (dictionary.containsKey("-condyleConstraints"))
+			this.condyleConstraints = Boolean.parseBoolean(dictionary.get("-condyleConstraints"));
 	}
 
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
