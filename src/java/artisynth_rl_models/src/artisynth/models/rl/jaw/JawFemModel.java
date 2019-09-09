@@ -498,8 +498,8 @@ public class JawFemModel extends JawBaseModel {
 		addFrameMarker(m6);
 		
 		// Add TMJ frame markers
-		FrameMarker m7 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(-50.18341, -1.8690455, -6.4896403));
-		FrameMarker m8 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(57.18341, -1.8690455, -6.4896403));
+		FrameMarker m7 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(-55.18341, -10.8690455, -00.4896403));
+		FrameMarker m8 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(60.18341, -10.8690455, -00.4896403));
 		m7.setName("rtmj");
 		m8.setName("ltmj");
 		addFrameMarker(m7);

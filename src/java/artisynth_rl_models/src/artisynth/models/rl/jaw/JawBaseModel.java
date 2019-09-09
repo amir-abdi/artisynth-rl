@@ -286,10 +286,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	int numSegments = 20;
 
 	public enum JawPlanes {
-		LTMJ("ltmj", true, 40.0), RTMJ("rtmj", true, 40.0), 
-		LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
-		LMED("ltmj", true, 25.0), RMED("rtmj", true, 25.0), 
-		LPOST("ltmj", true, 25.0), RPOST("rtmj", true, 25.0),
+		LTMJ("ltmj", true, 40.0), RTMJ("rtmj", true, 40.0), LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
+		LMED("ltmj", true, 25.0), RMED("rtmj", true, 25.0), LPOST("ltmj", true, 25.0), RPOST("rtmj", true, 25.0),
 		LLTRL("ltmj", true, 25.0), RLTRL("rtmj", true, 25.0);
 
 		String contactName;
@@ -535,12 +533,12 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		if (useCurvJoint) {
 			// remove planar tmj constraints (first two in list)
-			removeBodyConnector(con.get(0));
-			removeBodyConnector(con.get(1));
-
+			Log.log("Using curved linear TMJ");
+			removeBodyConnector(bodyConnectors().get("LTMJ"));
+			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();
 		}
-	
+
 	}
 
 	private void setupRenderProps() {
@@ -2031,9 +2029,9 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 					pc = new PlanarConnector();
 				}
 				pc.setPlaneSize(jp.getPlaneSize());
-				pc.setName(jp.name());				
+				pc.setName(jp.name());
 			}
-			
+
 //			RenderableComponentBase.setVisible(pc, true);
 //			Log.log("Adding PlanarConnector: " + pc.getName());
 //			RenderProps.setVisible(pc, true);
@@ -2048,7 +2046,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			props.setFaceStyle(Renderer.FaceStyle.FRONT_AND_BACK);
 			props.setAlpha(0.8);
 			props.setVisible(true);
-			pc.setRenderProps(props);	
+			pc.setRenderProps(props);
 			RenderProps.setVisible(pc, true);
 		}
 	}
@@ -2152,12 +2150,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		Xpw.R.mulAxisAngle(0, 1, 0, Math.toRadians(condylarCant[conOrder.indexOf(plane)]));
 		// Xpw.R.mulAxisAngle(0,0,1,
 		// Math.toRadians(medWallAngle[conOrder.indexOf(plane)]));
-		Log.log("plane");
-		Log.log(plane);
-		Log.log("conPt");
-		Log.log(conPt);
-		Log.log("conOrder");
-		Log.log(conOrder);
 
 		Xpw.p.set(conPt.get(conOrder.indexOf(plane)).getPosition());
 		return Xpw;
@@ -2522,7 +2514,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	public void addCurvConstraint(String name, String contactName, RigidBody jaw) {
 		SegmentedPlanarConnector tmj = new SegmentedPlanarConnector();
 		tmj.setName(name);
-		tmj.setPlaneSize(40);
+		tmj.setPlaneSize(20);
 		tmj.setUnilateral(true);
 		updateCurvCon(tmj, myFrameMarkers.get(contactName), jaw);
 		addBodyConnector(tmj);
