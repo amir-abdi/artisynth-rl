@@ -23,6 +23,7 @@ public class RlRestApi {
 		
 		spark.Spark.get("/state", (request, response) -> rlController.getState(), json());		
 		spark.Spark.get("/obsSize", (request, response) -> rlController.getObservationSize(), json());
+		spark.Spark.get("/stateSize", (request, response) -> rlController.getStateSize(), json());
 		spark.Spark.get("/actionSize", (request, response) -> rlController.getActionSize(), json());
 		
 		spark.Spark.get("/excitations", (request, response) -> rlController.getExcitations(), json());

@@ -524,7 +524,11 @@ public class RlController extends ControllerBase
 
 	// --------------- Implement RlControllerInterface ---------
 	public int getObservationSize() {
-		return getState().size();
+		return getState().size(false);
+	}
+	
+	public int getStateSize() {
+		return getState().size(true);
 	}
 
 	public int getActionSize() {

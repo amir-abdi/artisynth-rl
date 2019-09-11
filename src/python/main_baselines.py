@@ -7,7 +7,7 @@ import numpy as np
 from baselines.common.vec_env import VecEnv
 from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env
 from baselines.common.tf_util import get_session
-from baselines import logger
+# from baselines import logger
 from importlib import import_module
 
 import common.arguments
@@ -34,7 +34,7 @@ def main(args):
     else:
         rank = MPI.COMM_WORLD.Get_rank()
 
-    common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
+    logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
@@ -155,9 +155,9 @@ def get_learn_function_defaults(alg, env_type):
 
 
 def parse_cmdline_kwargs(args):
-    '''
+    """
     convert a list of '='-spaced command-line arguments to a dictionary, evaluating python objects when possible
-    '''
+    """
 
     def parse(v):
 

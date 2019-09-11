@@ -40,13 +40,17 @@ public class RlState {
 		return rlComponents.size();
 	}
 	
-	public int size() {
+	public int size(Boolean withExcitations) {
 		int size = 0;
 		for (RlComponent rlComponent : rlComponents) {
 			size += rlComponent.getPosition() != null ? rlComponent.getPosition().size() : 0;
 			size += rlComponent.getOrientation() != null ? rlComponent.getOrientation().size() : 0;
 			size += rlComponent.getAngularVelocity() != null ? rlComponent.getAngularVelocity().size() : 0;
 			size += rlComponent.getVelocity() != null ? rlComponent.getVelocity().size() : 0;
+		}
+		
+		if (withExcitations) {
+			size += rlExcitations.getExcitations().size();
 		}
 		return size;
 	}

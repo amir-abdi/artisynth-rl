@@ -139,9 +139,11 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
 
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
-			for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
-				Log.log("rlTrack Exciter> " + exCategoryName + ":"+ mex.getName());
-				rlTrack.addExciter(mex);
+			if (exCategoryName == myJawModel.muscleExciterCategoryNames[2]) { // only add bilateral
+				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
+					Log.log("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
+					rlTrack.addExciter(mex);
+				}
 			}
 		}
 
@@ -172,12 +174,13 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 		Frame mandible = null;
 		Point lowerincisor = null;
+		Point3d openMouthPositionLowerIncisor = new Point3d(2.6639861, -85.972497, -75.207516);
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
 			Log.log(list.get(0).getName());
 			if (list.get(0) instanceof Frame) {
 				mandible = (Frame) list.get(0);
-			} else if (list.get(0) instanceof Point) {			
+			} else if (list.get(0) instanceof Point) {
 				lowerincisor = (Point) list.get(0);
 			}
 			r.setSeed(123);
@@ -228,6 +231,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					throw new NotImplementedException();
 				} else {
 					// do nothing as we want the mount open point to be fixed for now... (simple!)
+					lowerincisor.setPosition(openMouthPositionLowerIncisor);
 				}
 			}
 		}

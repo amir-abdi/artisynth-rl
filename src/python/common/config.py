@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
-from common.utilities import Bunch
 import logging
+
+from common.utilities import Bunch
+import common.constants as c
 
 
 def get_config(args):
@@ -33,7 +35,9 @@ def get_config(args):
 
 
 def setup_logger(level, name, log_directory):
-    logger = logging.getLogger()
+    if c.LOGGER_STR in logging.Logger.manager.loggerDict:
+        return logging.getLogger(c.LOGGER_STR)
+    logger = logging.getLogger(c.LOGGER_STR)
     log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 
     file_handler = logging.FileHandler("{0}/{1}.log".format(log_directory, name))
@@ -45,5 +49,6 @@ def setup_logger(level, name, log_directory):
     logger.addHandler(console_handler)
 
     logger.setLevel(level=level)
+    logger.propagate = False  # to prohibit double logging to console
     logger.info('Log level: %i', level)
     return logger

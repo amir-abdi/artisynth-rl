@@ -4,6 +4,7 @@ import logging
 import os
 import time
 import numpy as np
+from gym import spaces
 
 import common.constants as c
 
@@ -22,6 +23,33 @@ class ArtiSynthBase(gym.Env):
             self.run_artisynth(ip, port, artisynth_model, artisynth_args)
 
         self.net = RestClient(ip, port)
+
+    def init_spaces(self, incremental_actions=False):
+        # todo: use the same init_spaces for all environments
+        action_size = self.get_action_size()
+        obs_size = self.get_obs_size()
+        state = self.reset()
+        state_size = state.shape[0]
+
+        logger.info('State array size: {}'.format(obs_size))
+        logger.info('Action array size: {}'.format(action_size))
+
+        # sanity check
+        assert state_size == obs_size + action_size, \
+            'The observation and action size sent by the environment does not match the state size.'
+
+        self.observation_space = spaces.Box(low=-0.2, high=+0.2, shape=[state_size], dtype=np.float32)
+        self.observation_space.shape = (state_size,)
+        if incremental_actions:
+            low_action = c.LOW_EXCITATION_INC
+            high_action = c.HIGH_EXCITATION_INC
+        else:
+            low_action = c.LOW_EXCITATION
+            high_action = c.HIGH_EXCITATION
+        self.action_space = spaces.Box(low=low_action, high=high_action,
+                                       shape=(action_size,), dtype=np.float32)
+
+        return action_size, obs_size
 
     def run_artisynth(self, ip, port, artisynth_model, artisynth_args=''):
         if ip != 'localhost' and ip != '0.0.0.0' and ip != '127.0.0.1':
@@ -42,10 +70,15 @@ class ArtiSynthBase(gym.Env):
             logger.info("Waiting for ArtiSynth to launch")
             time.sleep(3)
 
+    def get_obs_size(self):
+        obs_size = self.net.get_post(request_type=c.GET_STR, message=c.OBS_SIZE_STR)
+        logger.info('Obs size: {}'.format(obs_size))
+        return obs_size
+
     def get_state_size(self):
-        rec_dict = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
-        logger.info('State size: {}'.format(rec_dict[c.STATE_SIZE_STR]))
-        return rec_dict[c.STATE_SIZE_STR]
+        state_size = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
+        logger.info('State size: {}'.format(state_size))
+        return state_size
 
     def get_action_size(self):
         action_size = self.net.get_post(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
@@ -70,6 +103,7 @@ class ArtiSynthBase(gym.Env):
 
     def take_action(self, action):
         action = np.clip(action, c.LOW_EXCITATION, c.HIGH_EXCITATION)
+        logger.debug('excitations sent:{}'.format(action))
         self.net.get_post({c.EXCITATIONS_STR: action.tolist()}, request_type=c.POST_STR, message=c.EXCITATIONS_STR)
 
     def render(self, mode=None, close=False):

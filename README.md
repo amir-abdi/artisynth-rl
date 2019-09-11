@@ -89,7 +89,7 @@ can be cloned from [here](https://github.com/amir-abdi/pytorch-a2c-ppo-acktr-gai
 Once you have the keras-rl library installed, 
 to train the point2point reaching toy project, run:
 
-    bash run_files/point2point.sh
+    bash scripts/point2point.sh
 
 This will fire up ArtiSynth with the RlPoint2PointModel instantiated 
 and starts training. 
@@ -105,7 +105,7 @@ And then run the `point2point.sh` bash file with `init-artisynth=false`.
 Make sure to set the `port` argument to the same port where you
 are running ArtiSynth.
 
-You can train the LumbarSpine model by running `bash run_files/lumbarspine.sh`.
+You can train the LumbarSpine model by running `bash scripts/lumbarspine.sh`.
 Similarly, ArtiSynth can be independently initiated with the 
 LumbarSpine model by running:
 
