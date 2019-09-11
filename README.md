@@ -97,8 +97,8 @@ Change the `artisynth-args` argument to initiate different models.
 
 You can also run ArtiSynth separately by executing the command: 
 
-    artisynth -model artisynth.models.rl.point2point.RlPoint2PointDemo \
-        [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
+    artisynth -model artisynth.models.rl.MODELPACKAGE.MODELNAME \
+        [ -port 8080 -FLAG1 FLAGVALUE1 -FLAG2 FLAGVALUE2... ] \
         -play -noTimeline
 
 And then run the `point2point.sh` bash file with `init-artisynth=false`.
@@ -123,9 +123,29 @@ Training results and logs are stored in 4 directories, namely
 by tensorboard and setting the `--logdir=logs_tb/TB_LOGGING_DIR`.
 
 The above 4 directories are created in the parent directory of where 
-`point_model2d_naf_main.py` is executed. In the `src/config.py` it is 
+`main_keras.py` is executed. In the `src/config.py` it is 
 assumed that the main file is executed from inside the `src` folder and
 the 4 directories are made in the artisynth_rl root.   
+
+### Available Environments
+
+#### Point2Point
+    artisynth -model artisynth.models.rl.point2point.RlPoint2PointDemo \
+        [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
+        -play -noTimeline
+        
+#### LumbarSpine
+
+    artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo \
+        [ -port 8080 ] \
+        -play -noTimeline
+
+#### Jaw
+
+    artisynth -model artisynth.models.rl.jaw.RlJawDemo \
+    [ -disc false -condyleConstraints true ]  \
+    -play -noTimeline
+
 
 ### Testing
 
