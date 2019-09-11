@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 //import com.sun.org.apache.bcel.internal.generic.LMUL;
 
 import maspack.geometry.PolygonalMesh;
+import maspack.matrix.AffineTransform3d;
 import maspack.matrix.AxisAngle;
 import maspack.matrix.Matrix;
 import maspack.matrix.Matrix4d;
@@ -204,7 +205,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	ArrayList<FrameMarker> conPt = new ArrayList<FrameMarker>(NUM_CON);
 
-	AxisAngle globalConRot = new AxisAngle();
+	AxisAngle globalConRot = new AxisAngle(1, 0, 0, 0.0);
 
 	RigidTransform3d globalConX = new RigidTransform3d();
 
@@ -217,6 +218,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	boolean useComplexJoint = true;
 
 	boolean useCurvJoint = true;
+	
+	boolean useMedialWall = true;
 
 	ArrayList<JawPlanes> conOrder = new ArrayList<JawPlanes>();
 
@@ -230,6 +233,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			conOrder.add(JawPlanes.RMED);
 			conOrder.add(JawPlanes.LPOST);
 			conOrder.add(JawPlanes.RPOST);
+			conOrder.add(JawPlanes.LFRONT);
+			conOrder.add(JawPlanes.RFRONT);
 			conOrder.add(JawPlanes.LLTRL);
 			conOrder.add(JawPlanes.RLTRL);
 		}
@@ -249,13 +254,15 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	double[] condylarAngle = new double[] { 40.0, 40.0 };// {left, right}
 
-	double[] condylarCant = new double[] { 0.0, -0.0 }; // {left, right}
+	double[] condylarCant = new double[] { 10.0, -10.0 }; // {left, right}
 
 	double[] medWallAngle = new double[] { -1.0, 1.0 }; // {left, right}
 
-	double[] ltrlWallAngle = new double[] { -1.0, 1.0 }; // {left, right}
+	double[] ltrlWallAngle = new double[] { -0.0, 0.0 }; // {left, right}
 
 	double[] postWallAngle = new double[] { 0.0, 0.0 }; // {left, right}
+
+	double[] antWallAngle = new double[] { 0.0, 0.0 }; // {left, right}
 
 	// double occlusalAngle = 6.5; // bite plane
 	double[] biteAngle = new double[] { 10, 10 };// {left, right}
@@ -263,13 +270,16 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	double[] biteCant = new double[] { 0.0, 0.0 }; // {left, right}
 
 	// medial wall offset (negative = lateral outward)
-	double[] medWallOffset = new double[] { 0, 0 };
+	double[] medWallOffset = new double[] { 0.5, 0.5 }; // {left, right}
 
 	// lateral wall offset (negative = lateral outward)
-	double[] ltrlWallOffset = new double[] { -0.1, -0.1 };
+	double[] ltrlWallOffset = new double[] { -0.5, -0.5 }; // {left, right}
 
 	// posterior wall offset (positive = forward);
-	double[] postWallOffset = new double[] { -0.0, -0.0 };
+	double[] postWallOffset = new double[] { -5.0, -5.0 }; // {left, right}
+
+	// anterior wall offset (positive = forward);
+	double[] antWallOffset = new double[] { 15.0, 15.0 }; // {left, right}
 
 	// constraint force norm properties (for output probes)
 	VectorNd tmjForceNorms = new VectorNd(NUM_CON); // 8 jaw constraint planes
@@ -286,9 +296,9 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	int numSegments = 20;
 
 	public enum JawPlanes {
-		LTMJ("ltmj", true, 40.0), RTMJ("rtmj", true, 40.0), LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
+		LTMJ("ltmj", false, 40.0), RTMJ("rtmj", false, 40.0), LBITE("lbite", true, 25.0), RBITE("rbite", true, 25.0),
 		LMED("ltmj", true, 25.0), RMED("rtmj", true, 25.0), LPOST("ltmj", true, 25.0), RPOST("rtmj", true, 25.0),
-		LLTRL("ltmj", true, 25.0), RLTRL("rtmj", true, 25.0);
+		LFRONT("ltmj", true, 25.0), RFRONT("rtmj", true, 25.0), LLTRL("ltmj", true, 25.0), RLTRL("rtmj", true, 25.0);
 
 		String contactName;
 
@@ -515,14 +525,18 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		initCons();
 
 		for (PlanarConnector pc : con) {
+			pc.setCompliance(new VectorNd(new double[] { 0.00001 }));
 			addBodyConnector(pc);
 		}
 
 		// do not use medial constraints in default jaw model
-		bodyConnectors().get("LMED").setEnabled(false);
-		bodyConnectors().get("RMED").setEnabled(false);
-		RenderProps.setVisible(bodyConnectors().get("LMED"), false);
-		RenderProps.setVisible(bodyConnectors().get("RMED"), false);
+		if (!useMedialWall) {
+			Log.log("Removing medial wall");
+			bodyConnectors().get("LMED").setEnabled(false);
+			bodyConnectors().get("RMED").setEnabled(false);
+			RenderProps.setVisible(bodyConnectors().get("LMED"), false);
+			RenderProps.setVisible(bodyConnectors().get("RMED"), false);
+		}
 
 		// add cricothyroid revolute joint
 		if (!fixedLaryngeal) {
@@ -537,6 +551,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			removeBodyConnector(bodyConnectors().get("LTMJ"));
 			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();
+		}
+
+		for (BodyConnector bc : bodyConnectors()) {
+			bc.setCompliance(new VectorNd(new double[] { 0.00001 }));
 		}
 
 	}
@@ -699,7 +717,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		mesh.scale(scale);
 		mesh.setFixed(true);
 		mesh.triangulate();
-		body.setMesh(mesh, meshFilename);
+		body.setSurfaceMesh(mesh, meshFilename);
 	}
 
 	public void setBodyDynamicProps(RigidBody body) {
@@ -1449,8 +1467,11 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		boolean hasRightPair;
 		RigidBody body;
 		String name;
+		Vector3d model_tr = new Vector3d(0, 10.0335, -38.6615);
+		AffineTransform3d X = new AffineTransform3d();
+		X.setTranslation(model_tr);
 		Point3d[] pts;
-		String[] list = new String[] { "jaw", "maxilla", "hyoid", "thyroid" };
+		String[] list = new String[] { "jaw" };
 		ArrayList<String> bodyList = new ArrayList<String>();
 		for (int i = 0; i < list.length; i++)
 			bodyList.add(list[i]);
@@ -1477,26 +1498,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			for (int k = 0; k < pts.length; k++) {
 				m = new FrameMarker();
 				m.setRenderProps(fixedProps.clone());
-				hasRightPair = false;
-
-				// find incisor point (if pt is in sagittal plane)
-				if (Math.abs(pts[k].x) < CLOSE_TO_SAGGITAL) {
-					pts[k].x = 0.0; // fix to sagittal plane
-					if (name.compareTo("maxilla") == 0.0) {
-						m.setName("upperincisor");
-					} else if (name.compareTo("jaw") == 0.0) {
-						m.setName("lowerincisor");
-						RenderProps.setPointRadius(m, CONTACT_PT_RADIUS);
-						pts[k].y -= 1.0;
-					} else if (name.compareTo("hyoid") == 0.0 && k == 0) {
-						m.setName("hyoidRefMarker");
-					} else if (name.compareTo("thyroid") == 0.0 && k == 0) {
-						m.setName("thyroidRef");
-					} else
-						RenderProps.setVisible(m, false);
-				} else {
-					hasRightPair = true;
-				}
+				hasRightPair = true;
 
 				if (k == tmjPointIndex) { // lower tmj point (by -4.0) from top
 					// surface of mesh to approx centre of
@@ -1506,11 +1508,15 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 					RenderProps.setPointRadius(m, CONTACT_PT_RADIUS);
 					RenderProps.setPointColor(m, Color.BLUE);
 				}
-				addFrameMarker(m, body, pts[k]);
 
+				addFrameMarker(m, body, pts[k]);
+				m.transformGeometry(X);
 				if (hasRightPair == true) {
 					m = new FrameMarker();
+
 					addFrameMarker(m, body, createRightSidePoint(pts[k]));
+
+					m.transformGeometry(X);
 					m.setRenderProps(fixedProps.clone());
 					if (k == tmjPointIndex) {
 						m.setName("rtmj");
@@ -1521,40 +1527,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 			}
 		}
-
-		// add C1 marker
-		body = myRigidBodies.get("sternum");
-		if (body != null) {
-			m = new FrameMarker();
-			addFrameMarker(m, body, c1Point);
-			m.setName("C1point");
-			m.setRenderProps(fixedProps.clone());
-			RenderProps.setPointColor(m, Color.MAGENTA);
-		}
-
-		// add COM markers
-		addComMarker("jaw");
-		addComMarker("hyoid");
-		addComMarker("thyroid");
-		addComMarker("cricoid");
-
-		// add bite points
-		FrameMarker fm;
-		fm = addFixedMarker("jaw", leftBiteLocation, "lbite");
-		RenderProps.setPointRadius(fm, CONTACT_PT_RADIUS);
-		Point3d rightBiteLocation = new Point3d(leftBiteLocation);
-		rightBiteLocation.x *= -1;
-		fm = addFixedMarker("jaw", rightBiteLocation, "rbite");
-		RenderProps.setPointRadius(fm, CONTACT_PT_RADIUS);
-
-		// add reference point for hyoid
-		RigidBody hyoid = myRigidBodies.get("hyoid");
-		if (hyoid != null) {
-			m = new FrameMarker();
-			addFrameMarker(m, hyoid, hyoidRefPos);
-			m.setName("hyoidRef");
-		}
-
 	}
 
 	public double getUnitConversion() {
@@ -2099,6 +2071,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		updateCon(JawPlanes.RMED);
 		updateCon(JawPlanes.LPOST);
 		updateCon(JawPlanes.RPOST);
+		updateCon(JawPlanes.LFRONT);
+		updateCon(JawPlanes.RFRONT);
 		updateCon(JawPlanes.LLTRL);
 		updateCon(JawPlanes.RLTRL);
 		updateCurvCons();
@@ -2132,6 +2106,11 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		case LPOST:
 		case RPOST: {
 			Xpw = updatePostWallPose(plane);
+			break;
+		}
+		case LFRONT:
+		case RFRONT: {
+			Xpw = updateAnteriorWallPose(plane);
 			break;
 		}
 		default: {
@@ -2242,6 +2221,33 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		return Xpw;
 	}
 
+	private RigidTransform3d updateAnteriorWallPose(JawPlanes plane) {
+		Point3d antWallOrigin;
+		RigidTransform3d Xpw;
+		if (plane.equals(JawPlanes.LFRONT)) {
+			Xpw = new RigidTransform3d(conPose.get(conOrder.indexOf(JawPlanes.LTMJ)));
+//			Xpw.R.mulAxisAngle(1, 0, 0, Math.PI);
+			Xpw.R.mulAxisAngle(0, 0, 1, Math.toRadians(antWallAngle[LEFT]));
+			// additional x-axis +90 degree flip for anterior wall
+			Xpw.R.mulAxisAngle(1, 0, 0, Math.toRadians(90.0));
+			antWallOrigin = new Point3d(conPt.get(conOrder.indexOf(plane)).getPosition());
+			antWallOrigin.y -= antWallOffset[LEFT];
+		} else if (plane.equals(JawPlanes.RFRONT)) {
+			Xpw = new RigidTransform3d(conPose.get(conOrder.indexOf(JawPlanes.RTMJ)));
+//			Xpw.R.mulAxisAngle(1, 0, 0, Math.PI);
+			Xpw.R.mulAxisAngle(0, 0, 1, Math.toRadians(antWallAngle[RIGHT]));
+			// additional x-axis +90 degree flip for anterior wall
+			Xpw.R.mulAxisAngle(1, 0, 0, Math.toRadians(90.0));
+			antWallOrigin = new Point3d(conPt.get(conOrder.indexOf(plane)).getPosition());
+			antWallOrigin.y -= antWallOffset[RIGHT];
+		} else {
+			System.err.println("updateBackWallPose called with bad arg:" + plane.name());
+			return new RigidTransform3d();
+		}
+		Xpw.p.set(antWallOrigin);
+		return Xpw;
+	}
+
 	private RigidTransform3d updateBitePose(JawPlanes plane) {
 		RigidTransform3d Xpw = conPose.get(conOrder.indexOf(plane));
 		if (plane.equals(JawPlanes.LBITE)) {
@@ -2291,6 +2297,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			updateCon(JawPlanes.LMED);
 			updateCon(JawPlanes.LLTRL);
 			updateCon(JawPlanes.LPOST);
+			updateCon(JawPlanes.LFRONT);
 		}
 	}
 
@@ -2305,6 +2312,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			updateCon(JawPlanes.LMED);
 			updateCon(JawPlanes.LLTRL);
 			updateCon(JawPlanes.LPOST);
+			updateCon(JawPlanes.LFRONT);
 		}
 	}
 
@@ -2318,6 +2326,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			updateCon(JawPlanes.RTMJ);
 			updateCon(JawPlanes.RMED);
 			updateCon(JawPlanes.RPOST);
+			updateCon(JawPlanes.RFRONT);
 		}
 	}
 
@@ -2331,6 +2340,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			updateCon(JawPlanes.RTMJ);
 			updateCon(JawPlanes.RMED);
 			updateCon(JawPlanes.RPOST);
+			updateCon(JawPlanes.RFRONT);
 		}
 	}
 
@@ -2506,23 +2516,25 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		RigidBody jaw = myRigidBodies.get("jaw");
 		if (jaw == null)
 			return;
-		addCurvConstraint("LTMJ", "ltmj", jaw);
-		addCurvConstraint("RTMJ", "rtmj", jaw);
+		addCurvConstraint("LTMJ", "ltmj", jaw, JawPlanes.LTMJ.isUnilateral());
+		addCurvConstraint("RTMJ", "rtmj", jaw, JawPlanes.RTMJ.isUnilateral());
 
 	}
 
-	public void addCurvConstraint(String name, String contactName, RigidBody jaw) {
+	public void addCurvConstraint(String name, String contactName, RigidBody jaw, Boolean unilateral) {
 		SegmentedPlanarConnector tmj = new SegmentedPlanarConnector();
 		tmj.setName(name);
-		tmj.setPlaneSize(20);
-		tmj.setUnilateral(true);
+		tmj.setPlaneSize(40);
+		tmj.setUnilateral(unilateral);
 		updateCurvCon(tmj, myFrameMarkers.get(contactName), jaw);
 		addBodyConnector(tmj);
 	}
 
 	public void updateCurvCon(SegmentedPlanarConnector tmj, FrameMarker contactPoint, RigidBody jaw) {
 		RigidTransform3d XTmjToWorld = new RigidTransform3d();
-		XTmjToWorld.p.set(contactPoint.getPosition()); // in world-coordinates
+		Vector3d upperOffset = new Vector3d(contactPoint.getPosition());
+		upperOffset.sub(new Vector3d(0, 0, 0));
+		XTmjToWorld.p.set(upperOffset); // in world-coordinates
 		// XTmjToWorld.p.transform(jaw.getPose());
 		XTmjToWorld.R.mulAxisAngle(globalConRot);
 		XTmjToWorld.R.mulAxisAngle(0, 0, 1, Math.PI / 2); // rotate x-z to y-z
@@ -2651,7 +2663,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		// mesh.computeCentreOfVolume (centroid);
 		mesh.transform(amiraTranformation);
 		// mesh.translate (centroid.scale (-1));
-		body.setMesh(mesh, meshFilename);
+		body.setSurfaceMesh(mesh, meshFilename);
 		// if(body.getName ()!="skull"){
 		// body.setPose (new RigidTransform3d (centroid.scale (-1),new AxisAngle ()));
 		// }

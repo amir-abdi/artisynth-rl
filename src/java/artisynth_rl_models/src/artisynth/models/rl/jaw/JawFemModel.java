@@ -80,9 +80,9 @@ public class JawFemModel extends JawBaseModel {
 
 	public boolean debug = false; // set to true for debug printlns
 
-	public String[] muscleExciterCategoryNames = {"singleExciters", "groupExciters", "bilateralExciters"};
+	public String[] muscleExciterCategoryNames = { "singleExciters", "groupExciters", "bilateralExciters" };
 	protected HashMap<String, ArrayList<MuscleExciter>> myMuscleExciterCategories = new HashMap<String, ArrayList<MuscleExciter>>();
-	
+
 	public static final String muscleListFilename = "muscleList.txt";
 
 	public static final String wrappedMuscleListFilename = "wrappedMuscleList.txt";
@@ -110,7 +110,7 @@ public class JawFemModel extends JawBaseModel {
 
 	protected static MooneyRivlinMaterial defaultMooneyRivlinMaterial = new MooneyRivlinMaterial(
 			900000 / unitConversion, 900 / unitConversion, 0d, 0d, 0d, /* 90000000 */10 * 9000000 / unitConversion);
-	
+
 	protected double linearMaterialNu = 0.33;
 	protected double linearMaterialE = 5000.0;
 
@@ -170,9 +170,9 @@ public class JawFemModel extends JawBaseModel {
 		frameMarkers().getRenderProps().setPointStyle(PointStyle.SPHERE);
 		frameMarkers().getRenderProps().setPointSize(1);
 		frameMarkers().getRenderProps().setPointColor(Color.PINK);
-		
+
 		// Planar connectors renderprops
-		for ( BodyConnector bc : bodyConnectors()) {
+		for (BodyConnector bc : bodyConnectors()) {
 			bc.getRenderProps().setVisible(true);
 		}
 	}
@@ -221,10 +221,8 @@ public class JawFemModel extends JawBaseModel {
 		if (useMooneyRivlin) {
 			setMooneyRivlinMaterial(model);
 			setIntegrator(Integrator.FullBackwardEuler);
-		}
-		else
+		} else
 			setLinearMaterial(model);
-		
 
 		return model;
 	}
@@ -257,9 +255,9 @@ public class JawFemModel extends JawBaseModel {
 		model.setParticleDamping(myParticleDamping);
 		model.setStiffnessDamping(myStiffnessDamping);
 	}
-	
+
 	public void setLinearMaterial(FemModel3d model) {
-		// Default material in ArtiSynth is linear		
+		// Default material in ArtiSynth is linear
 		LinearMaterial linearMaterial = new LinearMaterial(linearMaterialE, linearMaterialNu);
 		linearMaterial.setCorotated(true);
 		model.setMaterial(linearMaterial);
@@ -361,7 +359,7 @@ public class JawFemModel extends JawBaseModel {
 		rigidBodies().get("skull_cartilage_right").setMass(0);
 		rigidBodies().get("skull_cartilage_left").setMass(0);
 	}
-	
+
 	protected void setBiteConstraints() {
 		Vector3d pCA = new Vector3d(-2.26103, -44.0217, 6.87158);
 		RigidTransform3d XPW = new RigidTransform3d(pCA, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
@@ -429,81 +427,27 @@ public class JawFemModel extends JawBaseModel {
 		addBodyConnector(con5);
 
 	}
-	
-	protected void createTMJConstraints() {
-		Vector3d rtmj = new Vector3d(-51.18341, 43.8690455, 40.4896403);		
-		RigidTransform3d RTMJ = new RigidTransform3d(rtmj, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
-		
-		PlanarConnector con6 = new PlanarConnector(rigidBodies().get("jaw"), rtmj, RTMJ);
-		con6.setPlaneSize(20);
-		con6.getRenderProps().setAlpha(0.7);
-		con6.getRenderProps().setFaceColor(Color.RED);
-		con6.setUnilateral(false);
-		con6.setName("RTMJ");		
-		
-//		Vector3d rtmj_o = new Vector3d(-51.18341, 43.8690455, 40.4896403);
-//		RigidTransform3d RTMJ_O = new RigidTransform3d(rtmj_o, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
-//		RTMJ_O.mulRotation(new RotationMatrix3d(new AxisAngle(new Vector3d(0, 1, 0), Math.toRadians(-90))));
-//		PlanarConnector con8 = new PlanarConnector(rigidBodies().get("jaw"), rtmj_o, RTMJ_O);
-//		con8.setPlaneSize(20);
-//		con8.getRenderProps().setAlpha(0.7);
-//		con8.getRenderProps().setFaceColor(Color.RED);
-//		con8.setUnilateral(true);
-//		con8.setName("RTMJ_O");
-//		
-//		Vector3d ltmj = new Vector3d(51.18341, 43.8690455, 40.4896403);
-//		RigidTransform3d LTMJ = new RigidTransform3d(ltmj, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
-//		PlanarConnector con7 = new PlanarConnector(rigidBodies().get("jaw"), ltmj, LTMJ);
-//		con7.setPlaneSize(20);
-//		con7.getRenderProps().setAlpha(0.7);
-//		con7.getRenderProps().setFaceColor(Color.RED);
-//		con7.setUnilateral(true);
-//		con7.setName("LTMJ");
-//		
-//		Vector3d ltmj_o = new Vector3d(51.18341, 43.8690455, 40.4896403);
-//		RigidTransform3d LTMJ_O = new RigidTransform3d(ltmj_o, new AxisAngle(new Vector3d(1, 0, 0), Math.toRadians(180)));
-//		LTMJ_O.mulRotation(new RotationMatrix3d(new AxisAngle(new Vector3d(0, 1, 0), Math.toRadians(-90))));
-//		PlanarConnector con9 = new PlanarConnector(rigidBodies().get("jaw"), ltmj_o, LTMJ_O);
-//		con9.setPlaneSize(20);
-//		con9.getRenderProps().setAlpha(0.7);
-//		con9.getRenderProps().setFaceColor(Color.RED);
-//		con9.setUnilateral(true);
-//		con9.setName("LTMJ_O");
-//
-		addBodyConnector(con6);
-//		addBodyConnector(con7);
-//		addBodyConnector(con8);
-//		addBodyConnector(con9);
-	}
-	
+
 	protected void addFrameMarkers() {
 		// create framemarkers for contact points of constraints
-		FrameMarker m1 = new FrameMarker(rigidBodies().get("skull"), new Point3d(2.4077531, -96.598413, -43.842046));
-		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));		
+		//FrameMarker m1 = new FrameMarker(rigidBodies().get("skull"), new Point3d(2.4077531, -96.598413, -43.842046));
+		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));
 		FrameMarker m3 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(16.27707, -89.304763, -40.534119));
 		FrameMarker m4 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(29.397112, -67.681713, -41.787386));
 		FrameMarker m5 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(25.260763, -77.824013, -41.914129));
 		FrameMarker m6 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(21.54352, -83.805296, -41.935241));
-		m1.setName("skull");
+
 		m2.setName("lowerincisor");
 		m3.setName("c_r");
 		m4.setName("m6_r");
 		m5.setName("pm5_r");
 		m6.setName("pm4_r");
-		addFrameMarker(m1);
+		//addFrameMarker(m1);
 		addFrameMarker(m2);
 		addFrameMarker(m3);
 		addFrameMarker(m4);
 		addFrameMarker(m5);
 		addFrameMarker(m6);
-		
-		// Add TMJ frame markers
-		FrameMarker m7 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(-55.18341, -10.8690455, -00.4896403));
-		FrameMarker m8 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(60.18341, -10.8690455, -00.4896403));
-		m7.setName("rtmj");
-		m8.setName("ltmj");
-		addFrameMarker(m7);
-		addFrameMarker(m8);
 	}
 
 	protected void attachLigaments() throws IOException {
@@ -904,9 +848,9 @@ public class JawFemModel extends JawBaseModel {
 
 		if (useBiteConstraints)
 			setBiteConstraints();
-		
+
 		addFrameMarkers();
-		
+
 		ArrayList<Muscle> myAssembledMuscles = JawBaseModel.assembleandreturnMuscles();
 		ArrayList<Muscle> myAttachedMuscles = JawBaseModel.attachMuscles(muscleList, muscleInfo, myMarkerInfo,
 				myAssembledMuscles);
@@ -936,7 +880,7 @@ public class JawFemModel extends JawBaseModel {
 				muscleInfo, myAttachedMuscles);
 
 		addExciters(myMuscles);
-		
+
 		JawBaseModel.updateMuscleLengthProps(myAttachedMuscles);
 
 		if (withDisc) {
@@ -952,16 +896,16 @@ public class JawFemModel extends JawBaseModel {
 		} else {
 			addInterBoneCollision();
 		}
-		
+
 		if (condyleConstraints) {
 			Log.log("hasCondyleConstraints");
-			
+			addFixedMarkers();
 			setCondyleConstraints(false);
 		}
-		
+
 		setupRenderProps();
 	}
-	
+
 	public void addExciters(HashMap<String, ExcitationComponent> myMuscles) {
 		// the following line doesn't work!
 		// assembleBilateralExcitors(muscleList, muscleInfo, myMuscles,
@@ -995,8 +939,8 @@ public class JawFemModel extends JawBaseModel {
 
 		// add bilateral exciters
 		System.out.println("Adding bilateral exciters");
-		ArrayList<MuscleExciter> bilateralExciters = assemblebilateralMuscleGroups(muscleGroupInfo,
-				getMuscleExciters(), muscleAbbreviations);
+		ArrayList<MuscleExciter> bilateralExciters = assemblebilateralMuscleGroups(muscleGroupInfo, getMuscleExciters(),
+				muscleAbbreviations);
 		for (MuscleExciter exciter : bilateralExciters) {
 			addMuscleExciter(exciter);
 		}
