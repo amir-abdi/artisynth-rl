@@ -221,8 +221,9 @@ public class JawFemModel extends JawBaseModel {
 		if (useMooneyRivlin) {
 			setMooneyRivlinMaterial(model);
 			setIntegrator(Integrator.FullBackwardEuler);
-		} else
+		} else {
 			setLinearMaterial(model);
+		}
 
 		return model;
 	}
@@ -811,6 +812,8 @@ public class JawFemModel extends JawBaseModel {
 
 	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints) throws IOException {
 		super();
+		setIntegrator(Integrator.FullBackwardEuler);
+		
 		this.setName(name);
 		this.withDisc = withDisc;
 		setGravity(0, 0, -gravityVal * unitConversion);

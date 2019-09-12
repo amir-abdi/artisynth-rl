@@ -1,6 +1,8 @@
 #!/bin/bash
 
 python3 src/python/main_baselines.py \
+--project-name=artisynth-rl-jaw \
+--model-name=ppo \
 --env=JawEnv-v0 \
 --algo=ppo \
 --verbose=20 \
@@ -13,3 +15,8 @@ python3 src/python/main_baselines.py \
 --wait-action=0.1 \
 --incremental_actions=True \
 --reset-step=30 \
+--save-interval=1 \
+--log-interval=1 \
+--nsteps=2048 \
+--num_timestep=20480 \
+--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/ppo/checkpoints/00008 \

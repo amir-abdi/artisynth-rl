@@ -116,13 +116,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	}
 
 	public StepAdjustment advance(double t0, double t1, int flags) {
-
-		artisynth.core.mechmodels.Point lowerincisor = myJawModel.frameMarkers().get("lowerincisor");
-		if (t0 == 0 || t0 == 0.1) {
-			System.out.println("t0=" + t0 + ":   " + lowerincisor.getPosition());
-		} else if (t1 == 0.75) {
-			System.out.println("t1=" + t1 + ":  " + lowerincisor.getPosition() + "\n");
-		}
+			
 		return super.advance(t0, t1, flags);
 	}
 
@@ -175,6 +169,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		Frame mandible = null;
 		Point lowerincisor = null;
 		Point3d openMouthPositionLowerIncisor = new Point3d(2.6639861, -85.972497, -75.207516);
+		Point3d closedMouthPositionLowerIncisor = new Point3d(2.3216955, -92.172079, -41.505347);
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
 			Log.log(list.get(0).getName());
@@ -203,11 +198,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					reset = false;
 					resetRefPosition(false);
 				}
-
-				// Log.log(lowerincisor.getPosition());
-
 			}
-
 		}
 
 		private double getRandom(double radius) {
@@ -230,8 +221,12 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				if (random) {
 					throw new NotImplementedException();
 				} else {
-					// do nothing as we want the mount open point to be fixed for now... (simple!)
-					lowerincisor.setPosition(openMouthPositionLowerIncisor);
+					// swtich between open and close mouth
+					if (lowerincisor.getPosition().z < -60) //open
+						lowerincisor.setPosition(closedMouthPositionLowerIncisor);
+					else
+						lowerincisor.setPosition(openMouthPositionLowerIncisor);
+					rlTrack.setExcitationsZero();
 				}
 			}
 		}

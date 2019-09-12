@@ -29,6 +29,8 @@ def get_parser(parser=None):
     except argparse.ArgumentError:
         pass
 
+    parser.add_argument('--project-name', default='ArtiSynth-RL',
+                        help='Name of the RL project.')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,

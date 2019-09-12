@@ -3,12 +3,15 @@ import multiprocessing
 import os.path as osp
 import tensorflow as tf
 import numpy as np
+import os
+from importlib import import_module
+import wandb
 
 from baselines.common.vec_env import VecEnv
 from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env
 from baselines.common.tf_util import get_session
-# from baselines import logger
-from importlib import import_module
+import baselines.logger
+from baselines.ppo2.ppo2 import learn
 
 import common.arguments
 import common.config
@@ -29,12 +32,17 @@ def main(args):
     extra_args = parse_cmdline_kwargs(unknown_args)
     configs = common.config.get_config(args)
 
+    args.save_path = os.path.join(configs.trained_directory, 'model.ckpt')
+
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
     else:
         rank = MPI.COMM_WORLD.Get_rank()
 
+    # setup my logger and baselines' logger
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
+    baselines.logger.configure(configs.model_path, ['stdout', 'wandb'], **vars(args))
+
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
@@ -89,12 +97,22 @@ def train(args, extra_args):
         if alg_kwargs.get('network') is None:
             alg_kwargs['network'] = get_default_network()
 
+    nsteps = alg_kwargs['nsteps']
+    nenvs = env.num_envs
+    nbatch = nsteps * nenvs
+    nupdates = total_timesteps / (nsteps * nenvs)
+
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
+    print('num_timesteps: {}   nsteps: {}   nenvs: {}   nbatch(nsteps*nenvs): {}   nupdates(num_timesteps/nbatch): {}'.
+          format(total_timesteps, nsteps, nenvs, nbatch, nupdates)
+          )
 
     model = learn(
         env=env,
         seed=seed,
         total_timesteps=total_timesteps,
+        save_interval=args.save_interval,
+        log_interval=args.log_interval,
         **alg_kwargs
     )
 
