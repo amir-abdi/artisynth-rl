@@ -41,7 +41,10 @@ def main(args):
 
     # setup my logger and baselines' logger
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
-    baselines.logger.configure(configs.model_path, ['stdout', 'wandb'], **vars(args))
+    logger_formats = ['stdout']
+    if args.use_wandb:
+        logger_formats.append('wandb')
+    baselines.logger.configure(configs.model_path, logger_formats, **vars(args))
 
     model, env = train(args, extra_args)
 

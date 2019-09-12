@@ -20,3 +20,6 @@ python3 src/python/main_baselines.py \
 --nsteps=2048 \
 --num_timestep=20480 \
 --load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/ppo/checkpoints/00008 \
+
+#--use_wandb=false \
+

@@ -8,7 +8,7 @@ from gym import spaces
 
 import common.constants as c
 
-logger = logging.getLogger()
+logger = logging.getLogger(c.LOGGER_STR)
 
 
 class ArtiSynthBase(gym.Env):
@@ -33,12 +33,18 @@ class ArtiSynthBase(gym.Env):
 
         logger.info('State array size: {}'.format(obs_size))
         logger.info('Action array size: {}'.format(action_size))
+        state_low, state_high = self.get_state_boundaries(action_size)
 
         # sanity check
-        assert state_size == obs_size + action_size, \
-            'The observation and action size sent by the environment does not match the state size.'
+        # assert state_size == obs_size + action_size, \
+        #     'The observation size {} and action size {} sent by the environment does not match the state size {}.'.\
+        #         format(obs_size, action_size, state_size)
+        assert state_size == state_low.shape[0] and state_size == state_high.shape[0], \
+            'The shape of state_low {}, state_high {} and state {} do not match.'.format(
+                state_low.shape[0], state_high.shape[0], state_size
+            )
 
-        self.observation_space = spaces.Box(low=-0.2, high=+0.2, shape=[state_size], dtype=np.float32)
+        self.observation_space = spaces.Box(low=state_low, high=state_high, dtype=np.float32)
         self.observation_space.shape = (state_size,)
         if incremental_actions:
             low_action = c.LOW_EXCITATION_INC
@@ -116,4 +122,7 @@ class ArtiSynthBase(gym.Env):
         pass
 
     def state_dic_to_array(self, state_dict):
+        pass
+
+    def get_state_boundaries(self, action_size):
         pass
