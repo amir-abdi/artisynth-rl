@@ -65,15 +65,16 @@ class ArtiSynthBase(gym.Env):
             return
 
         command = 'artisynth -model artisynth.models.rl.{} '.format(artisynth_model) + \
-                  '[ -port {} {} ] -play -noTimeline'. \
-                      format(port, artisynth_args)
+                  '[ -port {} {} ] -play -noTimeline'.format(port, artisynth_args)
         command_list = command.split(' ')
 
         import subprocess
         FNULL = open(os.devnull, 'w')
         subprocess.Popen(command_list, stdout=FNULL, stderr=subprocess.STDOUT)
+        # os.spawnvp(os.P_NOWAIT, 'artisynth', tuple(command_list))
+
         while not RestClient.server_is_alive(ip, port):
-            logger.info("Waiting for ArtiSynth to launch")
+            logger.info(f"Waiting for ArtiSynth to launch @{port}")
             time.sleep(3)
 
     def get_obs_size(self):

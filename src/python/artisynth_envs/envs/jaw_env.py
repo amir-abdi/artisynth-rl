@@ -36,8 +36,9 @@ class JawEnvV0(ArtiSynthBase):
         self.eval_mode = eval_mode
         self.wait_action = wait_action
         self.include_current_pos = include_current_pos
+        self.incremental_actions = self.args.incremental_actions
 
-        self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.args.incremental_actions)
+        self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.incremental_actions)
 
     def state_dict2tensor(self, state):
         return torch.tensor(self.state_dic_to_array(state))
@@ -50,7 +51,11 @@ class JawEnvV0(ArtiSynthBase):
         self.episode_counter += 1
 
         logger.debug('action:{}'.format(action))
-        self.take_action(action + np.array(self.get_excitations_dict()))
+
+        if self.incremental_actions:
+            self.take_action(action + np.array(self.get_excitations_dict()))
+        else:
+            self.take_action(action)
 
         time.sleep(self.wait_action)
         state = self.get_state_dict()

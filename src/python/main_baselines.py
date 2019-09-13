@@ -41,7 +41,9 @@ def main(args):
 
     # setup my logger and baselines' logger
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
-    logger_formats = ['stdout']
+
+    # setup wandb
+    logger_formats = ['stdout', 'log', 'csv']
     if args.use_wandb:
         logger_formats.append('wandb')
     baselines.logger.configure(configs.model_path, logger_formats, **vars(args))
@@ -99,7 +101,6 @@ def train(args, extra_args):
     else:
         if alg_kwargs.get('network') is None:
             alg_kwargs['network'] = get_default_network()
-
     nsteps = alg_kwargs['nsteps']
     nenvs = env.num_envs
     nbatch = nsteps * nenvs
@@ -116,6 +117,7 @@ def train(args, extra_args):
         total_timesteps=total_timesteps,
         save_interval=args.save_interval,
         log_interval=args.log_interval,
+        load_path=args.load_path,
         **alg_kwargs
     )
 
