@@ -601,6 +601,12 @@ public class RlController extends ControllerBase
 			exciters.get(i).setExcitation(excitations.get(i));
 		}
 	}
+	
+	public void setExcitationsZero() {
+		for (int i = 0; i < exciters.size(); i++) {
+			exciters.get(i).setExcitation(0.0);
+		}
+	}
 
 	public void setRandomExcitations() {
 		Random random = new Random();
