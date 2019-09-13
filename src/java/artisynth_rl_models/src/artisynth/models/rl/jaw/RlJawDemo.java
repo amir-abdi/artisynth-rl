@@ -1,67 +1,26 @@
 package artisynth.models.rl.jaw;
 
-import java.awt.Color;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
-import artisynth.core.driver.Main;
-import artisynth.core.femmodels.FemMarker;
-import artisynth.core.femmodels.FemModel3d;
-import artisynth.core.inverse.ForceTargetTerm;
-import artisynth.core.inverse.TrackingController;
-import artisynth.core.mechmodels.BodyConnector;
-import artisynth.core.mechmodels.CollidableBody;
-import artisynth.core.mechmodels.ExcitationComponent;
 import artisynth.core.mechmodels.Frame;
-import artisynth.core.mechmodels.FrameMarker;
-import artisynth.core.mechmodels.MechModel;
 import artisynth.core.mechmodels.MotionTargetComponent;
-import artisynth.core.mechmodels.MultiPointMuscle;
-import artisynth.core.mechmodels.Muscle;
 import artisynth.core.mechmodels.MuscleExciter;
-import artisynth.core.mechmodels.PlanarConnector;
 import artisynth.core.mechmodels.Point;
-import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.modelbase.ControllerBase;
 import artisynth.core.modelbase.StepAdjustment;
-import artisynth.core.probes.NumericInputProbe;
-import artisynth.core.probes.NumericOutputProbe;
+import artisynth.core.rl.Log;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.RlModelInterface;
 import artisynth.core.rl.RlTargetControllerInterface;
 import artisynth.core.util.ArtisynthPath;
 import artisynth.core.utils.Utils;
-import artisynth.core.workspace.DriverInterface;
 import artisynth.core.workspace.RootModel;
-
-import artisynth.models.rl.lumbarspine.InvLumbarSpineDemo.RandomTargetController;
-import artisynth.models.rl.lumbarspine.InvLumbarSpineDemo.SimpleTargetController;
-//import artisynth.models.bruxism.Activation_Renderer;
-//import artisynth.models.bruxism.Bruxism;
-//import artisynth.models.elasticCollisions.PenetrationRenderer;
-import maspack.matrix.AxisAngle;
 import maspack.matrix.Point3d;
-import maspack.matrix.RigidTransform3d;
-import maspack.matrix.SparseBlockMatrix;
-import maspack.matrix.Vector3d;
-import maspack.matrix.VectorNd;
-import maspack.properties.Property;
-import maspack.render.Renderer.LineStyle;
-import maspack.render.Renderer.PointStyle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import artisynth.core.femmodels.FemModel3d;
-import artisynth.core.rl.Log;
 
 public class RlJawDemo extends RootModel implements RlModelInterface {
 
