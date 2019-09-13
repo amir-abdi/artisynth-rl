@@ -23,7 +23,7 @@ class JawEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
                  include_current_pos, artisynth_model, artisynth_args,
                  goal_threshold, incremental_actions, goal_reward,
-                 init_artisynth=True,  **kwargs):
+                 init_artisynth=False,  **kwargs):
         self.args = Bunch(kwargs)
         # super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
         super().__init__(ip, port, init_artisynth, artisynth_model, artisynth_args)
@@ -39,8 +39,9 @@ class JawEnvV0(ArtiSynthBase):
         self.wait_action = float(wait_action)
         self.include_current_pos = include_current_pos
         self.goal_reward = goal_reward
+        self.incremental_actions = incremental_actions
 
-        self.action_size, self.obs_size = self.init_spaces(incremental_actions=incremental_actions)
+        self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.incremental_actions)
 
     def state_dict2tensor(self, state):
         return torch.tensor(self.state_dic_to_array(state))
@@ -53,7 +54,11 @@ class JawEnvV0(ArtiSynthBase):
         self.episode_counter += 1
 
         logger.debug('action:{}'.format(action))
-        self.take_action(action + np.array(self.get_excitations_dict()))
+
+        if self.incremental_actions:
+            self.take_action(action + np.array(self.get_excitations_dict()))
+        else:
+            self.take_action(action)
 
         time.sleep(self.wait_action)
         state = self.get_state_dict()

@@ -141,7 +141,7 @@ def get_parser(parser=None):
     # initialize artisynth
     parser.add_argument('--init-artisynth', type=str2bool, default=False,
                         help='Initialize ArtiSynth automatically.')
-    parser.add_argument('--artisynth-model', default='RlPoint2PointModel',
+    parser.add_argument('--artisynth-model', default=None,
                         help='Name of the artisynth model to run. The model is expected to be inside the '
                              'package artisynth.models.rl')
     parser.add_argument('--artisynth-args', default='',

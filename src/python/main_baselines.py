@@ -38,7 +38,12 @@ def main(args):
         rank = MPI.COMM_WORLD.Get_rank()
 
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
-    # baselines.logger.configure(configs.model_path, ['stdout', 'wandb'], **vars(args))
+    logger_formats = ['stdout', 'log', 'csv']
+    if args.use_wandb:
+        logger_formats.append('wandb')
+
+    # baselines.logger.configure(configs.model_path, logger_formats, **vars(args))
+
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
