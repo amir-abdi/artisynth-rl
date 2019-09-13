@@ -21,22 +21,26 @@ NUM_TARGETS = len(COMPS_TARGET)
 
 class JawEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
-                 include_current_pos, init_artisynth=True, **kwargs):
+                 include_current_pos, artisynth_model, artisynth_args,
+                 goal_threshold, incremental_actions, goal_reward,
+                 init_artisynth=True,  **kwargs):
         self.args = Bunch(kwargs)
-        super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
+        # super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
+        super().__init__(ip, port, init_artisynth, artisynth_model, artisynth_args)
 
         self.prev_exc = None
         self.episode_counter = 0
         self.action_size = 0
         self.obs_size = 0
-        self.goal_threshold = self.args.goal_threshold
+        self.goal_threshold = float(goal_threshold)
 
-        self.reset_step = reset_step
+        self.reset_step = int(reset_step)
         self.eval_mode = eval_mode
-        self.wait_action = wait_action
+        self.wait_action = float(wait_action)
         self.include_current_pos = include_current_pos
+        self.goal_reward = goal_reward
 
-        self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.args.incremental_actions)
+        self.action_size, self.obs_size = self.init_spaces(incremental_actions=incremental_actions)
 
     def state_dict2tensor(self, state):
         return torch.tensor(self.state_dic_to_array(state))
@@ -93,7 +97,7 @@ class JawEnvV0(ArtiSynthBase):
         done_reward = 0
         if phi_u < thres:
             done = True
-            done_reward = self.args.goal_reward
+            done_reward = self.goal_reward
 
         # if decided to add excitaiton regularization
         # excitations = state[c.EXCITATIONS_STR]

@@ -7,6 +7,7 @@ import numpy as np
 from baselines.common.vec_env import VecEnv
 from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env
 from baselines.common.tf_util import get_session
+import baselines.logger
 # from baselines import logger
 from importlib import import_module
 
@@ -14,6 +15,8 @@ import common.arguments
 import common.config
 import common.utilities
 import artisynth_envs
+import gym
+import wandb
 
 try:
     from mpi4py import MPI
@@ -35,6 +38,7 @@ def main(args):
         rank = MPI.COMM_WORLD.Get_rank()
 
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
+    # baselines.logger.configure(configs.model_path, ['stdout', 'wandb'], **vars(args))
     model, env = train(args, extra_args)
 
     if args.save_path is not None and rank == 0:
@@ -81,7 +85,6 @@ def train(args, extra_args):
     alg_kwargs.update(extra_args)
 
     env = build_env(args)
-    print('build_env returns:', env)
 
     if args.network:
         alg_kwargs['network'] = args.network
@@ -91,12 +94,16 @@ def train(args, extra_args):
 
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
 
-    model = learn(
-        env=env,
-        seed=seed,
-        total_timesteps=total_timesteps,
-        **alg_kwargs
-    )
+    if args.alg == 'sac':
+        model = learn(
+            env=env)
+    else:
+        model = learn(
+            env=env,
+            seed=seed,
+            total_timesteps=total_timesteps,
+            **alg_kwargs
+        )
 
     return model, env
 
@@ -117,10 +124,16 @@ def build_env(args):
     get_session(config=config)
 
     flatten_dict_observations = alg not in {'her'}
-    env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
-                       env_kwargs=vars(args),
-                       reward_scale=args.reward_scale,
-                       flatten_dict_observations=flatten_dict_observations)
+    if alg == 'sac':
+        env_args = {args.port, args.include_current_pos, args.wait_action, args.reset_step}
+        print('Environment args are:', args.port, args.include_current_pos, args.wait_action, args.reset_step)
+        env = gym.make(env_id,
+                       )
+    else:
+        env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
+                           env_kwargs=vars(args),
+                           reward_scale=args.reward_scale,
+                           flatten_dict_observations=flatten_dict_observations)
 
     return env
 

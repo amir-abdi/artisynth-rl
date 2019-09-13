@@ -17,4 +17,8 @@ register(
     id='JawEnv-v0',
     entry_point='artisynth_envs.envs:JawEnvV0',
     nondeterministic=False,
+    kwargs={'port': '8080', 'wait_action': '0.1', 'eval_mode': False, 'reset_step': '30',
+            'ip': 'localhost', 'include_current_pos': True, 'artisynth_model': 'jaw.RlJawDemo',
+            'artisynth_args': "-disc false -condyleConstraints true", 'incremental_actions': True,
+            'goal_threshold': '0.02', 'goal_reward': 5},
 )

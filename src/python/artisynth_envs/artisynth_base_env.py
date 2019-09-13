@@ -35,8 +35,8 @@ class ArtiSynthBase(gym.Env):
         logger.info('Action array size: {}'.format(action_size))
 
         # sanity check
-        assert state_size == obs_size + action_size, \
-            'The observation and action size sent by the environment does not match the state size.'
+        # assert state_size == obs_size + action_size, \
+        #     'The observation and action size sent by the environment does not match the state size.'
 
         self.observation_space = spaces.Box(low=-0.2, high=+0.2, shape=[state_size], dtype=np.float32)
         self.observation_space.shape = (state_size,)

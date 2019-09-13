@@ -1,14 +1,14 @@
 #!/bin/bash
 
-python3 src/python/main_baselines.py \
+python src/python/main_baselines.py \
 --env=JawEnv-v0 \
---algo=ppo \
+--alg=sac \
 --verbose=20 \
---init-artisynth=false \
+--init-artisynth=true \
 --artisynth-model=jaw.RlJawDemo \
 --test=false \
 --port=8080 \
---artisynth-args="-disc true -condyleConstraints true" \
+--artisynth-args="-disc false -condyleConstraints true" \
 --include-current-pos=true \
 --wait-action=0.1 \
 --incremental_actions=True \
