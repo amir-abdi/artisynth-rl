@@ -99,6 +99,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				}
 			}
 		}
+//		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_open"));
+//		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_close"));
 
 		targetMotionController = new RandomTargetController(rlTrack.getMotionTargets());
 

@@ -2,19 +2,19 @@
 
 python3 src/python/main_baselines.py \
 --project-name=artisynth-rl-jaw \
---model-name=ppo \
+--model-name=ppoOpenClose \
 --env=JawEnv-v0 \
 --algo=ppo \
 --verbose=20 \
---init-artisynth=false \
+--init-artisynth=true \
 --artisynth-model=jaw.RlJawDemo \
 --test=false \
---port=8080 \
+--port=8082 \
 --artisynth-args="-disc false -condyleConstraints true" \
 --include-current-pos=true \
---wait-action=0.1 \
+--wait-action=1.5 \
 --incremental_actions=True \
---reset-step=30 \
+--reset-step=60 \
 --save-interval=1 \
 --log-interval=1 \
 --nsteps=2048 \
