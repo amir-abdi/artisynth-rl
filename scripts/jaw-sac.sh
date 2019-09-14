@@ -12,11 +12,11 @@ python src/python/main_baselines.py \
 --include-current-pos=true \
 --wait-action=0.1 \
 --incremental_actions=True \
---reset-step=30 \
+--reset-step=60 \
 --save-interval=1 \
 --log-interval=1 \
 --nsteps=2048 \
 --num_timestep=204800 \
 --use-wandb=true \
 --goal_reward=5 \
---goal_threshold=0.03 \
+--goal_threshold=1.0 \

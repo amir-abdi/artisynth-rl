@@ -3,6 +3,8 @@ import multiprocessing
 import os.path as osp
 import tensorflow as tf
 import numpy as np
+import os
+from importlib import import_module
 
 import baselines
 from baselines.common.vec_env import VecEnv
@@ -33,17 +35,21 @@ def main(args):
     extra_args = parse_cmdline_kwargs(unknown_args)
     configs = common.config.get_config(args)
 
+    args.save_path = os.path.join(configs.trained_directory, 'model.ckpt')
+
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
     else:
         rank = MPI.COMM_WORLD.Get_rank()
 
+    # setup my logger and baselines' logger
     logger = common.config.setup_logger(args.verbose, args.model_name, configs.log_directory)
+
+    # setup wandb
     logger_formats = ['stdout', 'log', 'csv']
     if args.use_wandb:
         logger_formats.append('wandb')
-
-    # baselines.logger.configure(configs.model_path, logger_formats, **vars(args))
+    baselines.logger.configure(configs.model_path, logger_formats, **vars(args))
 
     model, env = train(args, extra_args)
 
@@ -97,8 +103,15 @@ def train(args, extra_args):
     else:
         if alg_kwargs.get('network') is None:
             alg_kwargs['network'] = get_default_network()
+    nsteps = alg_kwargs['nsteps']
+    nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
+    nbatch = nsteps * nenvs
+    nupdates = total_timesteps / (nsteps * nenvs)
 
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
+    print('num_timesteps: {}   nsteps: {}   nenvs: {}   nbatch(nsteps*nenvs): {}   nupdates(num_timesteps/nbatch): {}'.
+          format(total_timesteps, nsteps, nenvs, nbatch, nupdates)
+          )
 
     if args.alg == 'sac':
         model = learn(env=env)
@@ -107,16 +120,18 @@ def train(args, extra_args):
             env=env,
             seed=seed,
             total_timesteps=total_timesteps,
+            save_interval=args.save_interval,
+            log_interval=args.log_interval,
+            load_path=args.load_path,
             **alg_kwargs
         )
-
     return model, env
 
 
 def build_env(args):
     ncpu = multiprocessing.cpu_count()
-    if sys.platform == 'darwin': ncpu //= 2
-    nenv = args.num_env or ncpu
+    if sys.platform == 'darwin':
+        ncpu //= 2
     alg = args.alg
     seed = args.seed
 
@@ -130,8 +145,6 @@ def build_env(args):
 
     flatten_dict_observations = alg not in {'her'}
     if alg == 'sac':
-        env_args = {args.port, args.include_current_pos, args.wait_action, args.reset_step}
-        print('Environment args are:', args.port, args.include_current_pos, args.wait_action, args.reset_step)
         env = gym.make(env_id, **vars(args))
     else:
         env = make_vec_env(env_id, env_type, args.num_env or 1, seed,

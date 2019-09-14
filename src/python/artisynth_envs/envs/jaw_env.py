@@ -14,7 +14,8 @@ logger = logging.getLogger(c.LOGGER_STR)
 COMPS_REAL = ['lowerincisor']
 COMPS_TARGET = ['lowerincisor_ref']
 # PROPS = ['position', 'orientation', 'velocity', 'angularVelocity']
-PROPS = ['position', 'velocity']
+# PROPS = ['position', 'velocity']
+PROPS = ['position']
 
 NUM_TARGETS = len(COMPS_TARGET)
 
@@ -24,7 +25,6 @@ class JawEnvV0(ArtiSynthBase):
                  include_current_pos, goal_threshold, incremental_actions, goal_reward,
                  init_artisynth,  **kwargs):
         self.args = Bunch(kwargs)
-        # super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
         super().__init__(ip, port, init_artisynth, 'jaw.RlJawDemo', '-disc false -condyleConstraints true')
 
         self.prev_exc = None
@@ -139,8 +139,31 @@ class JawEnvV0(ArtiSynthBase):
                 observation_vector = np.append(observation_vector, t[prop])
 
         observation_vector = np.append(observation_vector, js[c.EXCITATIONS_STR])
-        # print('observation_vector ', observation_vector )
         return np.asarray(observation_vector)
+
+    def get_state_boundaries(self, action_size):
+        low = []
+        high = []
+        # todo: hard coded for now... velocities ignored...
+        if self.include_current_pos:
+            low.append(0)
+            low.append(-95)
+            low.append(-80)
+            high.append(5)
+            high.append(-85)
+            high.append(-35)
+        low.append(0)
+        low.append(-95)
+        low.append(-80)
+        high.append(5)
+        high.append(-85)
+        high.append(-35)
+        low = np.array(low)
+        high = np.array(high)
+
+        low = np.append(low, np.full((action_size,), 0))
+        high = np.append(high, np.full((action_size,), 1))
+        return low, high
 
     def render(self, mode='gui', close=False):
         pass

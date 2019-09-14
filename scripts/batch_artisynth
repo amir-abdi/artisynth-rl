@@ -8,9 +8,9 @@ echo "Running artisynth: " Count:$NUM_ENVS $MODEL with args: $ARGS Staring Port:
 for (( p=$START_PORT; p<$START_PORT+$NUM_ENVS; p++ ))
 do
     echo "run artisynth at port:" $p
-    if [ "$p" = "$2" ]; then
-        artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel [ -port $p ] -play -noTimeline &
+    if [ "$p" = "$START_PORT" ]; then
+        artisynth -model artisynth.models.rl.$MODEL [ -port $p $ARGS ] -play -noTimeline &
     else
-        artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel [ -port $p ] -play -noTimeline -noGui &
+        artisynth -model artisynth.models.rl.$MODEL [ -port $p $ARGS ] -play -noTimeline &
     fi
 done

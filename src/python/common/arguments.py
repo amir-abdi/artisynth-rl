@@ -29,6 +29,8 @@ def get_parser(parser=None):
     except argparse.ArgumentError:
         pass
 
+    parser.add_argument('--project-name', default='ArtiSynth-RL',
+                        help='Name of the RL project.')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
@@ -57,8 +59,12 @@ def get_parser(parser=None):
                         help='Reset envs every n iters.')
     parser.add_argument('--hidden-layer-size', type=int, default=64,
                         help='Number of neurons in all hidden layers.')
-    parser.add_argument('--algo', default='ppo',
-                        help='algorithm to use: a2c | ppo | acktr | mpc')
+
+    try:
+        parser.add_argument('--alg', default='ppo',
+                            help='algorithm to use: a2c | ppo | acktr | mpc')
+    except argparse.ArgumentError:
+        pass
     parser.add_argument('--lr', type=float, default=7e-4,
                         help='learning rate (default: 7e-4)')
     parser.add_argument('--eps', type=float, default=1e-5,
