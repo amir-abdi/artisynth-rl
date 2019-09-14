@@ -21,12 +21,11 @@ NUM_TARGETS = len(COMPS_TARGET)
 
 class JawEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
-                 include_current_pos, artisynth_model, artisynth_args,
-                 goal_threshold, incremental_actions, goal_reward,
-                 init_artisynth=False,  **kwargs):
+                 include_current_pos, goal_threshold, incremental_actions, goal_reward,
+                 init_artisynth,  **kwargs):
         self.args = Bunch(kwargs)
         # super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
-        super().__init__(ip, port, init_artisynth, artisynth_model, artisynth_args)
+        super().__init__(ip, port, init_artisynth, 'jaw.RlJawDemo', '-disc false -condyleConstraints true')
 
         self.prev_exc = None
         self.episode_counter = 0

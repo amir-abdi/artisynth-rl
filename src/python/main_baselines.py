@@ -4,6 +4,7 @@ import os.path as osp
 import tensorflow as tf
 import numpy as np
 
+import baselines
 from baselines.common.vec_env import VecEnv
 from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, make_vec_env
 from baselines.common.tf_util import get_session
@@ -100,8 +101,7 @@ def train(args, extra_args):
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
 
     if args.alg == 'sac':
-        model = learn(
-            env=env)
+        model = learn(env=env)
     else:
         model = learn(
             env=env,
@@ -132,8 +132,7 @@ def build_env(args):
     if alg == 'sac':
         env_args = {args.port, args.include_current_pos, args.wait_action, args.reset_step}
         print('Environment args are:', args.port, args.include_current_pos, args.wait_action, args.reset_step)
-        env = gym.make(env_id,
-                       )
+        env = gym.make(env_id, **vars(args))
     else:
         env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
                            env_kwargs=vars(args),
