@@ -6,7 +6,7 @@ python3 src/python/main_baselines.py \
 --env=JawEnv-v0 \
 --alg=ddpg \
 --verbose=20 \
---init-artisynth=true \
+--init-artisynth=false \
 --artisynth-model=jaw.RlJawDemo \
 --test=false \
 --port=8081 \
@@ -14,10 +14,10 @@ python3 src/python/main_baselines.py \
 --include-current-pos=true \
 --wait-action=1.0 \
 --incremental_actions=True \
---reset-step=30 \
+--reset-step=60 \
 --save-interval=1 \
 --log-interval=1 \
 --nsteps=2048 \
 --num_timestep=204800 \
---use-wandb=true \
+--use-wandb=false \
 

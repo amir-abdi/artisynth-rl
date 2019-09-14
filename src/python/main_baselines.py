@@ -103,6 +103,8 @@ def train(args, extra_args):
     else:
         if alg_kwargs.get('network') is None:
             alg_kwargs['network'] = get_default_network()
+
+
     nsteps = alg_kwargs['nsteps']
     nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
     nbatch = nsteps * nenvs
@@ -113,8 +115,18 @@ def train(args, extra_args):
           format(total_timesteps, nsteps, nenvs, nbatch, nupdates)
           )
 
+    # todo: different algs have different args... reoslve this later...
     if args.alg == 'sac':
         model = learn(env=env)
+    elif args.alg == 'ddpg':
+        # todo: remove this hack
+        alg_kwargs.pop('nsteps', None)
+        model = learn(
+            env=env,
+            seed=seed,
+            total_timesteps=total_timesteps,
+            **alg_kwargs
+        )
     else:
         model = learn(
             env=env,
