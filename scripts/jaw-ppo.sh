@@ -2,15 +2,13 @@
 
 python3 src/python/main_baselines.py \
 --project-name=artisynth-rl-jaw \
---model-name=ppo \
+--model-name=ppo2 \
 --env=JawEnv-v0 \
---algo=ppo \
+--alg=ppo2 \
 --verbose=20 \
 --init-artisynth=true \
---artisynth-model=jaw.RlJawDemo \
 --test=false \
---port=8080 \
---artisynth-args="-disc false -condyleConstraints true" \
+--port=8090 \
 --include-current-pos=true \
 --wait-action=0.1 \
 --incremental_actions=True \
@@ -19,5 +17,5 @@ python3 src/python/main_baselines.py \
 --log-interval=1 \
 --nsteps=2048 \
 --num_timestep=204800 \
---use-wandb=true \
+--use-wandb=false \
 

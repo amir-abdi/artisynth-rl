@@ -4,7 +4,7 @@ python3 src/python/main_baselines.py \
 --project-name=artisynth-rl-jaw \
 --model-name=ppoOpenClose \
 --env=JawEnv-v0 \
---algo=ppo \
+--alg=ppo \
 --verbose=20 \
 --init-artisynth=true \
 --artisynth-model=jaw.RlJawDemo \

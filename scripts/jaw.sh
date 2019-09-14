@@ -10,7 +10,7 @@ python3 src/python/main_pytorch.py \
 --eval-interval=1 \
 --num-steps-eval=5 \
 --ppo-epoch=4 \
---algo=ppo \
+--alg=ppo \
 --num-processes=1 \
 --port=8080 \
 --use-wandb=false \

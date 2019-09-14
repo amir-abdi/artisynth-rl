@@ -24,7 +24,7 @@ class JawEnvV0(ArtiSynthBase):
     def __init__(self, ip, port, wait_action, eval_mode, reset_step,
                  include_current_pos, init_artisynth=True, **kwargs):
         self.args = Bunch(kwargs)
-        super().__init__(ip, port, init_artisynth, self.args.artisynth_model, self.args.artisynth_args)
+        super().__init__(ip, port, init_artisynth, 'jaw.RlJawDemo', "-disc false -condyleConstraints true")
 
         self.prev_exc = None
         self.episode_counter = 0

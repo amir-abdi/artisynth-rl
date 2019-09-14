@@ -4,7 +4,7 @@ python3 src/python/main_baselines.py \
 --project-name=artisynth-rl-jaw \
 --model-name=ddpg \
 --env=JawEnv-v0 \
---algo=ddpg \
+--alg=ddpg \
 --verbose=20 \
 --init-artisynth=true \
 --artisynth-model=jaw.RlJawDemo \
