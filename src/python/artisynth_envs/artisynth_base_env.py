@@ -105,6 +105,8 @@ class ArtiSynthBase(gym.Env):
 
     def reset(self):
         self.net.get_post(request_type=c.GET_STR, message=c.RESET_STR)
+        # wait two seconds for ArtiSynth environment to reset
+        time.sleep(2.0)
         state_dict = self.get_state_dict()
         return self.state_dic_to_array(state_dict)
 
