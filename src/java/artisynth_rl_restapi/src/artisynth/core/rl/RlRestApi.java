@@ -11,7 +11,8 @@ import com.google.gson.Gson;
 public class RlRestApi {
 	RlControllerInterface rlController;
 	int serverPort;
-	//private static org.apache.logging.log4j.Logger logger = LogManager.getLogger(RlRestApi.class);
+	// private static org.apache.logging.log4j.Logger logger =
+	// LogManager.getLogger(RlRestApi.class);
 
 	public RlRestApi(RlControllerInterface rlController, int serverPort) {
 		this.rlController = rlController;
@@ -39,23 +40,13 @@ public class RlRestApi {
 			res.body(toJson(new ResponseError(e)));
 		});
 	}
-	
-	public Route setExcitations = (Request request, Response response) -> {
-        Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());       
-        Gson gson = new Gson();
-        RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
-        Log.log(rlExcitations.getExcitations());
-        this.rlController.setExcitations(rlExcitations.getExcitations());
-        return 0;
-    };
 
-//    public Route getState = (Request request, Response response) -> {
-//    	boolean includeExc = request.attribute("includeExcitations");
-//        Log.log("getState length:" + request.contentLength() + 
-//        		" includeExcitations: " + includeExc);       
-//        rlController.getState();
-//        Gson gson = new Gson();
-//        
-//        return 0;
-//    };
+	public Route setExcitations = (Request request, Response response) -> {
+		Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
+		Gson gson = new Gson();
+		Log.log(request.body());
+		RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
+		RlState nextState = this.rlController.setExcitations(rlExcitations.getExcitations());
+		return nextState;
+	};
 }

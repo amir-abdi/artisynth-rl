@@ -7,6 +7,7 @@
  */
 package artisynth.core.rl;
 
+import java.util.concurrent.locks.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
@@ -24,6 +26,7 @@ import artisynth.core.inverse.TargetPoint;
 import artisynth.core.mechmodels.ExcitationComponent;
 import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.MechSystemBase;
+import artisynth.core.mechmodels.MechSystemModel;
 import artisynth.core.mechmodels.MotionTargetComponent;
 import artisynth.core.mechmodels.MultiPointMuscle;
 import artisynth.core.mechmodels.Muscle;
@@ -34,6 +37,7 @@ import artisynth.core.mechmodels.MotionTarget.TargetActivity;
 import artisynth.core.modelbase.ComponentChangeEvent;
 import artisynth.core.modelbase.ComponentList;
 import artisynth.core.modelbase.ComponentListImpl;
+import artisynth.core.modelbase.ComponentState;
 import artisynth.core.modelbase.ComponentUtils;
 import artisynth.core.modelbase.CompositeComponent;
 import artisynth.core.modelbase.ControllerBase;
@@ -42,6 +46,7 @@ import artisynth.core.modelbase.ReferenceList;
 import artisynth.core.modelbase.RenderableComponent;
 import artisynth.core.modelbase.RenderableComponentList;
 import maspack.geometry.PolygonalMesh;
+import maspack.matrix.VectorNd;
 import maspack.properties.PropertyList;
 import maspack.render.RenderList;
 import maspack.render.RenderProps;
@@ -71,6 +76,14 @@ public class RlController extends ControllerBase
 
 	// list of all muscle exciters
 	protected ComponentList<ExcitationComponent> exciters;
+//	protected ComponentList<ExcitationComponent> excitersDoubleBuffer;
+	protected ArrayList<Double> excitationValues = new ArrayList<Double>();
+	protected Boolean excitersUpToDate = true;
+	protected RlState nextState = new RlState();
+	protected Boolean nextStateUpToDate = false;
+	protected Boolean getNextState = false;
+	protected double lastStateT = 0.0;
+	protected Boolean nextStateUntilConvergence = false;
 
 	RlRestApi networkHandler;
 	protected MechSystemBase myMech;
@@ -96,12 +109,11 @@ public class RlController extends ControllerBase
 		myInverseModel = model;
 	}
 
-	/**
-	 * Creates and names a tracking controller for a given mech system
-	 * 
-	 * @param m    mech system, typically your "MechModel"
-	 * @param name name to give the controller
-	 */
+	public RlController(MechSystemBase m, RlModelInterface model, String name, int port, Boolean getNextState) {
+		this(m, model, name, port);
+		this.getNextState = getNextState;
+	}
+
 	public RlController(MechSystemBase m, RlModelInterface model, String name, int port) {
 		super();
 		setMech(m);
@@ -139,6 +151,65 @@ public class RlController extends ControllerBase
 		initSourceRenderProps();
 	}
 
+	public synchronized RlState getNextState(double t0, double t1) {
+		double currentStep = t0;
+		MechSystemModel mySys = (MechSystemModel) myMech;
+		ComponentState saveState = mySys.createState(null);
+		mySys.getState(saveState);
+
+		if (nextStateUntilConvergence) {
+			VectorNd prev_f = new VectorNd();
+			VectorNd f = new VectorNd();
+			mySys.getActiveForces(prev_f);
+
+			double thres = 0.1;
+			double force_diffs_norm = 1000;
+			int iter = 0, max_iters = 10;
+			double stepSize = t1 - t0;
+
+			// repeat until convergence
+			while (force_diffs_norm > thres && iter < max_iters) {
+				mySys.preadvance(currentStep, currentStep + stepSize, 0);
+				mySys.advance(currentStep, currentStep + stepSize, 0);
+
+				mySys.getActiveForces(f);
+				VectorNd diff = f.copyAndSub(prev_f);
+				force_diffs_norm = diff.norm(); // faster than norm?
+
+				prev_f = f.copy();
+				iter++;
+				currentStep += stepSize;
+				Log.log(iter + " * " + force_diffs_norm);
+			}
+			Log.log("Next state converged");
+		} else {
+			double stepSize;
+			if (lastStateT == 0.0)
+				stepSize = t1 - t0;
+			else
+				stepSize = t0 - lastStateT;
+
+			mySys.preadvance(currentStep, currentStep + stepSize, 0);
+			mySys.advance(currentStep, currentStep + stepSize, 0);
+			lastStateT = t0;
+		}
+
+		// Create the RlState and fill with values
+		RlState rlState = new RlState();
+		rlState.addAll(getRlComponents(getSources()));
+		rlState.addAll(getRlComponents(getTargets()));
+		rlState.setRlExcitations(this.getExcitations());
+
+		// reset state
+		mySys.setState(saveState);
+
+		// inform about the next state being ready to send to the agent
+		nextStateUpToDate = true;
+		notify();
+
+		return rlState;
+	}
+
 	@Override
 	public void prerender(RenderList list) {
 		super.prerender(list);
@@ -158,7 +229,7 @@ public class RlController extends ControllerBase
 	}
 
 	public void setMech(MechSystemBase m) {
-		setModel(m);
+		//setModel(m); John found this unnecessary
 		myMech = m;
 	}
 
@@ -237,6 +308,8 @@ public class RlController extends ControllerBase
 				m.setExcitationColor(Color.RED);
 			}
 		}
+
+//		excitersDoubleBuffer = exciters.copy(flags, copyMap)
 	}
 
 	/**
@@ -517,16 +590,25 @@ public class RlController extends ControllerBase
 
 	@Override
 	public void apply(double t0, double t1) {
-		// A controller should implement the apply method, but you can leave this empty
-		// as the control is done
-		// via the RlRestApi
+		if (!excitersUpToDate) {
+
+			for (int i = 0; i < excitationValues.size(); ++i) {
+				exciters.get(i).setExcitation(excitationValues.get(i));
+			}
+			excitersUpToDate = true;
+
+			if (getNextState) {
+				nextState = getNextState(t0, t1);
+				Log.log("nextStateUpToDate " + nextStateUpToDate);
+			}
+		}
 	}
 
 	// --------------- Implement RlControllerInterface ---------
 	public int getObservationSize() {
 		return getState().size(false);
 	}
-	
+
 	public int getStateSize() {
 		return getState().size(true);
 	}
@@ -595,13 +677,31 @@ public class RlController extends ControllerBase
 		return state;
 	}
 
-	@Override
-	public void setExcitations(ArrayList<Double> excitations) {
-		for (int i = 0; i < excitations.size(); i++) {
-			exciters.get(i).setExcitation(excitations.get(i));
+	ReentrantLock lock = new ReentrantLock();
+
+	protected synchronized void waitForNextState() {
+		while (!nextStateUpToDate) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
+	@Override
+	public RlState setExcitations(ArrayList<Double> excitations) {
+		excitationValues = excitations;
+		excitersUpToDate = false;
+		
+		if (getNextState) {
+			nextStateUpToDate = false;
+			waitForNextState();
+			return nextState;
+		}
+		return new RlState();
+	}
+
 	public void setExcitationsZero() {
 		for (int i = 0; i < exciters.size(); i++) {
 			exciters.get(i).setExcitation(0.0);

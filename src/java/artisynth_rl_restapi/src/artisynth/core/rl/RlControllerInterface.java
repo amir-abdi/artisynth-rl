@@ -9,6 +9,6 @@ public interface RlControllerInterface {
 	int getObservationSize();
 	int getStateSize();
 	String resetState();
-	void setExcitations(ArrayList<Double> excitations);
+	RlState setExcitations(ArrayList<Double> excitations);
 	ArrayList<Double> getExcitations();
 }

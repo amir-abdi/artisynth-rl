@@ -55,9 +55,11 @@ class JawEnvV0(ArtiSynthBase):
         logger.debug('action:{}'.format(action))
 
         if self.incremental_actions:
-            self.take_action(action + np.array(self.get_excitations_dict()))
+            next_state = self.take_action(action + np.array(self.get_excitations_dict()))
         else:
-            self.take_action(action)
+            next_state = self.take_action(action)
+
+        # todo: next state can potentially be used in a model based approach
 
         time.sleep(self.wait_action)
         state = self.get_state_dict()

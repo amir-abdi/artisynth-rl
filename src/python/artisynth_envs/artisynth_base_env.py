@@ -113,7 +113,9 @@ class ArtiSynthBase(gym.Env):
     def take_action(self, action):
         action = np.clip(action, c.LOW_EXCITATION, c.HIGH_EXCITATION)
         logger.debug('excitations sent:{}'.format(action))
-        self.net.get_post({c.EXCITATIONS_STR: action.tolist()}, request_type=c.POST_STR, message=c.EXCITATIONS_STR)
+        next_state_dict = self.net.get_post({c.EXCITATIONS_STR: action.tolist()}, request_type=c.POST_STR,
+                                            message=c.EXCITATIONS_STR)
+        return next_state_dict
 
     def render(self, mode=None, close=False):
         pass

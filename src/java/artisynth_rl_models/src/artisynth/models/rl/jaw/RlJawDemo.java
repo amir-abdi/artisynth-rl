@@ -86,7 +86,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 	@Override
 	public void addRlController() {
-		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "RlTracker", this.port);
+		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "RlTracker", 
+				this.port, false);
 
 		// rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));

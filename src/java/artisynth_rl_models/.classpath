@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/artisynth_core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/artisynth_rl_restapi"/>
-	<classpathentry kind="lib" path="/home/praneethsv/Pictures/artisynth-rl/src/java/artisynth_rl_restapi/target/artisynth_rl_restapi-1.0.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/artisynth_rl_restapi/target/artisynth_rl_restapi-1.0.0-jar-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
