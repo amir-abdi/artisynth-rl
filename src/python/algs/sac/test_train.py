@@ -175,3 +175,32 @@ def train(env, agent, args, configs):
             print('------------------')
 
     env.close()
+
+
+def test(env, agent, args, configs):
+    logger = setup_logger()
+
+    avg_reward = 0.
+    episodes = 10
+    for _ in range(episodes):
+        state = env.reset()
+        episode_reward = 0
+        done = False
+        episode_iter_count = 0
+        while not done:
+            action = agent.select_action(state, eval=True)
+
+            next_state, reward, done, _ = env.step(action)
+            episode_reward += reward
+
+            state = next_state
+            episode_iter_count += 1
+            if episode_iter_count % 10 == 0:
+                print(f'{episode_iter_count}/{env.reset_step}')
+        avg_reward += episode_reward
+    avg_reward /= episodes
+
+    print("Test Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
+    print("----------------------------------------")
+
+    env.close()

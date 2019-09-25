@@ -21,9 +21,9 @@ NUM_TARGETS = len(COMPS_TARGET)
 
 
 class JawEnvV0(ArtiSynthBase):
-    def __init__(self, ip, port, wait_action, eval_mode, reset_step,
+    def __init__(self, ip, port, wait_action, test, reset_step,
                  include_current_pos, goal_threshold, incremental_actions, goal_reward,
-                 init_artisynth,  **kwargs):
+                 init_artisynth, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(ip, port, init_artisynth, 'jaw.RlJawDemo', '-disc false -condyleConstraints true')
 
@@ -34,7 +34,7 @@ class JawEnvV0(ArtiSynthBase):
         self.goal_threshold = float(goal_threshold)
 
         self.reset_step = int(reset_step)
-        self.eval_mode = eval_mode
+        self.test_mode = test
         self.wait_action = float(wait_action)
         self.include_current_pos = include_current_pos
         self.goal_reward = goal_reward
@@ -74,7 +74,8 @@ class JawEnvV0(ArtiSynthBase):
             info = {}
 
         # todo: get rid of this hack!
-        if (done or self.episode_counter >= self.reset_step) and not self.eval_mode:
+        # todo: decide whether to set done=true in test mode or not
+        if (done or self.episode_counter >= self.reset_step): # and not self.test_mode:
             done = True
 
         return state_array, reward, done, info

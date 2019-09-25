@@ -15,8 +15,8 @@ python src/python/main_sac.py \
 --reset-step=100 \
 --use-wandb=true \
 --goal-reward=5 \
---goal-threshold=0.5 \
+--goal-threshold=2.0 \
 --save-interval=10 \
---eval-interval=10
-
-#--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/sac/trained/saved
+--eval-interval=10 \
+--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/sac/trained/saved_1 \
+--test=true \

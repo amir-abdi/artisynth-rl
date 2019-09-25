@@ -11,7 +11,7 @@ import common.config
 from common.arguments import get_parser
 from common.config import setup_logger
 
-from algs.sac.train import train
+from algs.sac.test_train import train, test
 
 
 def main():
@@ -39,11 +39,6 @@ def main():
     import gym
     env = gym.make(args.env, **vars(args))
 
-    # env = make_env(args.env, args.num_processes,
-    #                args.gamma, configs.log_directory, device,
-    #                start_port=args.port,
-    #                allow_early_resets=True, num_frame_stack=None, args=args)
-
     # Agent
     from algs.sac.sac import SAC
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
@@ -51,7 +46,10 @@ def main():
         logger.info(f'loading model from {args.load_path}')
         agent.load_state_dict(torch.load(args.load_path))
 
-    train(env, agent, args, configs)
+    if args.test:
+        test(env, agent, args, configs)
+    else:
+        train(env, agent, args, configs)
 
 
 if __name__ == "__main__":
