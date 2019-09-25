@@ -104,6 +104,7 @@ class JawEnvV0(ArtiSynthBase):
         if phi_u < thres:
             done = True
             done_reward = self.goal_reward
+            logging.info(f'Done: {phi_u} < {thres}')
 
         # if decided to add excitaiton regularization
         # excitations = state[c.EXCITATIONS_STR]

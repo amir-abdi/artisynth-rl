@@ -36,9 +36,23 @@ def main():
         resume_wandb = True if args.wandb_resume_id is not None else False
         wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl')
 
-    env = make_env(args.env, seed, args.num_processes,
-                   args.gamma, configs.log_directory, device,
-                   start_port=args.port,
-                   allow_early_resets=True, num_frame_stack=None, args=args)
+    import gym
+    env = gym.make(args.env, **vars(args))
 
-    train(env, args)
+    # env = make_env(args.env, args.num_processes,
+    #                args.gamma, configs.log_directory, device,
+    #                start_port=args.port,
+    #                allow_early_resets=True, num_frame_stack=None, args=args)
+
+    # Agent
+    from algs.sac.sac import SAC
+    agent = SAC(env.observation_space.shape[0], env.action_space, args)
+    if args.load_path:
+        logger.info(f'loading model from {args.load_path}')
+        agent.load_state_dict(torch.load(args.load_path))
+
+    train(env, agent, args, configs)
+
+
+if __name__ == "__main__":
+    main()

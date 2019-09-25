@@ -6,6 +6,10 @@ import torch
 from algs.sac.sac import SAC
 from tensorboardX import SummaryWriter
 from algs.sac.replay_memory import ReplayMemory
+import logging
+import os
+
+from common.config import setup_logger
 
 
 # parser = argparse.ArgumentParser(description='PyTorch Soft Actor-Critic Args')
@@ -53,13 +57,13 @@ from algs.sac.replay_memory import ReplayMemory
 # np.random.seed(args.seed)
 # env.seed(args.seed)
 
-def train(env, args):
-    # Agent
-    agent = SAC(env.observation_space.shape[0], env.action_space, args)
+def train(env, agent, args, configs):
+    logger = setup_logger()
 
     # TesnorboardX
     writer = SummaryWriter(
-        logdir='runs/{}_SAC_{}_{}_{}'.format(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env_name,
+        logdir= '{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
+            datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
                                              args.policy, "autotune" if args.automatic_entropy_tuning else ""))
 
     # Memory
@@ -73,6 +77,7 @@ def train(env, args):
         episode_reward = 0
         episode_steps = 0
         done = False
+
         state = env.reset()
 
         while not done:
@@ -102,7 +107,7 @@ def train(env, args):
 
             # Ignore the "done" signal if it comes from hitting the time horizon.
             # (https://github.com/openai/spinningup/blob/master/spinup/algos/sac/sac.py)
-            mask = 1 if episode_steps == env._max_episode_steps else float(not done)
+            mask = 1 if episode_steps == env.reset_step else float(not done)
 
             memory.push(state, action, reward, next_state, mask)  # Append transition to memory
 
@@ -111,12 +116,16 @@ def train(env, args):
         if total_numsteps > args.num_steps:
             break
 
-        writer.add_scalar('reward/train', episode_reward, i_episode)
-        print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(i_episode, total_numsteps,
-                                                                                      episode_steps,
-                                                                                      round(episode_reward, 2)))
+        if i_episode % args.episode_log_interval == 0:
+            writer.add_scalar('reward/train', episode_reward, i_episode)
+            print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(i_episode, total_numsteps,
+                                                                                          episode_steps,
+                                                                                          round(episode_reward, 2)))
+        if args.use_wandb:
+            import wandb
+            wandb.log({'episode_reward': episode_reward}, step=i_episode)
 
-        if i_episode % 10 == 0 and args.eval == True:
+        if i_episode % args.eval_interval == 0 and args.eval == True:
             avg_reward = 0.
             episodes = 10
             for _ in range(episodes):
@@ -134,9 +143,19 @@ def train(env, args):
             avg_reward /= episodes
 
             writer.add_scalar('avg_reward/test', avg_reward, i_episode)
+            if args.use_wandb:
+                import wandb
+                wandb.log({'avg_test_reward': avg_reward}, step=i_episode)
 
             print("----------------------------------------")
             print("Test Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
             print("----------------------------------------")
+
+        if i_episode % args.save_interval == 0:
+            path = os.path.join(configs.trained_directory, 'saved')
+            torch.save(agent.state_dict(), path)
+            logger.info(f'model saved: {path}')
+            print('------------------')
+
 
     env.close()

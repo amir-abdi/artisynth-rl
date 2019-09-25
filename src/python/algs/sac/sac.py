@@ -4,10 +4,12 @@ import torch.nn.functional as F
 from torch.optim import Adam
 from algs.sac.utils import soft_update, hard_update
 from algs.sac.model import GaussianPolicy, QNetwork, DeterministicPolicy
+import torch.nn as nn
 
 
-class SAC(object):
+class SAC(nn.Module):
     def __init__(self, num_inputs, action_space, args):
+        super(SAC, self).__init__()
 
         self.gamma = args.gamma
         self.tau = args.tau

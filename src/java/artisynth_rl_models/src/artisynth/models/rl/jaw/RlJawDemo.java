@@ -75,7 +75,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	}
 
 	public StepAdjustment advance(double t0, double t1, int flags) {
-			
+
 		return super.advance(t0, t1, flags);
 	}
 
@@ -86,8 +86,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 	@Override
 	public void addRlController() {
-		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "RlTracker", 
-				this.port, false);
+		rlTrack = new RlController(myJawModel, (RlModelInterface) this, "RlTracker", this.port, false);
 
 		// rlTrack.addMotionTarget(myJawModel.rigidBodies().get("jaw"));
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
@@ -132,6 +131,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		Point lowerincisor = null;
 		Point3d openMouthPositionLowerIncisor = new Point3d(2.6639861, -85.972497, -75.207516);
 		Point3d closedMouthPositionLowerIncisor = new Point3d(2.3216955, -92.172079, -41.505347);
+		Point3d restPositionLowerIncisor = new Point3d(2.4890594, -90.656961, -44.354956);
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
 			Log.log(list.get(0).getName());
@@ -184,8 +184,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					throw new NotImplementedException();
 				} else {
 					// swtich between open and close mouth
-					if (lowerincisor.getPosition().z < -60) //open
-						lowerincisor.setPosition(closedMouthPositionLowerIncisor);
+					if (lowerincisor.getPosition().z < -60) // open
+						lowerincisor.setPosition(restPositionLowerIncisor);
 					else
 						lowerincisor.setPosition(openMouthPositionLowerIncisor);
 					rlTrack.setExcitationsZero();

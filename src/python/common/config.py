@@ -34,7 +34,7 @@ def get_config(args):
     return Bunch(configs)
 
 
-def setup_logger(level, name, log_directory):
+def setup_logger(level=None, name=None, log_directory=None):
     if c.LOGGER_STR in logging.Logger.manager.loggerDict:
         return logging.getLogger(c.LOGGER_STR)
     logger = logging.getLogger(c.LOGGER_STR)
