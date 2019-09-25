@@ -1,7 +1,5 @@
 import argparse
 
-import torch
-
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -12,8 +10,9 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
-def get_args():
-    parser = argparse.ArgumentParser(description='RL')
+def get_parser(parser=None):
+    parser = parser or argparse.ArgumentParser(description='RL')
+    parser.conflict_handler = 'resolve'
 
     parser.add_argument('--w_u', type=float, default=1)
     parser.add_argument('--w_d', type=float, default=0.00005)
@@ -23,8 +22,15 @@ def get_args():
                         help='IP of server')
     parser.add_argument('--verbose', type=int, default='20',
                         help='Verbosity level')
-    parser.add_argument('--env-name', default='PongNoFrameskip-v4',
-                        help='environment to train on (default: PongNoFrameskip-v4)')
+    # todo: remove the following try except
+    try:
+        parser.add_argument('--env', default='Point2PointEnv-v0',
+                            help='environment to train on (default: Point2PointEnv-v0)')
+    except argparse.ArgumentError:
+        pass
+
+    parser.add_argument('--project-name', default='ArtiSynth-RL',
+                        help='Name of the RL project.')
     parser.add_argument('--model-name', default='testModel',
                         help='Name of the RL model being trained for logging purposes.')
     parser.add_argument('--load-path', default=None,
@@ -43,17 +49,22 @@ def get_args():
                         help='Whether task is episodic.')
     parser.add_argument('--test', type=str2bool,  default=False,
                         help='Only evaluate a trained model.')
+    parser.add_argument('--incremental_actions', type=str2bool, default=False,
+                        help='Treat actions as increment/decrements to the current excitations.')
     parser.add_argument('--use-wandb', type=str2bool,  default=False,
                         help='Use wandb for train logging.')
-    parser.add_argument('--resume-wandb', type=str2bool,  default=False,
-                        help='Resume the wandb training log.')
-    parser.add_argument('--reset-step', type=int, default=-1,
+    parser.add_argument('--wandb_resume_id', default=None, type=str,
+                        help='resume previous wandb run with id')
+    parser.add_argument('--reset-step', type=int, default=1e10,
                         help='Reset envs every n iters.')
     parser.add_argument('--hidden-layer-size', type=int, default=64,
                         help='Number of neurons in all hidden layers.')
 
-    parser.add_argument('--algo', default='ppo',
-                        help='algorithm to use: a2c | ppo | acktr')
+    try:
+        parser.add_argument('--alg', default='ppo',
+                            help='algorithm to use: a2c | ppo | acktr | mpc')
+    except argparse.ArgumentError:
+        pass
     parser.add_argument('--lr', type=float, default=7e-4,
                         help='learning rate (default: 7e-4)')
     parser.add_argument('--eps', type=float, default=1e-5,
@@ -72,8 +83,12 @@ def get_args():
                         help='value loss coefficient (default: 0.5)')
     parser.add_argument('--max-grad-norm', type=float, default=0.5,
                         help='max norm of gradients (default: 0.5)')
-    parser.add_argument('--seed', type=int, default=1,
-                        help='random seed (default: 1)')
+    # todo: fix the following conflict
+    try:
+        parser.add_argument('--seed', type=int, default=1,
+                            help='random seed (default: 1)')
+    except argparse.ArgumentError:
+        pass
     parser.add_argument('--num-processes', type=int, default=1,
                         help='how many training CPU processes to use (default: 16)')
     parser.add_argument('--num-steps', type=int, default=5,
@@ -121,18 +136,26 @@ def get_args():
     parser.add_argument('--goal-reward', type=float, default=1,
                         help='The reward to give if goal was reached.')
 
+    # PETS MPC args
+    parser.add_argument('-ca', '--ctrl_arg', action='append', nargs=2, default=[],
+                        help='Controller arguments, see https://github.com/kchua/handful-of-trials#controller-arguments')
+    parser.add_argument('-o', '--override', action='append', nargs=2, default=[],
+                        help='Override default parameters, see https://github.com/kchua/handful-of-trials#overrides')
+    parser.add_argument('-logdir', type=str, default='log',
+                        help='Directory to which results will be logged (default: ./results)')
+
     # initialize artisynth
     parser.add_argument('--init-artisynth', type=str2bool, default=False,
                         help='Initialize ArtiSynth automatically.')
-    parser.add_argument('--artisynth-model', default='RlPoint2PointModel',
+    parser.add_argument('--artisynth-model', default=None,
                         help='Name of the artisynth model to run. The model is expected to be inside the '
                              'package artisynth.models.rl')
     parser.add_argument('--artisynth-args', default='',
                         help='Arguments used in artisynth model initialization.')
 
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
+    # args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-    args.cuda = not args.no_cuda and torch.cuda.is_available()
+    return parser
 
-    return args

@@ -11,7 +11,8 @@ import com.google.gson.Gson;
 public class RlRestApi {
 	RlControllerInterface rlController;
 	int serverPort;
-	//private static org.apache.logging.log4j.Logger logger = LogManager.getLogger(RlRestApi.class);
+	// private static org.apache.logging.log4j.Logger logger =
+	// LogManager.getLogger(RlRestApi.class);
 
 	public RlRestApi(RlControllerInterface rlController, int serverPort) {
 		this.rlController = rlController;
@@ -22,6 +23,7 @@ public class RlRestApi {
 		spark.Spark.get("/reset", (request, response) -> rlController.resetState(), json());
 		
 		spark.Spark.get("/state", (request, response) -> rlController.getState(), json());		
+		spark.Spark.get("/obsSize", (request, response) -> rlController.getObservationSize(), json());
 		spark.Spark.get("/stateSize", (request, response) -> rlController.getStateSize(), json());
 		spark.Spark.get("/actionSize", (request, response) -> rlController.getActionSize(), json());
 		
@@ -38,15 +40,13 @@ public class RlRestApi {
 			res.body(toJson(new ResponseError(e)));
 		});
 	}
-	
+
 	public Route setExcitations = (Request request, Response response) -> {
-        Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
-        Gson gson = new Gson();
-        RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
-        Log.log(rlExcitations.getExcitations());
-        this.rlController.setExcitations(rlExcitations.getExcitations());
-        return 0;
-    };
-
-
+		Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
+		Gson gson = new Gson();
+		Log.log(request.body());
+		RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
+		RlState nextState = this.rlController.setExcitations(rlExcitations.getExcitations());
+		return nextState;
+	};
 }

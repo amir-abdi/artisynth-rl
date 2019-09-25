@@ -1,0 +1,16 @@
+rpm
+lpm
+ram
+lam
+rip
+lip
+rsp
+lsp
+rad
+lad
+rgh
+lgh
+rmt
+lmt
+rpt
+lpt

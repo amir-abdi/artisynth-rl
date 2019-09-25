@@ -1,3 +1,8 @@
+log
+wandb
+results
+*legacy*
+
 # Compiled class file
 *.class
 

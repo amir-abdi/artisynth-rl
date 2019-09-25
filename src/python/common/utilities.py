@@ -1,8 +1,5 @@
 from datetime import datetime
 from pathlib import Path
-import logging
-
-import common.config as config
 
 start_time = str(datetime.now().strftime('%y-%m-%d_%H-%M'))
 
@@ -49,17 +46,5 @@ class Bunch(object):
         self.__dict__.update(adict)
 
 
-def setup_logger(logger, level, name):
-    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-
-    file_handler = logging.FileHandler("{0}/{1}.log".format(config.log_directory, name))
-    file_handler.setFormatter(log_formatter)
-    logger.addHandler(file_handler)
-
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(log_formatter)
-    logger.addHandler(console_handler)
-
-    logger.setLevel(level=level)
-    logger.info('Log level: %i', level)
-
+def get_env_type(args):
+    return 'artisynth', args.env

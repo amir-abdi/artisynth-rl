@@ -1,0 +1,16 @@
+#!/bin/bash
+MODEL=$1
+ARGS=$2
+NUM_ENVS=$3
+START_PORT=$4
+echo "Running artisynth: " Count:$NUM_ENVS $MODEL with args: $ARGS Staring Port:$START_PORT
+
+for (( p=$START_PORT; p<$START_PORT+$NUM_ENVS; p++ ))
+do
+    echo "run artisynth at port:" $p
+    if [ "$p" = "$START_PORT" ]; then
+        artisynth -model artisynth.models.rl.$MODEL [ -port $p $ARGS ] -play -noTimeline &
+    else
+        artisynth -model artisynth.models.rl.$MODEL [ -port $p $ARGS ] -play -noTimeline &
+    fi
+done
