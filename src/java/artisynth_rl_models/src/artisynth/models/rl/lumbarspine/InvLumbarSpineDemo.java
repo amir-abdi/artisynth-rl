@@ -97,7 +97,7 @@ public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 			motionRealComponents.add(rb);
 		}
 
-		Log.log("orientations added to lists");
+		Log.debug("orientations added to lists");
 		sourceOrientations = new ArrayList<AxisAngle>();
 		sourceOrientations.add(thoraxOrientation);
 		sourceOrientations.add(L1Orientation);
@@ -215,7 +215,7 @@ public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 		setFlexL4(0);
 		setFlexL5(0);
 
-		Log.log("Positions set");
+		Log.debug("Positions set");
 		setThoraxOrientation(new AxisAngle(0, 0, 1, 0));
 		setL1Orientation(new AxisAngle(0, 0, 1, 0));
 		setL2Orientation(new AxisAngle(0, 0, 1, 0));

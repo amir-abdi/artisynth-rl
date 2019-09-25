@@ -94,7 +94,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
 			if (exCategoryName == myJawModel.muscleExciterCategoryNames[2]) { // only add bilateral
 				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
-					Log.log("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
+					Log.debug("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
 					rlTrack.addExciter(mex);
 				}
 			}
@@ -134,7 +134,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		Point3d restPositionLowerIncisor = new Point3d(2.4890594, -90.656961, -44.354956);
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
-			Log.log(list.get(0).getName());
+			Log.debug(list.get(0).getName());
 			if (list.get(0) instanceof Frame) {
 				mandible = (Frame) list.get(0);
 			} else if (list.get(0) instanceof Point) {
@@ -187,8 +187,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					if (lowerincisor.getPosition().z < -60) // open
 						lowerincisor.setPosition(restPositionLowerIncisor);
 					else
-						lowerincisor.setPosition(openMouthPositionLowerIncisor);
-					rlTrack.setExcitationsZero();
+						lowerincisor.setPosition(openMouthPositionLowerIncisor);					
 				}
 			}
 		}

@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import sun.util.logging.resources.logging;
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
 import artisynth.core.inverse.TargetPoint;
@@ -179,9 +180,9 @@ public class RlController extends ControllerBase
 				prev_f = f.copy();
 				iter++;
 				currentStep += stepSize;
-				Log.log(iter + " * " + force_diffs_norm);
+				Log.debug(iter + " * " + force_diffs_norm);
 			}
-			Log.log("Next state converged");
+			Log.debug("Next state converged");
 		} else {
 			double stepSize;
 			if (lastStateT == 0.0)
@@ -577,7 +578,7 @@ public class RlController extends ControllerBase
 
 	public void setDebug(boolean debug) {
 		this.debug = debug;
-		Log.logging = this.debug;
+		Log.DEBUG = this.debug;
 	}
 
 	public boolean isEnabled() {
@@ -599,7 +600,7 @@ public class RlController extends ControllerBase
 
 			if (getNextState) {
 				nextState = getNextState(t0, t1);
-				Log.log("nextStateUpToDate " + nextStateUpToDate);
+				Log.debug("nextStateUpToDate " + nextStateUpToDate);
 			}
 		}
 	}
@@ -631,7 +632,7 @@ public class RlController extends ControllerBase
 
 		rlState.setRlExcitations(getExcitations());
 
-		Log.log("Get State state.size = " + rlState.numComponents());
+		Log.debug("Get State state.size = " + rlState.numComponents());
 		return rlState;
 	}
 
@@ -730,6 +731,7 @@ public class RlController extends ControllerBase
 	public String resetState() {
 		myInverseModel.resetState();
 		this.setExcitationsZero();
+		Log.info("Reset");
 		return "Reset Done";
 	}
 

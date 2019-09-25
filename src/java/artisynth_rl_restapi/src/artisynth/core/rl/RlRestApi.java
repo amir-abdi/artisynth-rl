@@ -42,9 +42,9 @@ public class RlRestApi {
 	}
 
 	public Route setExcitations = (Request request, Response response) -> {
-		Log.log("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
+		Log.debug("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
 		Gson gson = new Gson();
-		Log.log(request.body());
+		Log.debug(request.body());
 		RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
 		RlState nextState = this.rlController.setExcitations(rlExcitations.getExcitations());
 		return nextState;

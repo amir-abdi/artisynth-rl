@@ -835,7 +835,7 @@ public class JawFemModel extends JawBaseModel {
 		for (RigidBody body : bodies) {
 			if (body.getName().contains("cartilage") && this.withDisc == false)
 				continue;
-			Log.log(body.getName());
+			Log.debug(body.getName());
 			addRigidBody(body);
 		}
 
@@ -901,7 +901,7 @@ public class JawFemModel extends JawBaseModel {
 		}
 
 		if (condyleConstraints) {
-			Log.log("hasCondyleConstraints");
+			Log.debug("hasCondyleConstraints");
 			addFixedMarkers();
 			setCondyleConstraints(false);
 		}

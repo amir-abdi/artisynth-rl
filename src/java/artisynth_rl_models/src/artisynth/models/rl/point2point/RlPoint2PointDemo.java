@@ -293,7 +293,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	}
 
 	public void add1dMuscles(String[] labels) {
-		Log.log("add1dMuscles");
+		Log.debug("add1dMuscles");
 		boolean[] dyn = new boolean[] { false, false };
 		int[] x = new int[] { -1, 1 };
 
@@ -487,7 +487,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(mech.frameMarkers().get(point_name));
 
 		for (MuscleExciter m : mex) {
-			Log.log("Add exciter " + m.getName());
+			Log.debug("Add exciter " + m.getName());
 			rlTrack.addExciter(m);
 		}
 

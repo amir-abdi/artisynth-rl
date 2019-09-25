@@ -531,7 +531,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		// do not use medial constraints in default jaw model
 		if (!useMedialWall) {
-			Log.log("Removing medial wall");
+			Log.debug("Removing medial wall");
 			bodyConnectors().get("LMED").setEnabled(false);
 			bodyConnectors().get("RMED").setEnabled(false);
 			RenderProps.setVisible(bodyConnectors().get("LMED"), false);
@@ -547,7 +547,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		if (useCurvJoint) {
 			// remove planar tmj constraints (first two in list)
-			Log.log("Using curved linear TMJ");
+			Log.debug("Using curved linear TMJ");
 			removeBodyConnector(bodyConnectors().get("LTMJ"));
 			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();

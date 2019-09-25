@@ -11,10 +11,10 @@ public class Utils {
 		try {
 			for (int i = 0; i < args.length; i += 2) {
 				dictionary.put(args[i], args[i + 1]);
-				Log.log("Arg: " + args[i] + " : " + args[i + 1]);
+				Log.debug("Arg: " + args[i] + " : " + args[i + 1]);
 			}
 		} catch (Exception e) {
-			Log.log("Args not properly parsed");
+			Log.debug("Args not properly parsed");
 		}
 		return dictionary;
 	}
