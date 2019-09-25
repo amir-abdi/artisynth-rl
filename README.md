@@ -49,7 +49,8 @@ The library is forked slightly extended by our team
 [here](https://github.com/amir-abdi/keras-rl).
 
 - **pytorch-a2c-ppo-acktr-gail**: PyTorch implementation of some RL algorithms.
-The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail).
+The repository fork which is tested with the current framework 
+can be cloned from [here](https://github.com/amir-abdi/pytorch-a2c-ppo-acktr-gail).
 
 
 
@@ -80,7 +81,7 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 - Check that ArtiSynth runs successfully by executing the command: `artisynth`
 
 - Run ArtiSynth with one of the RL environments, e.g.: 
-`artisynth -model artisynth.models.lumbarSpine.RlLumbarSpineModel`
+`artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo`
 
 
 ## Run and Train
@@ -88,7 +89,7 @@ The repository can be cloned from [here](https://github.com/ikostrikov/pytorch-a
 Once you have the keras-rl library installed, 
 to train the point2point reaching toy project, run:
 
-    bash run_files/point2point.sh
+    bash scripts/point2point.sh
 
 This will fire up ArtiSynth with the RlPoint2PointModel instantiated 
 and starts training. 
@@ -96,19 +97,19 @@ Change the `artisynth-args` argument to initiate different models.
 
 You can also run ArtiSynth separately by executing the command: 
 
-    artisynth -model artisynth.models.rl.RlPoint2PointModel \
-        [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
+    artisynth -model artisynth.models.rl.MODELPACKAGE.MODELNAME \
+        [ -port 8080 -FLAG1 FLAGVALUE1 -FLAG2 FLAGVALUE2... ] \
         -play -noTimeline
 
 And then run the `point2point.sh` bash file with `init-artisynth=false`.
 Make sure to set the `port` argument to the same port where you
 are running ArtiSynth.
 
-You can train the LumbarSpine model by running `bash run_files/lumbarspine.sh`.
+You can train the LumbarSpine model by running `bash scripts/lumbarspine.sh`.
 Similarly, ArtiSynth can be independently initiated with the 
 LumbarSpine model by running:
 
-    artisynth -model artisynth.models.rl.RlLumbarSpineModel \
+    artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo \
         [ -port 8080  ] \
         -play -noTimeline
   
@@ -122,9 +123,29 @@ Training results and logs are stored in 4 directories, namely
 by tensorboard and setting the `--logdir=logs_tb/TB_LOGGING_DIR`.
 
 The above 4 directories are created in the parent directory of where 
-`point_model2d_naf_main.py` is executed. In the `src/config.py` it is 
+`main_keras.py` is executed. In the `src/config.py` it is 
 assumed that the main file is executed from inside the `src` folder and
 the 4 directories are made in the artisynth_rl root.   
+
+### Available Environments
+
+#### Point2Point
+    artisynth -model artisynth.models.rl.point2point.RlPoint2PointDemo \
+        [ -port 8080 -num 6 -demoType 2d -muscleOptLen 0.1 -radius 5 ] \
+        -play -noTimeline
+        
+#### LumbarSpine
+
+    artisynth -model artisynth.models.rl.lumbarspine.RlLumbarSpineDemo \
+        [ -port 8080 ] \
+        -play -noTimeline
+
+#### Jaw
+
+    artisynth -model artisynth.models.rl.jaw.RlJawDemo \
+    [  -port 8080 -disc false -condyleConstraints true ]  \
+    -play -noTimeline
+
 
 ### Testing
 
