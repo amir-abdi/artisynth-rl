@@ -37,8 +37,6 @@ def get_parser(parser=None):
                         help='Path to load the trained model.')
     parser.add_argument('--port', type=int, default=8080,
                         help='port to run the server on (default: 4545)')
-    parser.add_argument('--visdom-port', type=int, default=8097,
-                        help='port to run the server on (default: 8097)')
     parser.add_argument('--episode-log-interval', type=int, default=1,
                         help='log interval for episodes (default: 10)')
     parser.add_argument('--log-interval', type=int, default=10,
@@ -105,8 +103,6 @@ def get_parser(parser=None):
                         help='save interval, one save per n updates (default: 100)')
     parser.add_argument('--eval-interval', type=int, default=100,
                         help='eval interval, one eval per n updates (default: 100)')
-    parser.add_argument('--vis-interval', type=int, default=100,
-                        help='vis interval, one log per n updates (default: 100)')
     parser.add_argument('--num-env-steps', type=int, default=10e6,
                         help='number of environment steps to train (default: 10e6)')
     parser.add_argument('--no-cuda', type=str2bool,  default=False,
@@ -119,8 +115,6 @@ def get_parser(parser=None):
                         help='use a linear schedule on the learning rate')
     parser.add_argument('--use-linear-clip-decay', type=str2bool,  default=False,
                         help='use a linear schedule on the ppo clipping parameter')
-    parser.add_argument('--vis', type=str2bool,  default=False,
-                        help='enable visdom visualization')
     parser.add_argument('--eval-mode', type=str2bool,  default=False,
                         help='Initialize environment in evalulation mode.')
     parser.add_argument('--use-tensorboard', type=str2bool, default=False,

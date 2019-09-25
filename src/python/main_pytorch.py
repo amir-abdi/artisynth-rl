@@ -2,7 +2,6 @@ import logging
 import os
 import time
 from collections import deque
-
 import numpy as np
 import torch
 
@@ -10,9 +9,8 @@ from a2c_ppo_acktr import algo
 from a2c_ppo_acktr.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 from a2c_ppo_acktr.utils import update_linear_schedule
-from artisynth_envs.make_env_pytorch import make_vec_envs
-from a2c_ppo_acktr.visualize import visdom_plot
 
+from artisynth_envs.make_env_pytorch import make_vec_envs
 import common.config
 from common.arguments import get_parser
 from common.config import setup_logger
@@ -21,14 +19,13 @@ from common.config import setup_logger
 def main():
     args = get_parser().parse_args()
     configs = common.config.get_config(args)
-    assert args.algo in ['a2c', 'ppo', 'acktr']
+    assert args.alg in ['a2c', 'ppo', 'acktr', 'sac']
     if args.recurrent_policy:
-        assert args.algo in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
+        assert args.alg in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
 
     if args.test:
         args.num_processes = 1
         args.use_wandb = False
-        args.vis = False
 
     logger = setup_logger(args.verbose, args.model_name, configs.log_directory)
     torch.set_num_threads(1)
@@ -39,11 +36,6 @@ def main():
     del args.seed
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-
-    if args.vis:
-        from visdom import Visdom
-        viz = Visdom(port=args.visdom_port)
-        win = None
 
     if args.use_wandb:
         import wandb
@@ -65,18 +57,18 @@ def main():
 
     actor_critic.to(device)
 
-    if args.algo == 'a2c':
+    if args.alg == 'a2c':
         agent = algo.A2C_ACKTR(actor_critic, args.value_loss_coef,
                                args.entropy_coef, lr=args.lr,
                                eps=args.eps, alpha=args.alpha,
                                max_grad_norm=args.max_grad_norm)
-    elif args.algo == 'ppo':
+    elif args.alg == 'ppo':
         agent = algo.PPO(actor_critic, args.clip_param, args.ppo_epoch, args.num_mini_batch,
                          args.value_loss_coef, args.entropy_coef, lr=args.lr,
                          eps=args.eps,
                          max_grad_norm=args.max_grad_norm,
                          use_clipped_value_loss=True)
-    elif args.algo == 'acktr':
+    elif args.alg == 'acktr':
         agent = algo.A2C_ACKTR(actor_critic, args.value_loss_coef,
                                args.entropy_coef, acktr=True)
 
@@ -103,7 +95,7 @@ def main():
 
         # decrease learning rate linearly
         if args.use_linear_lr_decay:
-            if args.algo == "acktr":
+            if args.alg == "acktr":
                 # use optimizer's learning rate since it's hard-coded in kfac.py
                 lr = update_linear_schedule(agent.optimizer, epoch, num_updates, agent.optimizer.lr)
             else:
@@ -111,7 +103,7 @@ def main():
         else:
             lr = args.lr
 
-        if args.algo == 'ppo' and args.use_linear_clip_decay:
+        if args.alg == 'ppo' and args.use_linear_clip_decay:
             agent.clip_param = args.clip_param * (1 - epoch / float(num_updates))
 
         distances = []
@@ -155,7 +147,7 @@ def main():
         # save for every interval-th episode or for the last epoch
         if epoch % args.save_interval == 0 or epoch == num_updates - 1:
             save_path = os.path.join(configs.trained_directory,
-                                     args.algo + "-" + args.env + ".pt")
+                                     args.alg + "-" + args.env + ".pt")
             logger.info("Saving model: {}".format(save_path))
             torch.save(actor_critic, save_path)
 
@@ -255,15 +247,6 @@ def main():
                 'mean_eval_reward': np.mean(rewards),
                 'eval_average_distance': np.mean(eval_distances)
             })
-
-        if args.vis and epoch % args.vis_interval == 0:
-            try:
-                # Sometimes monitor doesn't properly flush the outputs
-                logger.info("Visdom log update")
-                win = visdom_plot(viz, win, configs.visdom_log_directory, args.env,
-                                  args.algo, args.num_env_steps)
-            except IOError:
-                pass
 
         if epoch % args.log_interval == 0:
             logger.info('{}:{}  {}'.format(epoch, num_updates, log_info))
