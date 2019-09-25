@@ -1,12 +1,8 @@
 import datetime
-import gym
-import numpy as np
 import itertools
 import torch
-from algs.sac.sac import SAC
 from tensorboardX import SummaryWriter
 from algs.sac.replay_memory import ReplayMemory
-import logging
 import os
 
 from common.config import setup_logger
@@ -62,9 +58,9 @@ def train(env, agent, args, configs):
 
     # TesnorboardX
     writer = SummaryWriter(
-        logdir= '{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
-            datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
-                                             args.policy, "autotune" if args.automatic_entropy_tuning else ""))
+        logdir='{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
+                                           datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
+                                           args.policy, "autotune" if args.automatic_entropy_tuning else ""))
 
     # Memory
     memory = ReplayMemory(args.replay_size)
@@ -88,6 +84,12 @@ def train(env, agent, args, configs):
 
             if len(memory) > args.batch_size:
                 # Number of updates per step in environment
+                critic_1_loss_total = 0
+                critic_2_loss_total = 0
+                policy_loss_total = 0
+                ent_loss_total = 0
+                alpha_total = 0
+
                 for i in range(args.updates_per_step):
                     # Update parameters of all the networks
                     critic_1_loss, critic_2_loss, policy_loss, ent_loss, alpha = \
@@ -98,6 +100,21 @@ def train(env, agent, args, configs):
                     writer.add_scalar('loss/policy', policy_loss, updates)
                     writer.add_scalar('loss/entropy_loss', ent_loss, updates)
                     writer.add_scalar('entropy_temprature/alpha', alpha, updates)
+
+                    critic_1_loss_total += critic_1_loss
+                    critic_2_loss_total += critic_2_loss
+                    policy_loss_total += policy_loss
+                    ent_loss_total += ent_loss
+                    alpha_total += alpha
+
+                    if args.use_wandb:
+                        import wandb
+                        wandb.log({'loss/critic_1': critic_1_loss_total / args.updates_per_step,
+                                   'loss/critic_2': critic_2_loss_total / args.updates_per_step,
+                                   'loss/policy': policy_loss_total / args.updates_per_step,
+                                   'loss/entropy_loss': ent_loss_total / args.updates_per_step,
+                                   'entropy_temprature/alpha': alpha_total / args.updates_per_step},
+                                  step=i_episode)
                     updates += 1
 
             next_state, reward, done, _ = env.step(action)  # Step
@@ -156,6 +173,5 @@ def train(env, agent, args, configs):
             torch.save(agent.state_dict(), path)
             logger.info(f'model saved: {path}')
             print('------------------')
-
 
     env.close()
