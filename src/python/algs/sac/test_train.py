@@ -66,7 +66,7 @@ def train(env, agent, args, configs):
     memory = ReplayMemory(args.replay_size)
 
     # Training Loop
-    total_numsteps = 0
+    global_steps = 0
     updates = 0
 
     for i_episode in itertools.count(1):
@@ -77,7 +77,7 @@ def train(env, agent, args, configs):
         state = env.reset()
 
         while not done:
-            if args.start_steps > total_numsteps:
+            if args.start_steps > global_steps:
                 action = env.action_space.sample()  # Sample random action
             else:
                 action = agent.select_action(state)  # Sample action from policy
@@ -119,7 +119,7 @@ def train(env, agent, args, configs):
 
             next_state, reward, done, _ = env.step(action)  # Step
             episode_steps += 1
-            total_numsteps += 1
+            global_steps += 1
             episode_reward += reward
 
             # Ignore the "done" signal if it comes from hitting the time horizon.
@@ -130,12 +130,12 @@ def train(env, agent, args, configs):
 
             state = next_state
 
-        if total_numsteps > args.num_steps:
+        if global_steps > args.num_steps:
             break
 
         if i_episode % args.episode_log_interval == 0:
             writer.add_scalar('reward/train', episode_reward, i_episode)
-            print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(i_episode, total_numsteps,
+            print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(i_episode, global_steps,
                                                                                           episode_steps,
                                                                                           round(episode_reward, 2)))
         if args.use_wandb:

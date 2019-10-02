@@ -55,7 +55,9 @@ class JawEnvV0(ArtiSynthBase):
         logger.debug('action:{}'.format(action))
 
         if self.incremental_actions:
-            next_state = self.take_action(action + np.array(self.get_excitations_dict()))
+            # todo: get excitations from previous state not by calling the environment again!
+            current_excitations = np.array(self.get_excitations_dict())
+            next_state = self.take_action(action + current_excitations)
         else:
             next_state = self.take_action(action)
 
@@ -65,7 +67,10 @@ class JawEnvV0(ArtiSynthBase):
         state = self.get_state_dict()
 
         if state is not None:
-            reward, done, info = self.calc_reward(state, action)
+            if self.incremental_actions:
+                reward, done, info = self.calc_reward(state, action + current_excitations)
+            else:
+                reward, done, info = self.calc_reward(state, action)
             state_array = self.state_dic_to_array(state)
         else:
             reward = 0
@@ -108,12 +113,12 @@ class JawEnvV0(ArtiSynthBase):
             logging.info(f'Done: {phi_u} < {thres}')
 
         # if decided to add excitaiton regularization
-        # excitations = state[c.EXCITATIONS_STR]
-        # phi_r = np.inner(excitations, excitations) / 2
+        excitations = action
+        phi_r = np.inner(excitations, excitations)
 
-        reward = done_reward - phi_u
+        reward = done_reward - phi_u - phi_r
 
-        logger.log(level=19, msg='reward={}  phi_u={}'.format(reward, phi_u))
+        logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))
         return reward, done, info
 
     def reset(self):
