@@ -34,9 +34,13 @@ import maspack.spatialmotion.SpatialInertia;
 import maspack.spatialmotion.Wrench;
 import maspack.util.ReaderTokenizer;
 import artisynth.core.mechmodels.MechModel;
+import artisynth.core.mechmodels.MultiPointSpring;
+import artisynth.core.femmodels.FemNode;
+import artisynth.core.materials.LigamentAxialMaterial;
 import artisynth.core.mechmodels.AxialSpring;
 import artisynth.core.mechmodels.ExcitationComponent;
 import artisynth.core.mechmodels.ExcitationSource;
+import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.FrameMarker;
 import artisynth.core.mechmodels.Muscle;
 import artisynth.core.mechmodels.MuscleExciter;
@@ -45,6 +49,7 @@ import artisynth.core.mechmodels.RevoluteJoint;
 import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.mechmodels.BodyConnector;
 import artisynth.core.mechmodels.SegmentedPlanarConnector;
+import artisynth.core.mechmodels.Wrappable;
 import artisynth.core.mechmodels.MechSystemSolver.Integrator;
 import artisynth.core.modelbase.ComponentList;
 import artisynth.core.modelbase.RenderableComponentBase;
@@ -137,11 +142,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	protected boolean enableMuscles = true;
 
-	// old damping parameters...
-	// protected double muscleDamping = 0.005;
-	// protected double genLinDamping = 0.01;
-	// protected double genRotDamping = 20;
-	// protected double initExcitation;
+	protected static LigamentAxialMaterial capsule_ligament_material = new LigamentAxialMaterial(250000, 0, 50);
 
 	protected static double myMuscleDamping = 0.00;
 
@@ -475,8 +476,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		attachMarkers();
 		assembleMuscles();
-		pruneMuscleList(); // removes muscles from myMuscles if not in
-		// muscleList
+		pruneMuscleList(); // removes muscles from myMuscles if not in muscleList
 		attachMuscles();
 		// printMuscleMaxForces();
 
@@ -513,7 +513,48 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		setCondyleConstraints(fixedLaryngeal);
 	}
+	
+	protected void createAddFrameMarker(String name, Point3d position, Frame frame) {		
+		FrameMarker fm = new FrameMarker(frame, position);		
+		fm.setName(name);
+		addFrameMarker(fm);	
+	}
 
+	protected void setCondylarCapsule() {
+		// todo: slack? 4?
+		double slack = 4.0;		
+		
+		MultiPointSpring asr = new MultiPointSpring();
+		asr.addPoint(frameMarkers().get("rCapsulePosterior"));		
+		asr.setSegmentWrappable(30);
+		asr.addWrappable((Wrappable) rigidBodies().get("jaw"));
+		asr.addPoint(frameMarkers().get("rTmjOuterPosterior"));
+		asr.addPoint(frameMarkers().get("rTmjOuterAnterior"));
+		asr.addPoint(frameMarkers().get("rCapsuleAnterior"));		
+		asr.setMaterial(capsule_ligament_material);
+		asr.getRenderProps().setLineStyle(LineStyle.LINE);
+		asr.setRestLength(asr.getLength() + slack);
+		asr.getRenderProps().setLineColor(Color.GREEN);
+		asr.getRenderProps().setLineStyle(LineStyle.CYLINDER);
+		asr.getRenderProps().setLineRadius(0.75);
+		addMultiPointSpring(asr);
+				
+		MultiPointSpring asl = new MultiPointSpring();
+		asl.addPoint(frameMarkers().get("lCapsulePosterior"));		
+		asl.setSegmentWrappable(30);
+		asl.addWrappable((Wrappable) rigidBodies().get("jaw"));
+		asl.addPoint(frameMarkers().get("lTmjOuterPosterior"));
+		asl.addPoint(frameMarkers().get("lTmjOuterAnterior"));
+		asl.addPoint(frameMarkers().get("lCapsuleAnterior"));		
+		asl.setMaterial(capsule_ligament_material);
+		asl.getRenderProps().setLineStyle(LineStyle.LINE);
+		asl.setRestLength(asl.getLength() + slack);
+		asl.getRenderProps().setLineColor(Color.GREEN);
+		asl.getRenderProps().setLineStyle(LineStyle.CYLINDER);
+		asl.getRenderProps().setLineRadius(0.75);
+		addMultiPointSpring(asl);
+	}
+	
 	protected void setCondyleConstraints(Boolean fixedLaryngeal) {
 		constrainedBody = myRigidBodies.get("jaw");
 		if (constrainedBody == null) // no jaw body - error
@@ -1099,13 +1140,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		// and
 		// right
 		// arytenoids)
-
-		// get length ratios to update muscle lengths for new Amira geometry
-		Muscle m;
-		for (int k = 0; k < myMuscles.size(); k++) {
-			m = myMuscles.get(k);
-		}
-
 	}
 
 	public void printMuscleMaxForces() {

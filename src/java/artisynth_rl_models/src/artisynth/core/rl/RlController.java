@@ -730,7 +730,7 @@ public class RlController extends ControllerBase
 	@Override
 	public String resetState() {
 		myInverseModel.resetState();
-		this.setExcitationsZero();
+//		this.setExcitationsZero();
 		Log.info("Reset");
 		return "Reset Done";
 	}

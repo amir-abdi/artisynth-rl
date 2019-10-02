@@ -42,6 +42,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	private int port;
 	private boolean withDisc = false;
 	private boolean condyleConstraints = false;
+	private boolean condylarCapsule = false;
 
 	protected String workingDirname = "data";
 
@@ -58,7 +59,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		parseArgs(args);
 		setWorkingDir();
 
-		myJawModel = new JawFemModel("jawmodel", withDisc, condyleConstraints);
+		myJawModel = new JawFemModel("jawmodel", withDisc, condyleConstraints, condylarCapsule);
 		addModel(myJawModel);
 		// TODO: set back to 0.001 if became unstable --> it became unstable in 0.01
 		getRoot(this).setMaxStepSize(0.001);
@@ -92,12 +93,12 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
 
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
-			if (exCategoryName == myJawModel.muscleExciterCategoryNames[2]) { // only add bilateral
+//			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) { // only add bilateral
 				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
 					Log.debug("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
 					rlTrack.addExciter(mex);
 				}
-			}
+//			}
 		}
 //		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_open"));
 //		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_close"));
@@ -119,6 +120,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			this.withDisc = Boolean.parseBoolean(dictionary.get("-disc"));
 		if (dictionary.containsKey("-condyleConstraints"))
 			this.condyleConstraints = Boolean.parseBoolean(dictionary.get("-condyleConstraints"));
+		if (dictionary.containsKey("-condylarCapsule"))
+			this.condylarCapsule = Boolean.parseBoolean(dictionary.get("-condylarCapsule"));
 	}
 
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {

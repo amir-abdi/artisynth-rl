@@ -18,6 +18,8 @@ python src/python/main_sac.py \
 --goal-threshold=0.5 \
 --save-interval=10 \
 --eval-interval=10 \
+--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/sac/trained/saved_individualMuscles_2Point \
+--test=false \
+--start_steps=0 \
 
 #--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/sac/trained/saved_1 \
-#--test=true \

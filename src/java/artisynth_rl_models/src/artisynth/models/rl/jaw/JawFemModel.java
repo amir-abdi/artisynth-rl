@@ -138,8 +138,6 @@ public class JawFemModel extends JawBaseModel {
 
 	protected static RigidTransform3d hyoid_translation = new RigidTransform3d(new Vector3d(0, 7, -7), new AxisAngle());
 
-	LigamentAxialMaterial capsule_ligament_material = new LigamentAxialMaterial(250000, 0, 50);
-
 	protected static PropertyList myProps = new PropertyList(JawFemModel.class, JawBaseModel.class);
 
 	public PropertyList getAllPropertyInfo() {
@@ -430,25 +428,45 @@ public class JawFemModel extends JawBaseModel {
 	}
 
 	protected void addFrameMarkers() {
-		// create framemarkers for contact points of constraints
-		//FrameMarker m1 = new FrameMarker(rigidBodies().get("skull"), new Point3d(2.4077531, -96.598413, -43.842046));
-		FrameMarker m2 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(2.3768318, -94.201781, -40.301746));
-		FrameMarker m3 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(16.27707, -89.304763, -40.534119));
-		FrameMarker m4 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(29.397112, -67.681713, -41.787386));
-		FrameMarker m5 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(25.260763, -77.824013, -41.914129));
-		FrameMarker m6 = new FrameMarker(rigidBodies().get("jaw"), new Point3d(21.54352, -83.805296, -41.935241));
+		// create framemarkers for contact points of constraints	
+		RigidBody jaw = rigidBodies().get("jaw");
+		RigidBody skull = rigidBodies().get("skull");
+		
+		FrameMarker m2 = new FrameMarker(jaw, new Point3d(2.3768318, -94.201781, -40.301746));
+		FrameMarker m3 = new FrameMarker(jaw, new Point3d(16.27707, -89.304763, -40.534119));
+		FrameMarker m4 = new FrameMarker(jaw, new Point3d(29.397112, -67.681713, -41.787386));
+		FrameMarker m5 = new FrameMarker(jaw, new Point3d(25.260763, -77.824013, -41.914129));
+		FrameMarker m6 = new FrameMarker(jaw, new Point3d(21.54352, -83.805296, -41.935241));
 
 		m2.setName("lowerincisor");
 		m3.setName("c_r");
 		m4.setName("m6_r");
 		m5.setName("pm5_r");
 		m6.setName("pm4_r");
-		//addFrameMarker(m1);
+		
 		addFrameMarker(m2);
 		addFrameMarker(m3);
 		addFrameMarker(m4);
 		addFrameMarker(m5);
 		addFrameMarker(m6);
+		
+		// add right condylar capsule frame markers		
+		createAddFrameMarker("rTmjOuterPosterior", new Point3d(-55.993489, -4.5712128, -10.36536), jaw);
+		createAddFrameMarker("rTmjOuterAnterior", new Point3d(-56.049736, -8.4312215, -10.324311), jaw);
+		createAddFrameMarker("rTmjInnerPosterior", new Point3d(-35.993489, -1.5712128, -9.36536), jaw);
+		createAddFrameMarker("rTmjInnerAnterior", new Point3d(-36.049736, -5.4312215, -9.324311), jaw);		
+		createAddFrameMarker("rCapsulePosterior", new Point3d(-47.049736, 1.4312215, -5.324311), skull);
+		createAddFrameMarker("rCapsuleAnterior", new Point3d(-48.569322, -14.338951, -6.7008584), skull);
+
+		// add left condylar capsule frame markers
+		createAddFrameMarker("lTmjOuterPosterior", new Point3d(65.453532, -7.4198865, -6.9921023), jaw);
+		createAddFrameMarker("lTmjOuterAnterior", new Point3d(65.936589, -11.156971, -6.4801041), jaw);		
+		createAddFrameMarker("lTmjInnerPosterior", new Point3d(43.93532, -3.4198865, -5.9921023), jaw);
+		createAddFrameMarker("lTmjInnerAnterior", new Point3d(44.936589, -7.156971, -5.4801041), jaw);		
+		createAddFrameMarker("lCapsulePosterior", new Point3d(56.613578, -1.363587, -4.6223223), skull);
+		createAddFrameMarker("lCapsuleAnterior", new Point3d(53.626018, -17.755689, -3.7161942), skull);
+		
+		
 	}
 
 	protected void attachLigaments() throws IOException {
@@ -601,20 +619,22 @@ public class JawFemModel extends JawBaseModel {
 		// create a particle at the middle of the FEM nodes where the force of the
 		// ligament will be distributed and attach these nodes to the particle
 
+		// Get the average of the FEM nodes
 		Point3d pos = new Point3d();
 		for (int i = 0; i < attached_points.size(); i++) {
 			pos.add(model.getNode(attached_points.get(i)).getPosition());
 		}
-
 		pos.x = pos.x / (attached_points.size());
 		pos.y = pos.y / (attached_points.size());
 		pos.z = pos.z / (attached_points.size());
+		
+		// Create particle p1 on the average position
 		Particle p1 = new Particle();
-		p1.setMass(0);
-		// p1.setPosition (model.getNode (attached_points.get (Math.round
-		// (attached_points.size ()/2))).getPosition());
+		p1.setMass(0);		
 		p1.setPosition(pos);
 		addParticle(p1);
+		
+		// Create a PointFem3dAttachment on p1 
 		PointFem3dAttachment att = new PointFem3dAttachment(p1);
 		att.setFromNodes(p1.getPosition(), collectNodes(model, attached_points));
 		addAttachment(att);
@@ -810,7 +830,8 @@ public class JawFemModel extends JawBaseModel {
 		return cbar;
 	}
 
-	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints) throws IOException {
+	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints, Boolean condylarCapsule) 
+			throws IOException {
 		super();
 		setIntegrator(Integrator.FullBackwardEuler);
 		
@@ -818,6 +839,7 @@ public class JawFemModel extends JawBaseModel {
 		this.withDisc = withDisc;
 		setGravity(0, 0, -gravityVal * unitConversion);
 
+		// Assuming a fixed Laryngeal scenario
 		JawBaseModel.muscleList = readStringList(
 				ArtisynthPath.getSrcRelativePath(JawFemModel.class, "geometry/" + muscleListFilename));
 		JawBaseModel.bodyInfoList = readBodyInfoList(
@@ -901,19 +923,20 @@ public class JawFemModel extends JawBaseModel {
 		}
 
 		if (condyleConstraints) {
-			Log.debug("hasCondyleConstraints");
+			Log.debug("Adding Condyle Constraints");
 			addFixedMarkers();
 			setCondyleConstraints(false);
+		}
+				
+		if (condylarCapsule) {
+			Log.debug("Adding Condylar Capsule");
+			setCondylarCapsule();
 		}
 
 		setupRenderProps();
 	}
 
 	public void addExciters(HashMap<String, ExcitationComponent> myMuscles) {
-		// the following line doesn't work!
-		// assembleBilateralExcitors(muscleList, muscleInfo, myMuscles,
-		// muscleAbbreviations);
-
 		// add individual excitors
 		System.out.println("Adding individual exciters");
 		ArrayList<MuscleExciter> singleExciters = assembleIndividualExciters(myMuscles, getMuscleExciters());
@@ -921,7 +944,7 @@ public class JawFemModel extends JawBaseModel {
 			addMuscleExciter(exciter);
 		}
 		myMuscleExciterCategories.put("singleExciters", singleExciters);
-		System.out.println("#excitors " + getMuscleExciters().size());
+		System.out.println("#excitors =" + getMuscleExciters().size());
 
 		// add group exciters
 		System.out.println("Adding group exciters");
@@ -938,7 +961,7 @@ public class JawFemModel extends JawBaseModel {
 			}
 		}
 		myMuscleExciterCategories.put("groupExciters", groupExciters);
-		System.out.println("#excitors " + getMuscleExciters().size());
+		System.out.println("#excitors =" + getMuscleExciters().size());
 
 		// add bilateral exciters
 		System.out.println("Adding bilateral exciters");
@@ -948,7 +971,7 @@ public class JawFemModel extends JawBaseModel {
 			addMuscleExciter(exciter);
 		}
 		myMuscleExciterCategories.put("bilateralExciters", bilateralExciters);
-		System.out.println("#excitors " + getMuscleExciters().size());
+		System.out.println("#excitors =" + getMuscleExciters().size());
 	}
 
 	public void addInterBoneCollision() {
