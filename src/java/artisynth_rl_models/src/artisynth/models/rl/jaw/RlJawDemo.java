@@ -92,7 +92,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
 
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
-			if (exCategoryName == myJawModel.muscleExciterCategoryNames[2]) { // only add bilateral
+			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) { // only add bilateral
 				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
 					Log.debug("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
 					rlTrack.addExciter(mex);

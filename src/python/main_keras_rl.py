@@ -1,8 +1,7 @@
 import os
 import pprint
 import numpy as np
-import logging
-import argparse
+import gym
 
 from rl.agents.dqn import NAFAgent
 from rl.random import OrnsteinUhlenbeckProcess
@@ -15,13 +14,10 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, Concatenate
 from keras.optimizers import Adam
 
-from artisynth_envs.envs.point2point_env import Point2PointEnvV0, PointModel2dProcessor
 from common.arguments import get_parser
 from common.utilities import setup_tensorflow
 import common.config
 from common.config import setup_logger
-
-args = get_parser()
 
 # Noise parameters
 THETA = .35
@@ -114,27 +110,31 @@ class MuscleNAFAgent(NAFAgent):
         return action
 
 
+def extend_arguments(parser):
+    from common.arguments import str2bool
+    parser.add_argument('--use_csvlogger', type=str2bool, default=False,
+                        help='Use csvlogger to log training.')
+    parser.add_argument('--use_tensorboard', type=str2bool, default=False,
+                        help='Use tensorboard to log training.')
+
+    return parser
+
+
 def main():
-    args = common.arguments.get_parser().parse_args()
+    args = extend_arguments(get_parser()).parse_args()
     configs = common.config.get_config(args)
     setup_tensorflow()
-    logger = setup_logger(args.verbose, args.model_name, configs.log_directory)
-
     get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
-    log_file_name = args.model_name
 
     save_path = os.path.join(configs.trained_directory,
-                             args.algo + "-" + args.env + ".h5f")
+                             args.alg + "-" + args.env + ".h5f")
 
-    if args.env == 'Point2PointEnv-v0':
-        env = Point2PointEnvV0(verbose=0, success_thres=args.goal_threshold,
-                               include_current_pos=False, wait_action=args.wait_action,
-                               port=args.port,
-                               init_artisynth=args.init_artisynth, artisynth_model=args.artisynth_model,
-                               artisynth_args=args.artisynth_args)
-    else:
-        raise NotImplementedError("No solution is implemented for the environment {} in keras-rl.".format(args.env_name))
-    env.seed(123)
+    log_file_name = args.model_name
+    logger = setup_logger(args.verbose, log_file_name, configs.log_directory)
+
+    import artisynth_envs.envs  # imported here to avoid the conflict with tensorflow's logger
+    env = gym.make(args.env, **vars(args))
+    env.seed(args.seed)
 
     try:
         nb_actions = env.action_space.shape[0]
@@ -154,20 +154,16 @@ def main():
             n_steps_annealing=NUM_STEPS_ANNEALING
         )
 
-        processor = PointModel2dProcessor()
         agent = MuscleNAFAgent(nb_actions=nb_actions, V_model=v_model,
                                L_model=l_model, mu_model=mu_model,
                                memory=memory,
                                nb_steps_warmup=WARMUP_STEPS,
                                random_process=random_process,
                                gamma=GAMMA,
-                               target_model_update=UPDATE_TARGET_MODEL_STEPS,
-                               processor=processor,
-                               target_episode_update=True)
+                               target_model_update=UPDATE_TARGET_MODEL_STEPS)
 
         agent.compile(Adam(lr=LR), metrics=['mse'])
         env.agent = agent
-        pprint.pprint(agent.get_config(False))
 
         if args.load_path is not None:
             agent.load_weights(args.load_path)
@@ -190,8 +186,7 @@ def main():
                 append=False, separator=',')
             callbacks.append(csv_logger)
 
-        if not args.test:
-            # train code
+        if not args.test:  # train code
             training = True
             agent.fit(env,
                       nb_steps=NUM_TRAINING_STEPS,
@@ -199,23 +194,22 @@ def main():
                       verbose=args.verbose,
                       nb_max_episode_steps=NUM_MAX_EPISODE_STEPS,
                       callbacks=callbacks)
-            print('Training complete')
+            logger.info('Training complete')
             agent.save_weights(save_path)
-        else:
-            # test code
+        else:  # test code
             training = False
             env.log_to_file = False
             history = agent.test(env, nb_episodes=NUM_EPISODES,
                                  nb_max_episode_steps=NUM_MAX_EPISODE_STEPS)
-            print(history.history)
-            print('Average last distance: ',
-                  np.mean(history.history['last_distance']))
-            print('Mean Reward: ', np.mean(history.history['episode_reward']))
+            logger.info(history.history)
+            logger.info('Average last distance: ',
+                        np.mean(history.history['last_distance']))
+            logger.info('Mean Reward: ', np.mean(history.history['episode_reward']))
 
     except Exception as e:
         if training:
             agent.save_weights(save_path)
-        print("Error in main code:", str(e))
+        logger.info("Error in main code:", str(e))
         raise e
 
 

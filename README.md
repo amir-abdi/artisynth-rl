@@ -44,13 +44,11 @@ https://www.tensorflow.org/install)
 - **PyTorch** Installation guide is available [here](
 https://pytorch.org/get-started/locally/)
 
-- **keras-rl**: Keras implementation of some RL algorithms. 
-The library is forked slightly extended by our team 
-[here](https://github.com/amir-abdi/keras-rl).
+- **keras-rl**: Keras implementation of some RL algorithms
+[here](https://github.com/keras-rl/keras-rl).
 
-- **pytorch-a2c-ppo-acktr-gail**: PyTorch implementation of some RL algorithms.
-The repository fork which is tested with the current framework 
-can be cloned from [here](https://github.com/amir-abdi/pytorch-a2c-ppo-acktr-gail).
+- **pytorch-a2c-ppo-acktr-gail**: PyTorch implementation of some RL algorithms 
+([here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail)).
 
 
 
