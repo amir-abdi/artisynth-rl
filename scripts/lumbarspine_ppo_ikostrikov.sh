@@ -16,7 +16,7 @@ python3 src/python/main_ikostrikov.py \
 --use_wandb=false \
 --num_env_steps=80000 \
 --num_mini_batch=16 \
---reset_step=200 \
+--reset_step=100 \
 --entropy_coef=0.0001 \
 --lr=7e-3 \
 --clip_param=0.2 \
@@ -30,3 +30,6 @@ python3 src/python/main_ikostrikov.py \
 --verbose=20 \
 --include_current_excitations=true \
 --include_current_state=true \
+--test=true \
+--load_path=/home/amirabdi/artisynth-rl/results/SpineEnv-v0/lumbarspine-ppo/trained/ppo-SpineEnv-v0_saved.pt \
+--test_episode=2 \

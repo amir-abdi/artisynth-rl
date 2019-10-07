@@ -16,6 +16,4 @@ python src/python/main_sac.py \
 --goal_threshold=0.5 \
 --save_interval=10 \
 --eval_interval=10 \
-
-#--load-path=/home/amirabdi/artisynth-rl/results/JawEnv-v0/sac/trained/saved_1 \
-#--test=true \
+--test=false \

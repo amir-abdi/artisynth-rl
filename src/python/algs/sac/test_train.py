@@ -136,8 +136,8 @@ def test(env, agent, args, configs):
     logger = setup_logger()
 
     avg_reward = 0.
-    episodes = 10
-    for _ in range(episodes):
+    episodes = args.test_episode
+    for episode_count in range(episodes):
         state = env.reset()
         episode_reward = 0
         done = False
@@ -150,8 +150,8 @@ def test(env, agent, args, configs):
 
             state = next_state
             episode_iter_count += 1
-            if episode_iter_count % 10 == 0:
-                print(f'{episode_iter_count}/{env.reset_step}')
+        episode_reward /= episode_iter_count
+        logger.info(f'{episode_count}/{episodes}  reward:{episode_reward}')
         avg_reward += episode_reward
     avg_reward /= episodes
 

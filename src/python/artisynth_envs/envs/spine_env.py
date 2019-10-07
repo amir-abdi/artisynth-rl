@@ -109,7 +109,7 @@ class SpineEnvV0(ArtiSynthBase):
             state_array = np.zeros(self.obs_size)
             info = {}
 
-        if (done or self.episode_counter >= self.reset_step) and not self.test_mode:
+        if done or self.episode_counter >= self.reset_step:
             done = True
             info['episode_'] = {}
             info['episode_']['distance'] = info['distance']

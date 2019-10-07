@@ -62,8 +62,8 @@ def get_parser(parser=None):
     parser.add_argument('--lr', type=float, default=0.0003, metavar='G', help='learning rate (default: 0.0003)')
 
     # others
-    parser.add_argument('--test', type=str2bool, default=False,
-                        help='Only evaluate a trained model.')
+    parser.add_argument('--test', type=str2bool, default=False, help='Only evaluate a trained model.')
+    parser.add_argument('--test_episode', type=int, default=10, help='Number of episodes to test')
     parser.add_argument('--alg', default='ppo',
                         help='algorithm to use: a2c | ppo | acktr | mpc')
     parser.add_argument('--seed', type=int, default=123456, metavar='N',

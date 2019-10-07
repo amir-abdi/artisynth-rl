@@ -29,16 +29,11 @@ NUM_STEPS_ANNEALING = 300000
 
 # Training hyper-parameters
 GAMMA = 0.99
-LR = 1e-2
-NUM_MAX_EPISODE_STEPS = 200
 NUM_TRAINING_STEPS = 5000000
 BATCH_SIZE = 32
 UPDATE_TARGET_MODEL_STEPS = 200
 WARMUP_STEPS = 200
 MEMORY_SIZE = 50000
-
-# Testing parameters
-NUM_EPISODES = 500
 
 
 def smooth_logistic(x):
@@ -103,9 +98,8 @@ class MuscleNAFAgent(NAFAgent):
             noise = self.random_process.sample()
             assert noise.shape == action.shape
             action += noise
-            # This is necessary even if using logistic or sigmoid activations
-            # because of the added noise to avoid negative and above 1 values
-            # for excitations.
+
+            # Clipping is necessary to avoid negative and above 1 values for excitations.
             action = np.clip(action, 0, 1)
         return action
 
@@ -162,11 +156,12 @@ def main():
                                gamma=GAMMA,
                                target_model_update=UPDATE_TARGET_MODEL_STEPS)
 
-        agent.compile(Adam(lr=LR), metrics=['mse'])
+        agent.compile(Adam(lr=args.lr), metrics=['mse'])
         env.agent = agent
 
         if args.load_path is not None:
             agent.load_weights(args.load_path)
+            logger.info(f'Wights loaded from: {args.load_path}')
 
         callbacks = []
         if args.use_tensorboard:
@@ -192,15 +187,15 @@ def main():
                       nb_steps=NUM_TRAINING_STEPS,
                       visualize=False,
                       verbose=args.verbose,
-                      nb_max_episode_steps=NUM_MAX_EPISODE_STEPS,
+                      nb_max_episode_steps=args.reset_step,
                       callbacks=callbacks)
             logger.info('Training complete')
             agent.save_weights(save_path)
         else:  # test code
+            logger.info("Testing")
             training = False
             env.log_to_file = False
-            history = agent.test(env, nb_episodes=NUM_EPISODES,
-                                 nb_max_episode_steps=NUM_MAX_EPISODE_STEPS)
+            history = agent.test(env, nb_episodes=args.test_episode, nb_max_episode_steps=args.reset_step)
             logger.info(history.history)
             logger.info('Average last distance: ',
                         np.mean(history.history['last_distance']))

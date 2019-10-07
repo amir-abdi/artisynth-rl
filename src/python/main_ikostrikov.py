@@ -26,7 +26,7 @@ def extend_arguments(parser):
     parser.add_argument('--w_u', type=float, default=1)
     parser.add_argument('--w_d', type=float, default=0.00005)
     parser.add_argument('--w_r', type=float, default=0.05)
-    parser.add_argument('--episodic', type=str2bool, default=False,
+    parser.add_argument('--episodic', type=str2bool, default=True,
                         help='Whether task is episodic.')
     parser.add_argument('--allow_early_resets', type=str2bool, default=True,
                         help='To allow resetting the environment before done.')
@@ -147,8 +147,6 @@ def train(envs, env_vector, eval_envs, actor_critic, args, configs, logger):
     start = time.time()
     for epoch in range(num_updates):
         logger.info('Training {}/{} updates'.format(epoch, num_updates))
-        if args.test:
-            break
         envs.reset()
 
         # decrease learning rate linearly
@@ -306,44 +304,38 @@ def train(envs, env_vector, eval_envs, actor_critic, args, configs, logger):
         env_vector[0].test_mode = True
 
 
-
 def test(eval_envs, actor_critic, args, logger):
     logger.info('Evaluate')
 
-    eval_episode_rewards = []
-    rewards = []
+    total_rewards = []
+    episode_rewards = []
 
     obs = eval_envs.reset()
     eval_recurrent_hidden_states = torch.zeros(args.num_processes,
                                                actor_critic.recurrent_hidden_state_size, device=device)
     eval_masks = torch.zeros(args.num_processes, 1, device=device)
 
-    # while len(eval_episode_rewards) < 10:
-    for eval_step in range(args.num_steps_eval):
-        with torch.no_grad():
-            _, action, _, eval_recurrent_hidden_states = actor_critic.act(
-                obs, eval_recurrent_hidden_states, eval_masks, deterministic=True)
+    for episode_count in range(args.test_episode):
+        logger.info(f'Test Episode {episode_count}')
+        eval_envs.reset()
+        done = False
+        while not done:
+            with torch.no_grad():
+                _, action, _, eval_recurrent_hidden_states = actor_critic.act(
+                    obs, eval_recurrent_hidden_states, eval_masks, deterministic=True)
 
-        # Obser reward and next obs
-        obs, reward, done, infos = eval_envs.step(action)
+            # Obser reward and next obs
+            obs, reward, done, infos = eval_envs.step(action)
 
-        if args.episodic:
-            for info in infos:
-                if 'episode' in info.keys():
-                    eval_episode_rewards.append(info['episode']['r'])
-        else:
-            rewards.append(reward)
+            if args.episodic and 'episode' in infos[0].keys():
+                episode_rewards.append(infos[0]['episode']['r'])
+            else:
+                total_rewards.append(reward)
 
     eval_envs.close()
 
-    if args.episodic:
-        logger.info("Evaluation using {} episodes: mean reward {:.5f}\n".
-                    format(len(eval_episode_rewards),
-                           np.mean(eval_episode_rewards)))
-    else:
-        logger.info("Evaluation using {} steps: mean reward {:.5f}\n".
-                    format(args.num_steps,
-                           np.mean(rewards)))
+    logger.info("Evaluation using {} steps: mean reward {:.5f}  episode_mean_reward: {:.5f}\n".format(
+            args.test_episode, np.mean(np.asarray(total_rewards)), np.mean(np.asarray(episode_rewards))))
 
 
 if __name__ == "__main__":
