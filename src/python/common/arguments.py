@@ -60,6 +60,9 @@ def get_parser(parser=None):
                         help='Difference between real and target which is considered as success when reaching a goal')
     parser.add_argument('--goal_reward', type=float, default=0, help='The reward to give if goal was reached.')
     parser.add_argument('--lr', type=float, default=0.0003, metavar='G', help='learning rate (default: 0.0003)')
+    parser.add_argument('--w_u', type=float, default=1, help='weight of distance reward term')
+    parser.add_argument('--w_d', type=float, default=1, help='weight of damping reward term')
+    parser.add_argument('--w_r', type=float, default=1, help='weight of excitation regularization reward term')
 
     # others
     parser.add_argument('--test', type=str2bool, default=False, help='Only evaluate a trained model.')

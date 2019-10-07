@@ -13,7 +13,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 class JawEnvV0(ArtiSynthBase):
     def __init__(self, wait_action, reset_step, include_current_state, goal_threshold,
-                 incremental_actions, goal_reward, include_current_excitations, **kwargs):
+                 incremental_actions, goal_reward, include_current_excitations, w_u, w_d, w_r, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(**kwargs)
 
@@ -24,6 +24,10 @@ class JawEnvV0(ArtiSynthBase):
 
         self.reset_step = int(reset_step)
         self.wait_action = float(wait_action)
+
+        self.w_u = w_u
+        self.w_d = w_d  # not used!
+        self.w_r = w_r
 
         self.include_excitations = include_current_excitations
         self.include_current_state = include_current_state
@@ -89,7 +93,7 @@ class JawEnvV0(ArtiSynthBase):
         excitations = action
         phi_r = np.inner(excitations, excitations)
 
-        reward = done_reward - phi_u - phi_r
+        reward = done_reward - phi_u * self.w_u - phi_r * self.w_r
 
         logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))
         return reward, done, info

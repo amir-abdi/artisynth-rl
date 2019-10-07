@@ -23,9 +23,6 @@ def extend_arguments(parser):
                         help='number of ppo epochs (default: 4)')
     parser.add_argument('--clip_param', type=float, default=0.2,
                         help='clip parameter (default: 0.2)')
-    parser.add_argument('--w_u', type=float, default=1)
-    parser.add_argument('--w_d', type=float, default=0.00005)
-    parser.add_argument('--w_r', type=float, default=0.05)
     parser.add_argument('--episodic', type=str2bool, default=True,
                         help='Whether task is episodic.')
     parser.add_argument('--allow_early_resets', type=str2bool, default=True,

@@ -4,7 +4,7 @@
 
 python3 src/python/main_keras_rl.py \
 --env=Point2PointEnv-v2 \
---model_name=point2point-naf \
+--model_name=point2point-naf-kerasRL \
 --alg=naf \
 --port=8082 \
 --verbose=20 \

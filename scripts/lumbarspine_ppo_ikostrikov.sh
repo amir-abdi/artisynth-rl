@@ -2,7 +2,7 @@
 
 python3 src/python/main_ikostrikov.py \
 --env=SpineEnv-v0 \
---model_name=lumbarspine-ppo \
+--model_name=lumbarspine-ppo-ikostrikov \
 --log_interval=1 \
 --num_steps=32 \
 --save_interval=4 \
