@@ -47,6 +47,7 @@ def get_parser(parser=None):
                         help='eval interval, one eval per n updates (default: 100)')
     parser.add_argument('--episode_log_interval', type=int, default=1,
                         help='log interval for episodes (default: 10)')
+    parser.add_argument('--eval_episode', type=int, default=5, help='Number of episodes to evaluate')
 
     # Model
     parser.add_argument('--incremental_actions', type=str2bool, default=False,
@@ -65,7 +66,7 @@ def get_parser(parser=None):
     parser.add_argument('--w_r', type=float, default=1, help='weight of excitation regularization reward term')
 
     # others
-    parser.add_argument('--test', type=str2bool, default=False, help='Only evaluate a trained model.')
+    parser.add_argument('--test', type=str2bool, default=False, help='Evaluate a trained model.')
     parser.add_argument('--test_episode', type=int, default=10, help='Number of episodes to test')
     parser.add_argument('--alg', default='ppo',
                         help='algorithm to use: a2c | ppo | acktr | mpc')

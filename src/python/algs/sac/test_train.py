@@ -24,7 +24,7 @@ def train(env, agent, args, configs):
     global_steps = 0
     updates = 0
 
-    for i_episode in itertools.count(1):
+    for i_episode in itertools.count(start=agent.global_episode, step=1):
         episode_reward = 0
         episode_steps = 0
         done = False
@@ -97,9 +97,9 @@ def train(env, agent, args, configs):
             import wandb
             wandb.log({'episode_reward': episode_reward}, step=i_episode)
 
-        if i_episode % args.eval_interval == 0 and args.eval == True:
+        if i_episode % args.eval_interval == 0:
             avg_reward = 0.
-            episodes = 10
+            episodes = args.eval_episode
             for _ in range(episodes):
                 state = env.reset()
                 episode_reward = 0
@@ -124,7 +124,8 @@ def train(env, agent, args, configs):
             print("----------------------------------------")
 
         if i_episode % args.save_interval == 0:
-            path = os.path.join(configs.trained_directory, 'saved')
+            path = os.path.join(configs.trained_directory, 'last')
+            agent.global_episode = i_episode
             torch.save(agent.state_dict(), path)
             logger.info(f'model saved: {path}')
             print('------------------')

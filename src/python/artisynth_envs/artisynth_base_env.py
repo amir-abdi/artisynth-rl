@@ -41,8 +41,6 @@ class ArtiSynthBase(gym.Env, ABC):
         state = self.reset()
         state_size = state.shape[0]
 
-        logger.info('State array size: {}'.format(obs_size))
-        logger.info('Action array size: {}'.format(action_size))
         state_low, state_high = self.get_state_boundaries(action_size)
 
         # sanity check
@@ -63,6 +61,10 @@ class ArtiSynthBase(gym.Env, ABC):
             high_action = c.HIGH_EXCITATION
         self.action_space = spaces.Box(low=low_action, high=high_action,
                                        shape=(action_size,), dtype=np.float32)
+
+        logger.info('Env observation size (excluding excitations): {}'.format(obs_size))
+        logger.info('Action array size: {}'.format(action_size))
+        logger.info('State size: {}'.format(state_size))
 
         return action_size, obs_size
 
@@ -106,17 +108,14 @@ class ArtiSynthBase(gym.Env, ABC):
 
     def get_obs_size(self):
         obs_size = self.net.get_post(request_type=c.GET_STR, message=c.OBS_SIZE_STR)
-        logger.info('Obs size: {}'.format(obs_size))
         return obs_size
 
     def get_state_size(self):
         state_size = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
-        logger.info('State size: {}'.format(state_size))
         return state_size
 
     def get_action_size(self):
         action_size = self.net.get_post(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
-        logger.info('Action size: {}'.format(action_size))
         return action_size
 
     def get_state_dict(self):
@@ -162,6 +161,7 @@ class ArtiSynthBase(gym.Env, ABC):
 
         if self.include_current_excitations:
             observation_vector = np.append(observation_vector, js[c.EXCITATIONS_STR])
+
         return np.asarray(observation_vector)
 
     def distance_to_target(self, observation):

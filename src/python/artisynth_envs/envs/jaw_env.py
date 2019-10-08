@@ -70,7 +70,7 @@ class JawEnvV0(ArtiSynthBase):
             state_array = np.zeros(self.obs_size)
             info = {}
 
-        if self.episode_counter >= self.reset_step and not self.test_mode:
+        if self.episode_counter >= self.reset_step:
             done = True
 
         return state_array, reward, done, info
@@ -91,7 +91,7 @@ class JawEnvV0(ArtiSynthBase):
             logging.info(f'Done: {phi_u} < {thres}')
 
         excitations = action
-        phi_r = np.inner(excitations, excitations)
+        phi_r = np.linalg.norm(excitations)
 
         reward = done_reward - phi_u * self.w_u - phi_r * self.w_r
 
