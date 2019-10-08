@@ -104,7 +104,6 @@ def train(args, extra_args):
         if alg_kwargs.get('network') is None:
             alg_kwargs['network'] = get_default_network()
 
-
     nsteps = alg_kwargs['nsteps']
     nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
     nbatch = nsteps * nenvs
@@ -116,27 +115,16 @@ def train(args, extra_args):
           )
 
     # todo: different algs have different args... reoslve this later...
-    if args.alg == 'sac':
-        model = learn(env=env)
-    elif args.alg == 'ddpg':
-        # todo: remove this hack
-        alg_kwargs.pop('nsteps', None)
-        model = learn(
-            env=env,
-            seed=seed,
-            total_timesteps=total_timesteps,
-            **alg_kwargs
-        )
-    else:
-        model = learn(
-            env=env,
-            seed=seed,
-            total_timesteps=total_timesteps,
-            save_interval=args.save_interval,
-            log_interval=args.log_interval,
-            load_path=args.load_path,
-            **alg_kwargs
-        )
+
+    model = learn(
+        env=env,
+        seed=seed,
+        total_timesteps=total_timesteps,
+        save_interval=args.save_interval,
+        log_interval=args.log_interval,
+        load_path=args.load_path,
+        **alg_kwargs
+    )
     return model, env
 
 
@@ -156,13 +144,10 @@ def build_env(args):
     get_session(config=config)
 
     flatten_dict_observations = alg not in {'her'}
-    if alg == 'sac':
-        env = gym.make(env_id, **vars(args))
-    else:
-        env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
-                           env_kwargs=vars(args),
-                           reward_scale=args.reward_scale,
-                           flatten_dict_observations=flatten_dict_observations)
+    env = make_vec_env(env_id, env_type, args.num_env or 1, seed,
+                       env_kwargs=vars(args),
+                       reward_scale=args.reward_scale,
+                       flatten_dict_observations=flatten_dict_observations)
 
     return env
 

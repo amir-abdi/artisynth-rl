@@ -93,12 +93,12 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
 
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
-//			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) { // only add bilateral
+			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) { // only add bilateral
 				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
 					Log.debug("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
 					rlTrack.addExciter(mex);
 				}
-//			}
+			}
 		}
 //		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_open"));
 //		rlTrack.addExciter(myJawModel.getMuscleExciters().get("bi_close"));
@@ -190,7 +190,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 					if (lowerincisor.getPosition().z < -60) // open
 						lowerincisor.setPosition(restPositionLowerIncisor);
 					else
-						lowerincisor.setPosition(openMouthPositionLowerIncisor);					
+						lowerincisor.setPosition(openMouthPositionLowerIncisor);
 				}
 			}
 		}

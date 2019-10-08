@@ -1,28 +1,38 @@
-import gym
-from common.rest_client import RestClient
 import logging
 import os
 import time
 import numpy as np
+import subprocess
+import gym
 from gym import spaces
+from gym.utils import seeding
+from abc import ABC, abstractmethod
 
+from common.rest_client import RestClient
 import common.constants as c
 
 logger = logging.getLogger(c.LOGGER_STR)
 
 
-class ArtiSynthBase(gym.Env):
-    def __init__(self, ip, port, init_artisynth, artisynth_model, artisynth_args=''):
+class ArtiSynthBase(gym.Env, ABC):
+    def __init__(self, ip, port, artisynth_model, test, components, artisynth_args='', **kwargs):
         self.observation_space = None
         self.action_space = None
         self.ip = ip
         self.port = port
+        self.test_mode = test
 
-        if init_artisynth:
-            logger.info('Running artisynth')
-            self.run_artisynth(ip, port, artisynth_model, artisynth_args)
+        # set default values
+        self.include_current_state = False
+        self.include_current_excitations = False
+        self.components = None
+        self.action_size = 0
+        self.obs_size = 0
+        self.components = components
 
         self.net = RestClient(ip, port)
+        if not RestClient.server_is_alive(ip, port):  # if server is not already running, initiate ArtiSynth
+            self.run_artisynth(ip, port, artisynth_model, artisynth_args)
 
     def init_spaces(self, incremental_actions=False):
         # todo: use the same init_spaces for all environments
@@ -31,8 +41,6 @@ class ArtiSynthBase(gym.Env):
         state = self.reset()
         state_size = state.shape[0]
 
-        logger.info('State array size: {}'.format(obs_size))
-        logger.info('Action array size: {}'.format(action_size))
         state_low, state_high = self.get_state_boundaries(action_size)
 
         # sanity check
@@ -40,9 +48,8 @@ class ArtiSynthBase(gym.Env):
         #     'The observation size {} and action size {} sent by the environment does not match the state size {}.'.\
         #         format(obs_size, action_size, state_size)
         assert state_size == state_low.shape[0] and state_size == state_high.shape[0], \
-            'The shape of state_low {}, state_high {} and state {} do not match.'.format(
-                state_low.shape[0], state_high.shape[0], state_size
-            )
+            f'The shape of state_low ({state_low.shape[0]}), ' \
+            f'state_high ({state_high.shape[0]}) and state_size ({state_size}) do not match.'
 
         self.observation_space = spaces.Box(low=state_low, high=state_high, dtype=np.float32)
         self.observation_space.shape = (state_size,)
@@ -55,7 +62,30 @@ class ArtiSynthBase(gym.Env):
         self.action_space = spaces.Box(low=low_action, high=high_action,
                                        shape=(action_size,), dtype=np.float32)
 
+        logger.info('Env observation size (excluding excitations): {}'.format(obs_size))
+        logger.info('Action array size: {}'.format(action_size))
+        logger.info('State size: {}'.format(state_size))
+
         return action_size, obs_size
+
+    def get_state_boundaries(self, action_size):
+        low = []
+        high = []
+        # order: lateral, anteroposterio, vertical
+        if self.include_current_state:
+            for current_obj in self.components[c.CURRENT]:
+                low.extend(current_obj[c.LOW])
+                high.extend(current_obj[c.HIGH])
+        for target_obj in self.components[c.TARGET]:
+            low.extend(target_obj[c.LOW])
+            high.extend(target_obj[c.HIGH])
+        low = np.array(low)
+        high = np.array(high)
+
+        if self.include_current_excitations:
+            low = np.append(low, np.full((action_size,), c.LOW_EXCITATION))
+            high = np.append(high, np.full((action_size,), c.HIGH_EXCITATION))
+        return low, high
 
     def run_artisynth(self, ip, port, artisynth_model, artisynth_args=''):
         if ip != 'localhost' and ip != '0.0.0.0' and ip != '127.0.0.1':
@@ -64,11 +94,10 @@ class ArtiSynthBase(gym.Env):
         if RestClient.server_is_alive(ip, port):
             return
 
-        command = 'artisynth -model artisynth.models.rl.{} '.format(artisynth_model) + \
+        command = 'artisynth -model {} '.format(artisynth_model) + \
                   '[ -port {} {} ] -play -noTimeline'.format(port, artisynth_args)
         command_list = command.split(' ')
 
-        import subprocess
         FNULL = open(os.devnull, 'w')
         subprocess.Popen(command_list, stdout=FNULL, stderr=subprocess.STDOUT)
         # os.spawnvp(os.P_NOWAIT, 'artisynth', tuple(command_list))
@@ -79,17 +108,14 @@ class ArtiSynthBase(gym.Env):
 
     def get_obs_size(self):
         obs_size = self.net.get_post(request_type=c.GET_STR, message=c.OBS_SIZE_STR)
-        logger.info('Obs size: {}'.format(obs_size))
         return obs_size
 
     def get_state_size(self):
         state_size = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
-        logger.info('State size: {}'.format(state_size))
         return state_size
 
     def get_action_size(self):
         action_size = self.net.get_post(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
-        logger.info('Action size: {}'.format(action_size))
         return action_size
 
     def get_state_dict(self):
@@ -117,6 +143,36 @@ class ArtiSynthBase(gym.Env):
                                             message=c.EXCITATIONS_STR)
         return next_state_dict
 
+    def state_dic_to_array(self, js):
+        logger.debug('state json: %s', str(js))
+        observation = js[c.OBSERVATION_STR]
+        observation_vector = np.array([])  # np.zeros(self.obs_size)
+
+        if self.include_current_state:
+            for current_comp in self.components[c.CURRENT]:
+                t = observation[current_comp[c.NAME]]
+                for prop in self.components[c.PROPS]:
+                    observation_vector = np.append(observation_vector, t[prop])
+
+        for target_comp in self.components[c.TARGET]:
+            t = observation[target_comp[c.NAME]]
+            for prop in self.components[c.PROPS]:
+                observation_vector = np.append(observation_vector, t[prop])
+
+        if self.include_current_excitations:
+            observation_vector = np.append(observation_vector, js[c.EXCITATIONS_STR])
+
+        return np.asarray(observation_vector)
+
+    def distance_to_target(self, observation):
+        diff = 0
+        for current_comp, target_comp in zip(self.components[c.CURRENT], self.components[c.TARGET]):
+            for prop in self.components[c.PROPS]:
+                p_current = np.asarray(observation[current_comp[c.NAME]][prop])
+                p_target = np.asarray(observation[target_comp[c.NAME]][prop])
+                diff += np.linalg.norm(p_current - p_target)
+        return diff
+
     def render(self, mode=None, close=False):
         pass
 
@@ -124,10 +180,5 @@ class ArtiSynthBase(gym.Env):
         pass
 
     def seed(self, seed=None):
-        pass
-
-    def state_dic_to_array(self, state_dict):
-        pass
-
-    def get_state_boundaries(self, action_size):
-        pass
+        np_random, seed = seeding.np_random(seed)
+        return [seed]
