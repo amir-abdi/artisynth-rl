@@ -60,6 +60,8 @@ def get_parser(parser=None):
     parser.add_argument('--goal_threshold', type=float, default=0.1,
                         help='Difference between real and target which is considered as success when reaching a goal')
     parser.add_argument('--goal_reward', type=float, default=0, help='The reward to give if goal was reached.')
+    parser.add_argument('--zero_excitations_on_reset', type=str2bool, default=True,
+                        help='Reset all muscle excitations to zero after each reset.')
     parser.add_argument('--lr', type=float, default=0.0003, metavar='G', help='learning rate (default: 0.0003)')
     parser.add_argument('--w_u', type=float, default=1, help='weight of distance reward term')
     parser.add_argument('--w_d', type=float, default=1, help='weight of damping reward term')

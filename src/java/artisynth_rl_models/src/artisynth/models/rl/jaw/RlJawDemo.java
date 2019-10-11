@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import org.python.modules.struct;
+
 import artisynth.core.mechmodels.Frame;
 import artisynth.core.mechmodels.MotionTargetComponent;
 import artisynth.core.mechmodels.MuscleExciter;
@@ -20,6 +22,7 @@ import artisynth.core.util.ArtisynthPath;
 import artisynth.core.utils.Utils;
 import artisynth.core.workspace.RootModel;
 import maspack.matrix.Point3d;
+import maspack.matrix.Vector3d;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class RlJawDemo extends RootModel implements RlModelInterface {
@@ -124,6 +127,64 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			this.condylarCapsule = Boolean.parseBoolean(dictionary.get("-condylarCapsule"));
 	}
 
+	enum JawModelType {
+		withCondylarConstraints, withCondylarCapsule
+	};
+
+	enum JawPositions {
+		closedPosition(2.6199824, -94.095219, -40.749265, JawModelType.withCondylarConstraints),
+		openPosition(3.7713994, -85.668177, -75.45326, JawModelType.withCondylarConstraints, 7.0),
+		restPosition(2.432348, -89.850281, -46.341909, JawModelType.withCondylarConstraints),		
+		pureRotationalOpeningPosition(3.1654528, -84.767872, -59.862705, JawModelType.withCondylarConstraints),
+		rightLaterotrusivePosition(-12.188396, -96.733508, -44.460555, JawModelType.withCondylarConstraints),
+		leftLaterotrusivePosition(16.940234, -97.129743, -43.485869, JawModelType.withCondylarConstraints),
+		retrudedContactPosition(2.8772912, -91.449043, -41.952765, JawModelType.withCondylarConstraints), // CentricRelation
+		edgeToEdgePosition(-0.024246108, -96.801937, -45.99113, JawModelType.withCondylarConstraints),
+		protrusivePosition(0.84730021, -107.36706, -40.258819, JawModelType.withCondylarConstraints);
+
+		JawModelType jawModelType;
+		double x, y, z;
+		double weight;
+
+		private JawPositions(double x, double y, double z, JawModelType jawModelType) {
+			this(x, y, z, jawModelType, 1);
+		}
+		
+		private JawPositions(double x, double y, double z, JawModelType jawModelType, double weight) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.jawModelType = jawModelType;
+			this.weight = weight;
+		}
+
+		public Vector3d getPosition() {
+			return new Vector3d(x, y, z);
+		}
+
+		public double getWeight() {
+			return weight;
+		}
+		
+		public JawModelType getJawModelType() {
+			return this.jawModelType;
+		}
+		
+		
+	}
+
+	// closedPosition 2.6199824 -94.095219 -40.749265
+	// restPosition 2.432348 -89.850281 -46.341909
+	// openPosition 3.7713994 -85.668177 -75.45326
+	// pureRotationalOpeningPosition 3.1654528 -84.767872 -59.862705
+
+	// rightLaterotrusivePosition -12.188396 -96.733508 -44.460555
+	// lefttLaterotrusivePosition 16.940234 -97.129743 -43.485869
+
+	// retrudedContactPosition 2.8772912 -91.449043 -41.952765 // CentricRelation
+	// edgeToEdgePosition -0.024246108 -96.801937 -45.99113
+	// protrusivePosition 0.84730021 -107.36706 -40.258819
+
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
 		public Boolean reset = false;
 		public Boolean trialRun = false;
@@ -132,9 +193,12 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 		Frame mandible = null;
 		Point lowerincisor = null;
+		
+		JawPositions jawPositionsArr[] = JawPositions.values();
+
 		Point3d openMouthPositionLowerIncisor = new Point3d(2.6639861, -85.972497, -75.207516);
 		Point3d closedMouthPositionLowerIncisor = new Point3d(2.3216955, -92.172079, -41.505347);
-		Point3d restPositionLowerIncisor = new Point3d(2.4890594, -90.656961, -44.354956);
+//		Point3d restPositionLowerIncisor = new Point3d(2.4890594, -90.656961, -44.354956);
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
 			Log.debug(list.get(0).getName());
@@ -170,6 +234,19 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			return (r.nextDouble() - 0.5) * radius;
 		}
 
+		private Point3d getRandomPoint(JawPositions jawPositions[]) {
+			Point3d result = new Point3d();
+			double weights_sum = 0;
+			for (int i=0; i<jawPositions.length; ++i) {
+				JawPositions jp = jawPositions[i];
+				double w = r.nextDouble();
+				result.add(jp.getPosition().scale(jp.getWeight() * w));
+				weights_sum += jp.getWeight() * w;
+			}
+			result.scale(1/weights_sum);
+			return result;
+		}
+		
 		private void resetRefPosition(Boolean random) {
 			// TODO: complete the reset pos implementation
 			if (mandible != null) {
@@ -186,11 +263,19 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				if (random) {
 					throw new NotImplementedException();
 				} else {
+					lowerincisor.setPosition(getRandomPoint(jawPositionsArr));
+										
+//					int index = r.nextInt(jawPositionsArr.length);
+//					lowerincisor.setPosition(jawPositionsArr[index].getPosition());
+//					Log.info(jawPositionsArr[index]);
+					
 					// swtich between open and close mouth
-					if (lowerincisor.getPosition().z < -60) // open
-						lowerincisor.setPosition(restPositionLowerIncisor);
-					else
-						lowerincisor.setPosition(openMouthPositionLowerIncisor);
+//					if (lowerincisor.getPosition().z < -60) // open
+////						lowerincisor.setPosition(restPositionLowerIncisor);
+//						lowerincisor.setPosition(closedMouthPositionLowerIncisor);					
+//					else
+//						lowerincisor.setPosition(openMouthPositionLowerIncisor);
+					
 				}
 			}
 		}

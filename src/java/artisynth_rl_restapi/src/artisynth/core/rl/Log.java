@@ -1,7 +1,7 @@
 package artisynth.core.rl;
 
 public class Log {
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 
 	public static void debug(String message) {
 		if (DEBUG)

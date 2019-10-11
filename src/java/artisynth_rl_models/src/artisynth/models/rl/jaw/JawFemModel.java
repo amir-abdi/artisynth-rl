@@ -131,11 +131,6 @@ public class JawFemModel extends JawBaseModel {
 
 	protected boolean useElasticFoundationContact = true;
 
-	// protected static RigidTransform3d hyoid_translation = new RigidTransform3d
-	// (new Vector3d(0, 4, -6),new AxisAngle());
-	// protected static RigidTransform3d hyoid_translation = new RigidTransform3d
-	// (new Vector3d(0, 4, -11),new AxisAngle());
-
 	protected static RigidTransform3d hyoid_translation = new RigidTransform3d(new Vector3d(0, 7, -7), new AxisAngle());
 
 	protected static PropertyList myProps = new PropertyList(JawFemModel.class, JawBaseModel.class);
@@ -427,47 +422,7 @@ public class JawFemModel extends JawBaseModel {
 
 	}
 
-	protected void addFrameMarkers() {
-		// create framemarkers for contact points of constraints	
-		RigidBody jaw = rigidBodies().get("jaw");
-		RigidBody skull = rigidBodies().get("skull");
-		
-		FrameMarker m2 = new FrameMarker(jaw, new Point3d(2.3768318, -94.201781, -40.301746));
-		FrameMarker m3 = new FrameMarker(jaw, new Point3d(16.27707, -89.304763, -40.534119));
-		FrameMarker m4 = new FrameMarker(jaw, new Point3d(29.397112, -67.681713, -41.787386));
-		FrameMarker m5 = new FrameMarker(jaw, new Point3d(25.260763, -77.824013, -41.914129));
-		FrameMarker m6 = new FrameMarker(jaw, new Point3d(21.54352, -83.805296, -41.935241));
 
-		m2.setName("lowerincisor");
-		m3.setName("c_r");
-		m4.setName("m6_r");
-		m5.setName("pm5_r");
-		m6.setName("pm4_r");
-		
-		addFrameMarker(m2);
-		addFrameMarker(m3);
-		addFrameMarker(m4);
-		addFrameMarker(m5);
-		addFrameMarker(m6);
-		
-		// add right condylar capsule frame markers		
-		createAddFrameMarker("rTmjOuterPosterior", new Point3d(-55.993489, -4.5712128, -10.36536), jaw);
-		createAddFrameMarker("rTmjOuterAnterior", new Point3d(-56.049736, -8.4312215, -10.324311), jaw);
-		createAddFrameMarker("rTmjInnerPosterior", new Point3d(-35.993489, -1.5712128, -9.36536), jaw);
-		createAddFrameMarker("rTmjInnerAnterior", new Point3d(-36.049736, -5.4312215, -9.324311), jaw);		
-		createAddFrameMarker("rCapsulePosterior", new Point3d(-47.049736, 1.4312215, -5.324311), skull);
-		createAddFrameMarker("rCapsuleAnterior", new Point3d(-48.569322, -14.338951, -6.7008584), skull);
-
-		// add left condylar capsule frame markers
-		createAddFrameMarker("lTmjOuterPosterior", new Point3d(65.453532, -7.4198865, -6.9921023), jaw);
-		createAddFrameMarker("lTmjOuterAnterior", new Point3d(65.936589, -11.156971, -6.4801041), jaw);		
-		createAddFrameMarker("lTmjInnerPosterior", new Point3d(43.93532, -3.4198865, -5.9921023), jaw);
-		createAddFrameMarker("lTmjInnerAnterior", new Point3d(44.936589, -7.156971, -5.4801041), jaw);		
-		createAddFrameMarker("lCapsulePosterior", new Point3d(56.613578, -1.363587, -4.6223223), skull);
-		createAddFrameMarker("lCapsuleAnterior", new Point3d(53.626018, -17.755689, -3.7161942), skull);
-		
-		
-	}
 
 	protected void attachLigaments() throws IOException {
 
@@ -926,11 +881,13 @@ public class JawFemModel extends JawBaseModel {
 			Log.debug("Adding Condyle Constraints");
 			addFixedMarkers();
 			setCondyleConstraints(false);
-		}
-				
+		}				
 		if (condylarCapsule) {
 			Log.debug("Adding Condylar Capsule");
 			setCondylarCapsule();
+		}
+		for (BodyConnector bc : bodyConnectors()) {
+			bc.setCompliance(new VectorNd(new double[] { 0.00001 }));
 		}
 
 		setupRenderProps();

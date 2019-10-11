@@ -12,8 +12,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 
 class SpineEnvV0(ArtiSynthBase):
-    def __init__(self, wait_action, reset_step, include_current_state, include_current_excitations,
-                 goal_reward, goal_threshold, w_u, w_d, w_r, **kwargs):
+    def __init__(self, wait_action, reset_step, goal_reward, goal_threshold, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(**kwargs)
 
@@ -24,18 +23,10 @@ class SpineEnvV0(ArtiSynthBase):
         self.goal_reward = goal_reward
         self.goal_threshold = goal_threshold
 
-        self.include_current_excitations = include_current_excitations
-        self.include_current_state = include_current_state
-
-        self.w_u = w_u
-        self.w_d = w_d
-        self.w_r = w_r
-
         # misc
         self.phi_r_episode = []
 
         self.init_spaces()
-
 
     def calc_reward(self, state, excitations):
         '''

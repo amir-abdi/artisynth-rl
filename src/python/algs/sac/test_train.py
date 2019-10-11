@@ -97,7 +97,7 @@ def train(env, agent, args, configs):
             import wandb
             wandb.log({'episode_reward': episode_reward}, step=i_episode)
 
-        if i_episode % args.eval_interval == 0:
+        if i_episode % args.eval_interval == args.eval_interval - 1:
             avg_reward = 0.
             episodes = args.eval_episode
             for _ in range(episodes):
@@ -120,7 +120,7 @@ def train(env, agent, args, configs):
                 wandb.log({'avg_test_reward': avg_reward}, step=i_episode)
 
             print("----------------------------------------")
-            print("Test Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
+            print("Eval Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
             print("----------------------------------------")
 
         if i_episode % args.save_interval == 0:

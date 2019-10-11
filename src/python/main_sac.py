@@ -11,6 +11,7 @@ import artisynth_envs
 
 
 def extend_arguments(parser):
+    from common.arguments import str2bool
     parser.add_argument('--policy', default="Gaussian",
                         help='Policy Type: Gaussian | Deterministic (default: Gaussian)')
     parser.add_argument('--gamma', type=float, default=0.99, metavar='G',
@@ -20,7 +21,7 @@ def extend_arguments(parser):
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
                         help='Temperature parameter α determines the relative importance of the entropy\
                                 term against the reward (default: 0.2)')
-    parser.add_argument('--automatic_entropy_tuning', type=bool, default=False, metavar='G',
+    parser.add_argument('--automatic_entropy_tuning', type=str2bool, default=False, metavar='G',
                         help='Automaically adjust α (default: False)')
     parser.add_argument('--batch_size', type=int, default=256, metavar='N',
                         help='batch size (default: 256)')

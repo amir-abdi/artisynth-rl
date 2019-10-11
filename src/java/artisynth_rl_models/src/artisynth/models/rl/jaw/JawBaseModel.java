@@ -114,6 +114,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	static final double MEMBRANE_CYL_RADIUS = 0.6;
 
 	static final double MEMBRANE_PT_RADIUS = 0.75;
+	
+	static final double bodyConnectorCompliance = 0.0005;
 
 	static public final Point3d c1Point = new Point3d(0.0, 54.3478, 63.5381);
 
@@ -219,25 +221,28 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	boolean useComplexJoint = true;
 
 	boolean useCurvJoint = true;
-	
+
 	boolean useMedialWall = true;
 
 	ArrayList<JawPlanes> conOrder = new ArrayList<JawPlanes>();
 
-	public void createConstraintOrder() {
+	public void createConstraintOrder(boolean onlyUpper) {
 		conOrder.add(JawPlanes.LTMJ);
 		conOrder.add(JawPlanes.RTMJ);
+
+		if (!onlyUpper) {
 //		conOrder.add(JawPlanes.LBITE);
 //		conOrder.add(JawPlanes.RBITE);
-		if (useComplexJoint) {
-			conOrder.add(JawPlanes.LMED);
-			conOrder.add(JawPlanes.RMED);
-			conOrder.add(JawPlanes.LPOST);
-			conOrder.add(JawPlanes.RPOST);
-			conOrder.add(JawPlanes.LFRONT);
-			conOrder.add(JawPlanes.RFRONT);
-			conOrder.add(JawPlanes.LLTRL);
-			conOrder.add(JawPlanes.RLTRL);
+			if (useComplexJoint) {
+				conOrder.add(JawPlanes.LMED);
+				conOrder.add(JawPlanes.RMED);
+				conOrder.add(JawPlanes.LPOST);
+				conOrder.add(JawPlanes.RPOST);
+				conOrder.add(JawPlanes.LFRONT);
+				conOrder.add(JawPlanes.RFRONT);
+				conOrder.add(JawPlanes.LLTRL);
+				conOrder.add(JawPlanes.RLTRL);
+			}
 		}
 	}
 
@@ -513,48 +518,102 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		setCondyleConstraints(fixedLaryngeal);
 	}
-	
-	protected void createAddFrameMarker(String name, Point3d position, Frame frame) {		
-		FrameMarker fm = new FrameMarker(frame, position);		
+
+	protected void createAddFrameMarker(String name, Point3d position, Frame frame) {
+		FrameMarker fm = new FrameMarker(frame, position);
 		fm.setName(name);
-		addFrameMarker(fm);	
+		addFrameMarker(fm);
+	}
+
+	protected void addFrameMarkers() {
+		// create framemarkers for contact points of constraints
+		RigidBody jaw = rigidBodies().get("jaw");
+		RigidBody skull = rigidBodies().get("skull");
+
+		FrameMarker m2 = new FrameMarker(jaw, new Point3d(2.3768318, -94.201781, -40.301746));
+		FrameMarker m3 = new FrameMarker(jaw, new Point3d(16.27707, -89.304763, -40.534119));
+		FrameMarker m4 = new FrameMarker(jaw, new Point3d(29.397112, -67.681713, -41.787386));
+		FrameMarker m5 = new FrameMarker(jaw, new Point3d(25.260763, -77.824013, -41.914129));
+		FrameMarker m6 = new FrameMarker(jaw, new Point3d(21.54352, -83.805296, -41.935241));
+
+		m2.setName("lowerincisor");
+		m3.setName("c_r");
+		m4.setName("m6_r");
+		m5.setName("pm5_r");
+		m6.setName("pm4_r");
+
+		addFrameMarker(m2);
+		addFrameMarker(m3);
+		addFrameMarker(m4);
+		addFrameMarker(m5);
+		addFrameMarker(m6);
+
+		// add right condylar capsule frame markers
+		createAddFrameMarker("rTmjOuterPosterior", new Point3d(-55.993489, -4.5712128, -10.36536), jaw);
+		createAddFrameMarker("rTmjOuterAnterior", new Point3d(-56.049736, -8.4312215, -10.324311), jaw);
+		createAddFrameMarker("rTmjInnerPosterior", new Point3d(-35.993489, -1.5712128, -9.36536), jaw);
+		createAddFrameMarker("rTmjInnerAnterior", new Point3d(-36.049736, -5.4312215, -9.324311), jaw);
+		createAddFrameMarker("rCapsulePosterior", new Point3d(-47.049736, 1.4312215, -5.324311), skull);
+		createAddFrameMarker("rCapsuleAnterior", new Point3d(-48.569322, -18.338951, 1.7008584), skull);
+
+		// add left condylar capsule frame markers
+		createAddFrameMarker("lTmjOuterPosterior", new Point3d(65.453532, -7.4198865, -6.9921023), jaw);
+		createAddFrameMarker("lTmjOuterAnterior", new Point3d(65.936589, -11.156971, -6.4801041), jaw);
+		createAddFrameMarker("lTmjInnerPosterior", new Point3d(43.93532, -3.4198865, -5.9921023), jaw);
+		createAddFrameMarker("lTmjInnerAnterior", new Point3d(44.936589, -7.156971, -5.4801041), jaw);
+		createAddFrameMarker("lCapsulePosterior", new Point3d(56.613578, -1.363587, -4.6223223), skull);
+		createAddFrameMarker("lCapsuleAnterior", new Point3d(53.626018, -18.755689, 1.7161942), skull);
+
 	}
 
 	protected void setCondylarCapsule() {
-		// todo: slack? 4?
-		double slack = 4.0;		
-		
-		MultiPointSpring asr = new MultiPointSpring();
-		asr.addPoint(frameMarkers().get("rCapsulePosterior"));		
-		asr.setSegmentWrappable(30);
-		asr.addWrappable((Wrappable) rigidBodies().get("jaw"));
-		asr.addPoint(frameMarkers().get("rTmjOuterPosterior"));
-		asr.addPoint(frameMarkers().get("rTmjOuterAnterior"));
-		asr.addPoint(frameMarkers().get("rCapsuleAnterior"));		
-		asr.setMaterial(capsule_ligament_material);
-		asr.getRenderProps().setLineStyle(LineStyle.LINE);
-		asr.setRestLength(asr.getLength() + slack);
-		asr.getRenderProps().setLineColor(Color.GREEN);
-		asr.getRenderProps().setLineStyle(LineStyle.CYLINDER);
-		asr.getRenderProps().setLineRadius(0.75);
-		addMultiPointSpring(asr);
-				
-		MultiPointSpring asl = new MultiPointSpring();
-		asl.addPoint(frameMarkers().get("lCapsulePosterior"));		
-		asl.setSegmentWrappable(30);
-		asl.addWrappable((Wrappable) rigidBodies().get("jaw"));
-		asl.addPoint(frameMarkers().get("lTmjOuterPosterior"));
-		asl.addPoint(frameMarkers().get("lTmjOuterAnterior"));
-		asl.addPoint(frameMarkers().get("lCapsuleAnterior"));		
-		asl.setMaterial(capsule_ligament_material);
-		asl.getRenderProps().setLineStyle(LineStyle.LINE);
-		asl.setRestLength(asl.getLength() + slack);
-		asl.getRenderProps().setLineColor(Color.GREEN);
-		asl.getRenderProps().setLineStyle(LineStyle.CYLINDER);
-		asl.getRenderProps().setLineRadius(0.75);
-		addMultiPointSpring(asl);
+		double slack = -25.0; // increase if jaw needs more flexibility
+		LigamentAxialMaterial capsule_material = new LigamentAxialMaterial(300, 0, 10);
+
+		MultiPointSpring mpstring_r = new MultiPointSpring();
+		mpstring_r.addPoint(frameMarkers().get("rCapsulePosterior"));
+		mpstring_r.addPoint(frameMarkers().get("rTmjOuterPosterior"));
+		mpstring_r.addPoint(frameMarkers().get("rTmjOuterAnterior"));
+		// mpstring_r.addPoint(frameMarkers().get("rCapsuleAnterior")); // removed
+		mpstring_r.addPoint(frameMarkers().get("rTmjInnerAnterior"));
+		mpstring_r.addPoint(frameMarkers().get("rTmjInnerPosterior"));
+		mpstring_r.addPoint(frameMarkers().get("rCapsulePosterior"));
+		mpstring_r.setMaterial(capsule_material );
+		mpstring_r.getRenderProps().setLineStyle(LineStyle.LINE);
+		mpstring_r.setRestLength(mpstring_r.getLength() + slack);
+		mpstring_r.getRenderProps().setLineColor(Color.GREEN);
+		mpstring_r.getRenderProps().setLineStyle(LineStyle.CYLINDER);
+		mpstring_r.getRenderProps().setLineRadius(0.75);
+		addMultiPointSpring(mpstring_r);
+
+		MultiPointSpring mpstring_l = new MultiPointSpring();
+		mpstring_l.addPoint(frameMarkers().get("lCapsulePosterior"));
+		mpstring_l.addPoint(frameMarkers().get("lTmjOuterPosterior"));
+		mpstring_l.addPoint(frameMarkers().get("lTmjOuterAnterior"));
+		// mpstring_l.addPoint(frameMarkers().get("lCapsuleAnterior")); // removed 
+		mpstring_l.addPoint(frameMarkers().get("lTmjInnerAnterior"));
+		mpstring_l.addPoint(frameMarkers().get("lTmjInnerPosterior"));
+		mpstring_l.addPoint(frameMarkers().get("lCapsulePosterior"));
+		mpstring_l.setMaterial(capsule_material );
+		mpstring_l.getRenderProps().setLineStyle(LineStyle.LINE);
+		mpstring_l.setRestLength(mpstring_l.getLength() + slack);
+		mpstring_l.getRenderProps().setLineColor(Color.GREEN);
+		mpstring_l.getRenderProps().setLineStyle(LineStyle.CYLINDER);
+		mpstring_l.getRenderProps().setLineRadius(0.75);
+		addMultiPointSpring(mpstring_l);
+
+		addFixedMarkers();
+		initCons(true);
+		if (this.useCurvJoint) {
+			// remove planar tmj constraints (first two in list)
+			Log.debug("Using curved linear TMJ");
+			addCurvilinearTmjs();
+		}
+		for (BodyConnector bc : bodyConnectors()) {
+			bc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
+		}
 	}
-	
+
 	protected void setCondyleConstraints(Boolean fixedLaryngeal) {
 		constrainedBody = myRigidBodies.get("jaw");
 		if (constrainedBody == null) // no jaw body - error
@@ -563,10 +622,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			return;
 		}
 
-		initCons();
+		initCons(false);
 
 		for (PlanarConnector pc : con) {
-			pc.setCompliance(new VectorNd(new double[] { 0.00001 }));
+			pc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
 			addBodyConnector(pc);
 		}
 
@@ -593,11 +652,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();
 		}
-
-		for (BodyConnector bc : bodyConnectors()) {
-			bc.setCompliance(new VectorNd(new double[] { 0.00001 }));
-		}
-
 	}
 
 	private void setupRenderProps() {
@@ -1068,7 +1122,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		myMuscles.add(createPeckMuscle("rmp", 174.8, 40.51, 50.63, 0.64)); // rmp
 		myMuscles.add(createPeckMuscle("rmt", 95.6, 65.81, 93.36, 0.48)); // rmt
 		myMuscles.add(createPeckMuscle("rpt", 75.6, 77.11, 101.08, 0.51)); // rpt
-		myMuscles.add(createPeckMuscle("rsm", 190.4, 51.46, 66.88, 0.46)); // rsm
+		myMuscles.add(createPeckMuscle("rsm", 190.4, 30.00, 66.88, 0.46)); // rsm
 		myMuscles.add(createPeckMuscle("rsp", shlpMaxForce, 27.7, 37.7, 0.0)); // rsp
 		// (opener)
 
@@ -1524,7 +1578,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			}
 
 			// find tmj point index for jaw
-			int tmjPointIndex = -1;
+			int tmjPointIndex = 3;
 			if (name.compareTo("jaw") == 0.0) {
 				tmjPointIndex = findLargestZValue(pts);
 			}
@@ -2009,17 +2063,13 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		globalConX.R.setAxisAngle(a);
 	}
 
-	public void initCons() {
+	public void initCons(boolean onlyUpperConstraint) {
+		createConstraintOrder(onlyUpperConstraint);
 		constrainedBody = myRigidBodies.get("jaw");
-		createConstraintOrder();
 
 		// set initial marker position as origin for tmj planes
 		for (JawPlanes jp : conOrder) {
 			PlanarConnector pc;
-//			Log.log("jp.getContactName()");
-//			Log.log(jp.getContactName());
-//			Log.log("myFrameMarkers.get(jp.getContactName())");
-//			Log.log(myFrameMarkers.get(jp.getContactName()));
 			conPt.add(myFrameMarkers.get(jp.getContactName()));
 			conPose.add(new RigidTransform3d());
 			// try to find existing constraints
@@ -2037,15 +2087,10 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 				pc.setPlaneSize(jp.getPlaneSize());
 				pc.setName(jp.name());
 			}
-
-//			RenderableComponentBase.setVisible(pc, true);
-//			Log.log("Adding PlanarConnector: " + pc.getName());
-//			RenderProps.setVisible(pc, true);
-//			Log.log(pc.getRenderProps().getProperty("visible").toString());
 			con.add(pc);
 		}
 
-		updateCons();
+		updateCons(onlyUpperConstraint);
 
 		for (PlanarConnector pc : con) {
 			RenderProps props = new RenderProps(myRenderProps);
@@ -2096,19 +2141,22 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	}
 
-	public void updateCons() {
-		updateCon(JawPlanes.LTMJ);
-		updateCon(JawPlanes.RTMJ);
-		updateCon(JawPlanes.LBITE);
-		updateCon(JawPlanes.RBITE);
-		updateCon(JawPlanes.LMED);
-		updateCon(JawPlanes.RMED);
-		updateCon(JawPlanes.LPOST);
-		updateCon(JawPlanes.RPOST);
-		updateCon(JawPlanes.LFRONT);
-		updateCon(JawPlanes.RFRONT);
-		updateCon(JawPlanes.LLTRL);
-		updateCon(JawPlanes.RLTRL);
+	public void updateCons(boolean onlyUpperConstraint) {
+
+		if (!onlyUpperConstraint) {
+			updateCon(JawPlanes.LTMJ);
+			updateCon(JawPlanes.RTMJ);
+			updateCon(JawPlanes.LBITE);
+			updateCon(JawPlanes.RBITE);
+			updateCon(JawPlanes.LMED);
+			updateCon(JawPlanes.RMED);
+			updateCon(JawPlanes.LPOST);
+			updateCon(JawPlanes.RPOST);
+			updateCon(JawPlanes.LFRONT);
+			updateCon(JawPlanes.RFRONT);
+			updateCon(JawPlanes.LLTRL);
+			updateCon(JawPlanes.RLTRL);
+		}
 		updateCurvCons();
 	}
 
@@ -2822,7 +2870,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		myMuscles.add(createPeckMuscle("lmp", 174.8, 40.51, 50.63, 0.64)); // lmp
 		myMuscles.add(createPeckMuscle("lmt", 95.6, 65.81, 93.36, 0.48)); // lmt
 		myMuscles.add(createPeckMuscle("lpt", 75.6, 77.11, 101.08, 0.51)); // lpt
-		myMuscles.add(createPeckMuscle("lsm", 190.4, 51.46, 66.88, 0.46)); // lsm
+		myMuscles.add(createPeckMuscle("lsm", 190.4, 51.46, 30.00, 0.46)); // lsm
 		myMuscles.add(createPeckMuscle("lsp", shlpMaxForce, 27.7, 37.7, 0.0)); // lsp
 		// (opener)
 		myMuscles.add(createPeckMuscle("rat", 158.0, 75.54, 95.92, 0.5)); // rat

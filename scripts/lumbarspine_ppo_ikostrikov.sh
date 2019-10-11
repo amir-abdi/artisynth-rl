@@ -12,7 +12,7 @@ python3 src/python/main_ikostrikov.py \
 --ppo_epoch=4 \
 --alg=ppo \
 --num_processes=1 \
---port=8081 \
+--port=8091 \
 --use_wandb=false \
 --num_env_steps=80000 \
 --num_mini_batch=16 \
@@ -30,6 +30,4 @@ python3 src/python/main_ikostrikov.py \
 --verbose=20 \
 --include_current_excitations=true \
 --include_current_state=true \
---test=true \
---load_path=/home/amirabdi/artisynth-rl/results/SpineEnv-v0/lumbarspine-ppo/trained/ppo-SpineEnv-v0_saved.pt \
---test_episode=2 \
+--test=false \

@@ -18,7 +18,9 @@ python src/python/main_sac.py \
 --eval_interval=10 \
 --test=false \
 --w_u=5 \
---load_path=/home/amirabdi/artisynth-rl/results/SpineEnv-v0/lumbarspine-sac-pytorch/trained/last_saved3 \
---use_wandb=true \
+--use_wandb=false \
 --start_steps=0 \
 --automatic_entropy_tuning=true \
+
+#--load_path=trained_models/SpineEnv-v0/lumbarspine-sac-pytorch/trained1 \
+

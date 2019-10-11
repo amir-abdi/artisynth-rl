@@ -9,8 +9,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 
 class Point2PointEnv(ArtiSynthBase):
-    def __init__(self, goal_threshold, wait_action, include_current_state, include_current_excitations,
-                 reset_step, goal_reward, **kwargs):
+    def __init__(self, goal_threshold, wait_action, reset_step, goal_reward, **kwargs):
         super().__init__(**kwargs)
 
         self.goal_threshold = goal_threshold
@@ -20,9 +19,6 @@ class Point2PointEnv(ArtiSynthBase):
         self.episode_counter = 0
         self.reset_step = int(reset_step)
         self.goal_reward = goal_reward
-
-        self.include_current_state = include_current_state
-        self.include_current_excitations = include_current_excitations
 
         self.position_radius = self.get_radius(kwargs['artisynth_args'])
         self.init_spaces()

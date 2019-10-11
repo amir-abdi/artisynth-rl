@@ -104,7 +104,7 @@ register(
     entry_point='artisynth_envs.envs:JawEnvV0',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
-            'artisynth_args': '-disc false -condyleConstraints true',
+            'artisynth_args': '-disc false -condyleConstraints true -condylarCapsule false',
             c.COMPONENTS: {
                 c.CURRENT: [
                     {c.NAME: 'lowerincisor',
@@ -125,7 +125,7 @@ register(
     entry_point='artisynth_envs.envs:JawEnvV0',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
-            'artisynth_args': '-disc false -condyleConstraints false',
+            'artisynth_args': '-disc false -condyleConstraints false -condylarCapsule true',
             c.COMPONENTS: {
                 c.CURRENT: [
                     {c.NAME: 'lowerincisor',
@@ -140,3 +140,4 @@ register(
                 c.PROPS: ['position']},
             }
 )
+

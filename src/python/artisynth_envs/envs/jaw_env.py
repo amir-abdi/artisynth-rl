@@ -12,8 +12,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 
 class JawEnvV0(ArtiSynthBase):
-    def __init__(self, wait_action, reset_step, include_current_state, goal_threshold,
-                 incremental_actions, goal_reward, include_current_excitations, w_u, w_d, w_r, **kwargs):
+    def __init__(self, wait_action, reset_step, goal_threshold, incremental_actions, goal_reward, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(**kwargs)
 
@@ -25,12 +24,6 @@ class JawEnvV0(ArtiSynthBase):
         self.reset_step = int(reset_step)
         self.wait_action = float(wait_action)
 
-        self.w_u = w_u
-        self.w_d = w_d  # not used!
-        self.w_r = w_r
-
-        self.include_excitations = include_current_excitations
-        self.include_current_state = include_current_state
         self.goal_reward = goal_reward
         self.incremental_actions = incremental_actions
 

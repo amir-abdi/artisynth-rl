@@ -490,7 +490,7 @@ public class RlController extends ControllerBase
 		resetStateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				resetState();
+				resetState(false);
 			}
 		});
 
@@ -728,9 +728,11 @@ public class RlController extends ControllerBase
 	}
 
 	@Override
-	public String resetState() {
+	public String resetState(boolean setExcitationsZero) {
 		myInverseModel.resetState();
-//		this.setExcitationsZero();
+		if (setExcitationsZero) {			
+			this.setExcitationsZero();
+		}
 		Log.info("Reset");
 		return "Reset Done";
 	}
