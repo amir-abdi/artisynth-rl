@@ -133,8 +133,8 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 	enum JawPositions {
 		closedPosition(2.6199824, -94.095219, -40.749265, JawModelType.withCondylarConstraints),
-		openPosition(3.7713994, -85.668177, -75.45326, JawModelType.withCondylarConstraints, 7.0),
-		restPosition(2.432348, -89.850281, -46.341909, JawModelType.withCondylarConstraints),		
+		openPosition(3.7836006, -85.6362, -75.485878, JawModelType.withCondylarConstraints, 7.0),
+//		restPosition(2.0856916, -87.358616, -51.34877, JawModelType.withCondylarConstraints),		
 		pureRotationalOpeningPosition(3.1654528, -84.767872, -59.862705, JawModelType.withCondylarConstraints),
 		rightLaterotrusivePosition(-12.188396, -96.733508, -44.460555, JawModelType.withCondylarConstraints),
 		leftLaterotrusivePosition(16.940234, -97.129743, -43.485869, JawModelType.withCondylarConstraints),

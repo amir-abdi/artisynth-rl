@@ -114,7 +114,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	static final double MEMBRANE_CYL_RADIUS = 0.6;
 
 	static final double MEMBRANE_PT_RADIUS = 0.75;
-	
+
 	static final double bodyConnectorCompliance = 0.0005;
 
 	static public final Point3d c1Point = new Point3d(0.0, 54.3478, 63.5381);
@@ -578,7 +578,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		mpstring_r.addPoint(frameMarkers().get("rTmjInnerAnterior"));
 		mpstring_r.addPoint(frameMarkers().get("rTmjInnerPosterior"));
 		mpstring_r.addPoint(frameMarkers().get("rCapsulePosterior"));
-		mpstring_r.setMaterial(capsule_material );
+		mpstring_r.setMaterial(capsule_material);
 		mpstring_r.getRenderProps().setLineStyle(LineStyle.LINE);
 		mpstring_r.setRestLength(mpstring_r.getLength() + slack);
 		mpstring_r.getRenderProps().setLineColor(Color.GREEN);
@@ -590,11 +590,11 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		mpstring_l.addPoint(frameMarkers().get("lCapsulePosterior"));
 		mpstring_l.addPoint(frameMarkers().get("lTmjOuterPosterior"));
 		mpstring_l.addPoint(frameMarkers().get("lTmjOuterAnterior"));
-		// mpstring_l.addPoint(frameMarkers().get("lCapsuleAnterior")); // removed 
+		// mpstring_l.addPoint(frameMarkers().get("lCapsuleAnterior")); // removed
 		mpstring_l.addPoint(frameMarkers().get("lTmjInnerAnterior"));
 		mpstring_l.addPoint(frameMarkers().get("lTmjInnerPosterior"));
 		mpstring_l.addPoint(frameMarkers().get("lCapsulePosterior"));
-		mpstring_l.setMaterial(capsule_material );
+		mpstring_l.setMaterial(capsule_material);
 		mpstring_l.getRenderProps().setLineStyle(LineStyle.LINE);
 		mpstring_l.setRestLength(mpstring_l.getLength() + slack);
 		mpstring_l.getRenderProps().setLineColor(Color.GREEN);
@@ -1089,12 +1089,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		double shlpMaxForce = 66.9 / 0.7 * 0.3; // ihlp reported as 70% of muscle
 		// [Peck 2000]
 		double mylohyoidMaxForce = 177.0 / 100 / 2.0 * 40.0; // mylohyoid 177 mm^2
-		// from
-		// Buchilliard2009
-		// JASA, divided
-		// equally into
-		// anterior and
-		// posterior parts
+		// from Buchilliard2009 JASA, divided equally into anterior and posterior parts
 		double geniohyoidMaxForce = 80.0 / 100 * 40.0; // geniohyoid 80 mm^2 from
 		// Buchilliard2009 JASA
 		double postdigMaxForce = 40.0; // same CSA as antdig from vanEijden 1997
@@ -1102,8 +1097,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		double stylohyoidMaxForce = 0.39 * 40; // 0.39 cm^2 from van Eijden 1997
 		// Anat Rec
 
-		// NB - max length and opt length get overwritten in
-		// updateMuscleLengthProps()
+		// NB - max length and opt length get overwritten in updateMuscleLengthProps()
 		// Skull - Jaw Muscles
 		myMuscles.add(createPeckMuscle("lat", 158.0, 75.54, 95.92, 0.5)); // lat
 		myMuscles.add(createPeckMuscle("ldm", 81.6, 29.07, 44.85, 0.29)); // ldm
@@ -1122,7 +1116,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		myMuscles.add(createPeckMuscle("rmp", 174.8, 40.51, 50.63, 0.64)); // rmp
 		myMuscles.add(createPeckMuscle("rmt", 95.6, 65.81, 93.36, 0.48)); // rmt
 		myMuscles.add(createPeckMuscle("rpt", 75.6, 77.11, 101.08, 0.51)); // rpt
-		myMuscles.add(createPeckMuscle("rsm", 190.4, 30.00, 66.88, 0.46)); // rsm
+		myMuscles.add(createPeckMuscle("rsm", 190.4, 51.46, 66.88, 0.46)); // rsm
 		myMuscles.add(createPeckMuscle("rsp", shlpMaxForce, 27.7, 37.7, 0.0)); // rsp
 		// (opener)
 
@@ -2860,8 +2854,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		double stylohyoidMaxForce = 0.39 * 40; // 0.39 cm^2 from van Eijden 1997
 		// Anat Rec
 
-		// NB - max length and opt length get overwritten in
-		// updateMuscleLengthProps()
+		// NB - max length and opt length get overwritten in updateMuscleLengthProps()
 		// Skull - Jaw Muscles
 		myMuscles.add(createPeckMuscle("lat", 158.0, 75.54, 95.92, 0.5)); // lat
 		myMuscles.add(createPeckMuscle("ldm", 81.6, 29.07, 44.85, 0.29)); // ldm
@@ -2870,7 +2863,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		myMuscles.add(createPeckMuscle("lmp", 174.8, 40.51, 50.63, 0.64)); // lmp
 		myMuscles.add(createPeckMuscle("lmt", 95.6, 65.81, 93.36, 0.48)); // lmt
 		myMuscles.add(createPeckMuscle("lpt", 75.6, 77.11, 101.08, 0.51)); // lpt
-		myMuscles.add(createPeckMuscle("lsm", 190.4, 51.46, 30.00, 0.46)); // lsm
+		myMuscles.add(createPeckMuscle("lsm", 190.4, 51.46, 66.88, 0.46)); // lsm
 		myMuscles.add(createPeckMuscle("lsp", shlpMaxForce, 27.7, 37.7, 0.0)); // lsp
 		// (opener)
 		myMuscles.add(createPeckMuscle("rat", 158.0, 75.54, 95.92, 0.5)); // rat
@@ -3000,6 +2993,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	}
 
 	public static void updateMuscleLengthProps(ArrayList<Muscle> myMuscles) {
+		// Overrides maximum muscle lengths
 		for (Muscle m : myMuscles)
 			m.resetLengthProps();
 	}
