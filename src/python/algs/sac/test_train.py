@@ -98,32 +98,17 @@ def train(env, agent, args, configs):
             wandb.log({'episode_reward': episode_reward}, step=i_episode)
 
         if i_episode % args.eval_interval == args.eval_interval - 1:
-            avg_reward = 0.
-            episodes = args.eval_episode
-            for _ in range(episodes):
-                state = env.reset()
-                episode_reward = 0
-                done = False
-                while not done:
-                    action = agent.select_action(state, eval=True)
-
-                    next_state, reward, done, _ = env.step(action)
-                    episode_reward += reward
-
-                    state = next_state
-                avg_reward += episode_reward
-            avg_reward /= episodes
-
-            writer.add_scalar('avg_reward/test', avg_reward, i_episode)
+            avg_reward, infos = _test(env, agent, args.eval_episode)
+            writer.add_scalar('eval/avg_reward', avg_reward, i_episode)
+            for key, val in infos.items():
+                writer.add_scalar(f'eval/{key}', val, i_episode)
             if args.use_wandb:
                 import wandb
-                wandb.log({'avg_test_reward': avg_reward}, step=i_episode)
+                wandb.log({'eval/avg_reward': avg_reward}, step=i_episode)
+                for key, val in infos.items():
+                    wandb.log({f'eval/{key}': val}, step=i_episode)
 
-            print("----------------------------------------")
-            print("Eval Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
-            print("----------------------------------------")
-
-        if i_episode % args.save_interval == 0:
+        if i_episode % args.save_interval == args.save_interval - 1:
             path = os.path.join(configs.trained_directory, 'last')
             agent.global_episode = i_episode
             torch.save(agent.state_dict(), path)
@@ -133,30 +118,51 @@ def train(env, agent, args, configs):
     env.close()
 
 
-def test(env, agent, args, configs):
-    logger = setup_logger()
+def test(env, agent, args):
+    # todo: add setSeed to api
+    env.seed(args.seed)
+    _test(env, agent, args.test_episode)
+    env.close()
 
+
+def _test(env, agent, episodes):
+    logger = setup_logger()
     avg_reward = 0.
-    episodes = args.test_episode
+    infos = {}
     for episode_count in range(episodes):
         state = env.reset()
         episode_reward = 0
         done = False
         episode_iter_count = 0
+        info_episode = {}
         while not done:
             action = agent.select_action(state, eval=True)
-
-            next_state, reward, done, _ = env.step(action)
+            next_state, reward, done, info = env.step(action)
             episode_reward += reward
-
             state = next_state
             episode_iter_count += 1
+
+            for key, val in info.items():
+                info_episode[key] = info_episode.get(key, 0) + val
+
         episode_reward /= episode_iter_count
-        logger.info(f'{episode_count}/{episodes}  reward:{episode_reward}')
         avg_reward += episode_reward
+        episode_print_str = f'{episode_count}/{episodes}  reward:{episode_reward:.3f}'
+
+        for key in info_episode.keys():
+            info_episode[key] /= episode_iter_count
+            infos[key] = infos.get(key, 0) + info_episode[key]
+            episode_print_str += f'  {key}:{info_episode[key]:.3f}'
+        logger.info(episode_print_str)
+
+    print_str = f'Test #Episodes: {episodes}, avg_reward: {round(avg_reward, 3)}'
     avg_reward /= episodes
+    for key in infos.keys():
+        infos[key] /= episodes
+        print_str += f'  {key}:{infos[key]:.3f}'
 
-    print("Test Episodes: {}, Avg. Reward: {}".format(episodes, round(avg_reward, 2)))
-    print("----------------------------------------")
+    logger.info("----------------------------------------")
+    logger.info(print_str)
+    logger.info("----------------------------------------")
+    return avg_reward, infos
 
-    env.close()

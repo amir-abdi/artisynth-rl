@@ -16,7 +16,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 class ArtiSynthBase(gym.Env, ABC):
     def __init__(self, ip, port, artisynth_model, test, components, zero_excitations_on_reset,
-                 include_current_excitations, include_current_state, w_u, w_d, w_r, artisynth_args='',
+                 include_current_excitations, include_current_state, w_u, w_d, w_r, seed, artisynth_args='',
                  **kwargs):
         logger.warning(f'The following args MIGHT have remained unused: {kwargs}')
 
@@ -42,7 +42,7 @@ class ArtiSynthBase(gym.Env, ABC):
         self.net = RestClient(ip, port)
         if not RestClient.server_is_alive(ip, port):  # if server is not already running, initiate ArtiSynth
             self.run_artisynth(ip, port, artisynth_model, artisynth_args)
-
+        self.seed(seed)
 
     def init_spaces(self, incremental_actions=False):
         # todo: use the same init_spaces for all environments
@@ -147,7 +147,7 @@ class ArtiSynthBase(gym.Env, ABC):
         self.net.get_post(set_excitations_zero, request_type=c.POST_STR, message=c.RESET_STR)
 
         # wait two seconds for ArtiSynth environment to reset
-        time.sleep(2.0)
+        time.sleep(1.0)
 
         state_dict = self.get_state_dict()
         return self.state_dic_to_array(state_dict)
@@ -178,7 +178,6 @@ class ArtiSynthBase(gym.Env, ABC):
         if self.include_current_excitations:
             observation_vector = np.append(observation_vector, js[c.EXCITATIONS_STR])
 
-
         return np.asarray(observation_vector)
 
     def distance_to_target(self, observation):
@@ -197,5 +196,7 @@ class ArtiSynthBase(gym.Env, ABC):
         pass
 
     def seed(self, seed=None):
+        # todo [BUG]: seeding gives different (but consistent) results when running artisynth seprately vs. from python.
         np_random, seed = seeding.np_random(seed)
+        self.net.get_post(seed, request_type=c.POST_STR, message=c.SET_SEED_STR)
         return [seed]

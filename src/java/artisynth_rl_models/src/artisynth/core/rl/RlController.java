@@ -77,7 +77,6 @@ public class RlController extends ControllerBase
 
 	// list of all muscle exciters
 	protected ComponentList<ExcitationComponent> exciters;
-//	protected ComponentList<ExcitationComponent> excitersDoubleBuffer;
 	protected ArrayList<Double> excitationValues = new ArrayList<Double>();
 	protected Boolean excitersUpToDate = true;
 	protected RlState nextState = new RlState();
@@ -102,6 +101,8 @@ public class RlController extends ControllerBase
 	public static final boolean DEFAULT_DEBUG = true;
 	private static final double DEFAULT_TARGET_RADIUS = 0.4d;
 	private static final int DEFAULT_TARGET_LINE_WIDTH = 2;
+	
+	public Random random = new Random();
 
 	/**
 	 * Set the Rl model which implements the RlModelInterface interface.
@@ -309,8 +310,6 @@ public class RlController extends ControllerBase
 				m.setExcitationColor(Color.RED);
 			}
 		}
-
-//		excitersDoubleBuffer = exciters.copy(flags, copyMap)
 	}
 
 	/**
@@ -735,6 +734,15 @@ public class RlController extends ControllerBase
 		}
 		Log.info("Reset");
 		return "Reset Done";
+	}
+	
+	@Override
+	public String setSeed(int seed) {
+		this.random.setSeed(seed);
+		String message = "seed set to " + seed; 
+		Log.debug(message);
+		Log.info(message);
+		return message;
 	}
 
 	/**

@@ -24,6 +24,7 @@ POST_STR = 'POST'
 
 EXCITATIONS_STR = 'excitations'
 OBSERVATION_STR = 'observation'
+SET_SEED_STR = 'setSeed'
 
 LOGGER_STR = 'artisynth_logger'
 

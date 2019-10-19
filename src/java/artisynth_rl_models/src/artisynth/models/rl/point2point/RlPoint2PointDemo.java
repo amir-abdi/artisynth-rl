@@ -215,11 +215,9 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	}
 
 	public Point3d getRandomTarget(Point3d center, double radius) {
-		Random rand = new Random();
-
-		double theta = rand.nextDouble() * 3.1415;
-		double phi = rand.nextDouble() * 3.1415;
-		double r = rand.nextDouble() * radius;
+		double theta = rlTrack.random.nextDouble() * 3.1415;
+		double phi = rlTrack.random.nextDouble() * 3.1415;
+		double r = rlTrack.random.nextDouble() * radius;
 
 		double x = r * Math.cos(theta) * Math.sin(phi);
 		double y = r * Math.sin(theta) * Math.sin(phi);

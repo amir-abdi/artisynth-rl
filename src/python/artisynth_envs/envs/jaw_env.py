@@ -75,7 +75,6 @@ class JawEnvV0(ArtiSynthBase):
 
         phi_u = self.distance_to_target(observation)
 
-        info['distance'] = phi_u
         done = False
         done_reward = 0
         if phi_u < thres:
@@ -84,11 +83,13 @@ class JawEnvV0(ArtiSynthBase):
             logging.info(f'Done: {phi_u} < {thres}')
 
         excitations = action
-        phi_r = np.linalg.norm(excitations)
-
+        phi_r = np.mean(excitations)  # phi_r = np.linalg.norm(excitations)
         reward = done_reward - phi_u * self.w_u - phi_r * self.w_r
 
+        info['distance'] = phi_u
+        info['excitations'] = phi_r
         logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))
+
         return reward, done, info
 
     def reset(self):

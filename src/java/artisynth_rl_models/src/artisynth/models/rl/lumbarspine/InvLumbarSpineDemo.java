@@ -507,6 +507,7 @@ public class InvLumbarSpineDemo extends LumbarSpineBaseDemo {
 		public Boolean reset = false;
 		public Boolean trialRun = false;
 		private double MAX_FLEX_EXTEND = 30;
+		// TODO: use the rlController random instead of this one
 		Random r = new Random();
 		private int time_pos_updated = -1;
 

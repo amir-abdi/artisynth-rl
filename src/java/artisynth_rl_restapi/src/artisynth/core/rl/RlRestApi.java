@@ -22,7 +22,8 @@ public class RlRestApi {
 		spark.Spark.get("/", (request, response) -> "Welcome to the REST API for the RL solutions in ArtiSynth.");
 		spark.Spark.post("/reset",
 				(request, response) -> rlController.resetState(Boolean.parseBoolean(request.body())), json());
-
+		spark.Spark.post("/setSeed",
+				(request, response) -> rlController.setSeed(Integer.parseInt(request.body())), json());
 		spark.Spark.get("/state", (request, response) -> rlController.getState(), json());
 		spark.Spark.get("/obsSize", (request, response) -> rlController.getObservationSize(), json());
 		spark.Spark.get("/stateSize", (request, response) -> rlController.getStateSize(), json());

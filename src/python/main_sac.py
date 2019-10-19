@@ -69,11 +69,12 @@ def main():
     # Agent
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
     if args.load_path:
+        # todo: save and load the optimizer
         logger.info(f'loading model from {args.load_path}')
         agent.load_state_dict(torch.load(args.load_path))
 
     if args.test:
-        test(env, agent, args, configs)
+        test(env, agent, args)
     else:
         train(env, agent, args, configs)
 
