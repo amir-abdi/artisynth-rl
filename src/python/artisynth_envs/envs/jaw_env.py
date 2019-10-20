@@ -12,7 +12,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 
 class JawEnvV0(ArtiSynthBase):
-    def __init__(self, wait_action, reset_step, goal_threshold, incremental_actions, goal_reward, **kwargs):
+    def __init__(self, wait_action, reset_step, goal_threshold, goal_reward, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(**kwargs)
 
@@ -25,7 +25,6 @@ class JawEnvV0(ArtiSynthBase):
         self.wait_action = float(wait_action)
 
         self.goal_reward = goal_reward
-        self.incremental_actions = incremental_actions
 
         self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.incremental_actions)
 
@@ -37,31 +36,33 @@ class JawEnvV0(ArtiSynthBase):
         return self.state_dict2tensor(state_dict)
 
     def step(self, action):
+        action = self.wrap_action(action)
         logger.debug('action:{}'.format(action))
         self.episode_counter += 1
 
-        current_excitations = np.array(self.get_excitations_dict())
+        # current_excitations = np.array(self.get_excitations_dict())
 
-        if self.incremental_actions:
-            # todo: get excitations from previous state not by calling the environment again!
-            self.take_action(action + current_excitations)
-        else:
-            self.take_action(action)
+        # if self.incremental_actions:
+        #     self.take_action(action + current_excitations)
+        # else:
+        #     self.take_action(action)
+        self.take_action(action)
 
         time.sleep(self.wait_action)
-        state = self.get_state_dict()
+        new_state = self.get_state_dict()
 
-        if state is not None:
-            if self.incremental_actions:
-                reward, done, info = self.calc_reward(state, action + current_excitations)
-            else:
-                reward, done, info = self.calc_reward(state, action)
-            state_array = self.state_dic_to_array(state)
-        else:
-            reward = 0
-            done = False
-            state_array = np.zeros(self.obs_size)
-            info = {}
+        # if new_state is not None:
+            # if self.incremental_actions:
+            #     reward, done, info = self.calc_reward(state, action + current_excitations)
+            # else:
+            #     reward, done, info = self.calc_reward(state, action)
+        reward, done, info = self.calc_reward(new_state, action)
+        state_array = self.state_dic_to_array(new_state)
+        # else:
+        #     reward = 0
+        #     done = False
+        #     state_array = np.zeros(self.obs_size)
+        #     info = {}
 
         if self.episode_counter >= self.reset_step:
             done = True

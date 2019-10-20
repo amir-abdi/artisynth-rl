@@ -95,7 +95,7 @@ public class RlController extends ControllerBase
 	protected boolean targetsVisible = true;
 	protected boolean sourcesVisible = true;
 	protected boolean enabled = true;
-	protected boolean debug = true;
+	protected boolean debug = false;
 	protected double targetsPointRadius = DEFAULT_TARGET_RADIUS;
 	protected int targetsLineWidth = DEFAULT_TARGET_LINE_WIDTH;
 	public static final boolean DEFAULT_DEBUG = true;

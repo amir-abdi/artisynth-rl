@@ -126,7 +126,6 @@ def test(env, agent, args):
 
 
 def _test(env, agent, episodes):
-    logger = setup_logger()
     avg_reward = 0.
     infos = {}
     for episode_count in range(episodes):
@@ -134,35 +133,42 @@ def _test(env, agent, episodes):
         episode_reward = 0
         done = False
         episode_iter_count = 0
-        info_episode = {}
+        info_episode_avg = {}
+        info_episode_final = {}
         while not done:
-            action = agent.select_action(state, eval=True)
+            action = agent.select_action(state, eval_mode=True)
             next_state, reward, done, info = env.step(action)
             episode_reward += reward
             state = next_state
             episode_iter_count += 1
 
             for key, val in info.items():
-                info_episode[key] = info_episode.get(key, 0) + val
+                info_episode_avg['avg_'+key] = info_episode_avg.get('avg_'+key, 0) + val
+                info_episode_final['final_'+key] = val
 
         episode_reward /= episode_iter_count
         avg_reward += episode_reward
-        episode_print_str = f'{episode_count}/{episodes}  reward:{episode_reward:.3f}'
+        episode_print_str = f'{episode_count}/{episodes} reward:{episode_reward:.3f}'
 
-        for key in info_episode.keys():
-            info_episode[key] /= episode_iter_count
-            infos[key] = infos.get(key, 0) + info_episode[key]
-            episode_print_str += f'  {key}:{info_episode[key]:.3f}'
-        logger.info(episode_print_str)
+        for key in info_episode_avg.keys():
+            info_episode_avg[key] /= episode_iter_count
+            infos[key] = infos.get(key, 0) + info_episode_avg[key]
+            episode_print_str += f'  {key}:{info_episode_avg[key]:.3f}'
+
+        for key in info_episode_final.keys():
+            infos[key] = infos.get(key, 0) + info_episode_final[key]
+            episode_print_str += f'  {key}:{info_episode_final[key]:.3f}'
+
+        print(episode_print_str)
 
     print_str = f'Test #Episodes: {episodes}, avg_reward: {round(avg_reward, 3)}'
     avg_reward /= episodes
     for key in infos.keys():
         infos[key] /= episodes
-        print_str += f'  {key}:{infos[key]:.3f}'
+        print_str += f' {key}:{infos[key]:.3f}'
 
-    logger.info("----------------------------------------")
-    logger.info(print_str)
-    logger.info("----------------------------------------")
+    print("----------------------------------------")
+    print(print_str)
+    print("----------------------------------------")
     return avg_reward, infos
 

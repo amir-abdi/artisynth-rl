@@ -8,6 +8,7 @@ python src/python/main_sac.py \
 --test=false \
 --port=8083 \
 --include_current_state=true \
+--include_current_excitations=true \
 --wait_action=0.1 \
 --incremental_actions=True \
 --reset_step=200 \
@@ -19,3 +20,8 @@ python src/python/main_sac.py \
 --test=false \
 --automatic_entropy_tuning=false \
 --w_r=10 \
+--w_u=1 \
+--w_d=0 \
+--test=true \
+--load_path=/home/amirabdi/artisynth-rl/results/JawEnv-v1/jaw-sac-pytorch-v1-3/trained/saved
+

@@ -49,13 +49,6 @@ class Point2PointEnv(ArtiSynthBase):
         logger.info('Reset')
         return super().reset()
 
-    def render(self, mode='human', close=False):
-        # our environment does not need rendering
-        pass
-
-    def seed(self, seed=None):
-        np.random.seed(seed)
-
     def configure(self, *args, **kwargs):
         pass
 

@@ -16,8 +16,8 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 class ArtiSynthBase(gym.Env, ABC):
     def __init__(self, ip, port, artisynth_model, test, components, zero_excitations_on_reset,
-                 include_current_excitations, include_current_state, w_u, w_d, w_r, seed, artisynth_args='',
-                 **kwargs):
+                 include_current_excitations, include_current_state, w_u, w_d, w_r, seed, incremental_actions,
+                 artisynth_args='', **kwargs):
         logger.warning(f'The following args MIGHT have remained unused: {kwargs}')
 
         self.observation_space = None
@@ -28,6 +28,7 @@ class ArtiSynthBase(gym.Env, ABC):
 
         self.include_current_excitations = include_current_excitations
         self.include_current_state = include_current_state
+        self.incremental_actions = incremental_actions
 
         self.w_u = w_u  # position
         self.w_d = w_d  # temporal damping
@@ -200,3 +201,11 @@ class ArtiSynthBase(gym.Env, ABC):
         np_random, seed = seeding.np_random(seed)
         self.net.get_post(seed, request_type=c.POST_STR, message=c.SET_SEED_STR)
         return [seed]
+
+    def wrap_action(self, action):
+        if self.incremental_actions:
+            # todo: get excitations from previous state not by calling the environment again!
+            current_excitations = np.array(self.get_excitations_dict())
+            action += current_excitations
+            action = np.clip(action, a_min=c.LOW_EXCITATION, a_max=c.HIGH_EXCITATION)
+        return action
