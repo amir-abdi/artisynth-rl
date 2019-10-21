@@ -1,8 +1,6 @@
 import logging
 import time
-
 import numpy as np
-import torch
 
 from common import constants as c
 from common.utilities import Bunch
@@ -25,7 +23,6 @@ class SpineEnvV0(ArtiSynthBase):
 
         # misc
         self.phi_r_episode = []
-
         self.init_spaces()
 
     def calc_reward(self, state, excitations):

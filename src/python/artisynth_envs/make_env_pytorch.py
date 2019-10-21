@@ -9,9 +9,10 @@ from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
 from baselines.common.vec_env.vec_normalize import VecNormalize
 
 
-def _make_env_fn(env_id, rank, seed, log_dir, allow_early_resets, **kwargs):
+def _make_env_fn(env_id, rank, log_dir, allow_early_resets, **kwargs):
     def _thunk():
         env = gym.make(env_id, **kwargs)
+        seed = kwargs['seed']
         env.seed(seed + rank)
         if log_dir is not None:
             env = bench.Monitor(env, os.path.join(log_dir, str(rank)), allow_early_resets=allow_early_resets)

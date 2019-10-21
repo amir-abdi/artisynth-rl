@@ -108,9 +108,6 @@ def extend_arguments(parser):
     from common.arguments import str2bool
     parser.add_argument('--use_csvlogger', type=str2bool, default=False,
                         help='Use csvlogger to log training.')
-    parser.add_argument('--use_tensorboard', type=str2bool, default=False,
-                        help='Use tensorboard to log training.')
-
     return parser
 
 
