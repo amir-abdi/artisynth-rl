@@ -190,12 +190,6 @@ class ArtiSynthBase(gym.Env, ABC):
                 diff += np.linalg.norm(p_current - p_target)
         return diff
 
-    def render(self, mode=None, close=False):
-        pass
-
-    def close(self):
-        pass
-
     def seed(self, seed=None):
         # todo [BUG]: seeding gives different (but consistent) results when running artisynth seprately vs. from python.
         np_random, seed = seeding.np_random(seed)
@@ -204,8 +198,7 @@ class ArtiSynthBase(gym.Env, ABC):
 
     def wrap_action(self, action):
         if self.incremental_actions:
-            # todo: get excitations from previous state not by calling the environment again!
+            # todo: MAYBE get excitations from previous state not by calling the environment again!
             current_excitations = np.array(self.get_excitations_dict())
-            action += current_excitations
-            action = np.clip(action, a_min=c.LOW_EXCITATION, a_max=c.HIGH_EXCITATION)
+            return np.clip(action + current_excitations, a_min=c.LOW_EXCITATION, a_max=c.HIGH_EXCITATION)
         return action

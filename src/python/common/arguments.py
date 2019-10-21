@@ -39,6 +39,8 @@ def get_parser(parser=None):
                         help='Use wandb for train logging.')
     parser.add_argument('--wandb_resume_id', default=None, type=str,
                         help='resume previous wandb run with id')
+    parser.add_argument('--use_tensorboard', default=False,
+                        help='use tensorboard for logging (default: True)')
     parser.add_argument('-logdir', type=str, default=None,
                         help='Directory to which results will be logged (default: ./)')
     parser.add_argument('--save_interval', type=int, default=10,

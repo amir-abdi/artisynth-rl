@@ -12,10 +12,11 @@ def train(env, agent, args, configs):
     logger = setup_logger()
 
     # TesnorboardX
-    writer = SummaryWriter(
-        logdir='{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
-                                           datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
-                                           args.policy, "autotune" if args.automatic_entropy_tuning else ""))
+    if args.use_tensorboard:
+        writer = SummaryWriter(
+            logdir='{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
+                                               datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
+                                               args.policy, "autotune" if args.automatic_entropy_tuning else ""))
 
     # Memory
     memory = ReplayMemory(args.replay_size)
@@ -50,11 +51,12 @@ def train(env, agent, args, configs):
                     critic_1_loss, critic_2_loss, policy_loss, ent_loss, alpha = \
                         agent.update_parameters(memory, args.batch_size, updates)
 
-                    writer.add_scalar('loss/critic_1', critic_1_loss, updates)
-                    writer.add_scalar('loss/critic_2', critic_2_loss, updates)
-                    writer.add_scalar('loss/policy', policy_loss, updates)
-                    writer.add_scalar('loss/entropy_loss', ent_loss, updates)
-                    writer.add_scalar('entropy_temprature/alpha', alpha, updates)
+                    if args.use_tensorboard:
+                        writer.add_scalar('loss/critic_1', critic_1_loss, updates)
+                        writer.add_scalar('loss/critic_2', critic_2_loss, updates)
+                        writer.add_scalar('loss/policy', policy_loss, updates)
+                        writer.add_scalar('loss/entropy_loss', ent_loss, updates)
+                        writer.add_scalar('entropy_temprature/alpha', alpha, updates)
 
                     critic_1_loss_total += critic_1_loss
                     critic_2_loss_total += critic_2_loss
@@ -89,19 +91,20 @@ def train(env, agent, args, configs):
             break
 
         if i_episode % args.episode_log_interval == 0:
-            writer.add_scalar('reward/train', episode_reward, i_episode)
-            print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(i_episode, global_steps,
-                                                                                          episode_steps,
-                                                                                          round(episode_reward, 2)))
-        if args.use_wandb:
-            import wandb
-            wandb.log({'episode_reward': episode_reward}, step=i_episode)
+            print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(
+                i_episode, global_steps, episode_steps, round(episode_reward, 2)))
+            if args.use_tensorboard:
+                writer.add_scalar('reward/train', episode_reward, i_episode)
+            if args.use_wandb:
+                import wandb
+                wandb.log({'episode_reward': episode_reward}, step=i_episode)
 
         if i_episode % args.eval_interval == args.eval_interval - 1:
             avg_reward, infos = _test(env, agent, args.eval_episode)
-            writer.add_scalar('eval/avg_reward', avg_reward, i_episode)
-            for key, val in infos.items():
-                writer.add_scalar(f'eval/{key}', val, i_episode)
+            if args.use_tensorboard:
+                writer.add_scalar('eval/avg_reward', avg_reward, i_episode)
+                for key, val in infos.items():
+                    writer.add_scalar(f'eval/{key}', val, i_episode)
             if args.use_wandb:
                 import wandb
                 wandb.log({'eval/avg_reward': avg_reward}, step=i_episode)
@@ -143,8 +146,8 @@ def _test(env, agent, episodes):
             episode_iter_count += 1
 
             for key, val in info.items():
-                info_episode_avg['avg_'+key] = info_episode_avg.get('avg_'+key, 0) + val
-                info_episode_final['final_'+key] = val
+                info_episode_avg['avg_' + key] = info_episode_avg.get('avg_' + key, 0) + val
+                info_episode_final['final_' + key] = val
 
         episode_reward /= episode_iter_count
         avg_reward += episode_reward
@@ -161,8 +164,8 @@ def _test(env, agent, episodes):
 
         print(episode_print_str)
 
-    print_str = f'Test #Episodes: {episodes}, avg_reward: {round(avg_reward, 3)}'
     avg_reward /= episodes
+    print_str = f'Test #Episodes: {episodes}, avg_reward: {round(avg_reward, 3)}'
     for key in infos.keys():
         infos[key] /= episodes
         print_str += f' {key}:{infos[key]:.3f}'
@@ -171,4 +174,3 @@ def _test(env, agent, episodes):
     print(print_str)
     print("----------------------------------------")
     return avg_reward, infos
-

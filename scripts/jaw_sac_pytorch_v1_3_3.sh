@@ -6,7 +6,7 @@ python src/python/main_sac.py \
 --alg=sac \
 --verbose=20 \
 --test=false \
---port=8083 \
+--port=8090 \
 --include_current_state=true \
 --include_current_excitations=true \
 --wait_action=0.1 \

@@ -40,29 +40,13 @@ class JawEnvV0(ArtiSynthBase):
         logger.debug('action:{}'.format(action))
         self.episode_counter += 1
 
-        # current_excitations = np.array(self.get_excitations_dict())
-
-        # if self.incremental_actions:
-        #     self.take_action(action + current_excitations)
-        # else:
-        #     self.take_action(action)
         self.take_action(action)
 
         time.sleep(self.wait_action)
-        new_state = self.get_state_dict()
+        state = self.get_state_dict()
 
-        # if new_state is not None:
-            # if self.incremental_actions:
-            #     reward, done, info = self.calc_reward(state, action + current_excitations)
-            # else:
-            #     reward, done, info = self.calc_reward(state, action)
-        reward, done, info = self.calc_reward(new_state, action)
-        state_array = self.state_dic_to_array(new_state)
-        # else:
-        #     reward = 0
-        #     done = False
-        #     state_array = np.zeros(self.obs_size)
-        #     info = {}
+        reward, done, info = self.calc_reward(state, action)
+        state_array = self.state_dic_to_array(state)
 
         if self.episode_counter >= self.reset_step:
             done = True
