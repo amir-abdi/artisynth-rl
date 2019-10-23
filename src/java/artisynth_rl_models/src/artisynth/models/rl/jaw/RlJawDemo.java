@@ -96,7 +96,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		rlTrack.addMotionTarget(myJawModel.frameMarkers().get("lowerincisor"));
 
 		for (String exCategoryName : myJawModel.muscleExciterCategoryNames) {
-			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) { // only add bilateral
+			if (exCategoryName == myJawModel.muscleExciterCategoryNames[0]) {
 				for (MuscleExciter mex : myJawModel.myMuscleExciterCategories.get(exCategoryName)) {
 					Log.debug("rlTrack Exciter> " + exCategoryName + ":" + mex.getName());
 					rlTrack.addExciter(mex);
@@ -132,16 +132,16 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	};
 
 	enum JawPositions {
-		closedPosition(2.6199824, -94.095219, -40.749265, JawModelType.withCondylarConstraints),
-		openPosition(3.7836006, -85.6362, -75.485878, JawModelType.withCondylarConstraints, 8.0),
-//		restPosition(2.0856916, -87.358616, -51.34877, JawModelType.withCondylarConstraints),		
-		pureRotationalOpeningPosition(3.1654528, -84.767872, -59.862705, JawModelType.withCondylarConstraints),
-		rightLaterotrusivePosition(-12.188396, -96.733508, -44.460555, JawModelType.withCondylarConstraints, 3.0),
-		leftLaterotrusivePosition(16.940234, -97.129743, -43.485869, JawModelType.withCondylarConstraints, 3.0),
+		closedPosition(2.6125553, -93.603598, -40.193028, JawModelType.withCondylarConstraints),
+		openPosition(3.689827, -85.574302, -74.711683, JawModelType.withCondylarConstraints, 8.0),
+//		restPosition(2.262723, -88.375605, -50.954255, JawModelType.withCondylarConstraints),		
+		pureRotationalOpeningPosition(3.4325864, -83.428434, -58.134616, JawModelType.withCondylarConstraints),
+		rightLaterotrusivePosition(-12.819281, -95.86765, -44.569985, JawModelType.withCondylarConstraints, 3.0),
+		leftLaterotrusivePosition(17.392102, -96.797142, -42.866704, JawModelType.withCondylarConstraints, 3.0),
 		retrudedContactPosition(2.8772912, -91.449043, -41.952765, JawModelType.withCondylarConstraints), // CentricRelation
 		edgeToEdgePosition(-0.024246108, -96.801937, -45.99113, JawModelType.withCondylarConstraints),
 		protrusivePosition(0.84730021, -107.36706, -40.258819, JawModelType.withCondylarConstraints, 3.0);
-
+		
 		JawModelType jawModelType;
 		double x, y, z;
 		double weight;
@@ -172,18 +172,6 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		
 		
 	}
-
-	// closedPosition 2.6199824 -94.095219 -40.749265
-	// restPosition 2.432348 -89.850281 -46.341909
-	// openPosition 3.7713994 -85.668177 -75.45326
-	// pureRotationalOpeningPosition 3.1654528 -84.767872 -59.862705
-
-	// rightLaterotrusivePosition -12.188396 -96.733508 -44.460555
-	// lefttLaterotrusivePosition 16.940234 -97.129743 -43.485869
-
-	// retrudedContactPosition 2.8772912 -91.449043 -41.952765 // CentricRelation
-	// edgeToEdgePosition -0.024246108 -96.801937 -45.99113
-	// protrusivePosition 0.84730021 -107.36706 -40.258819
 
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
 		public Boolean reset = false;
@@ -257,20 +245,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				if (random) {
 					throw new NotImplementedException();
 				} else {
-					lowerincisor.setPosition(getRandomPoint(jawPositionsArr));
-										
-//					int index = r.nextInt(jawPositionsArr.length);
-//					lowerincisor.setPosition(jawPositionsArr[index].getPosition());
-//					Log.info(jawPositionsArr[index]);
-					
-					// swtich between open and close mouth
-//					if (lowerincisor.getPosition().z < -60) // open
-////						lowerincisor.setPosition(restPositionLowerIncisor);
-//						lowerincisor.setPosition(closedMouthPositionLowerIncisor);					
-//					else
-//						lowerincisor.setPosition(openMouthPositionLowerIncisor);
-					
-					
+					lowerincisor.setPosition(getRandomPoint(jawPositionsArr));								
 				}
 			}
 		}

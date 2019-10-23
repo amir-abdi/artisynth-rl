@@ -1,7 +1,7 @@
 #!/bin/bash
 
 python src/python/main_sac.py \
---model_name=jaw-sac-pytorch-v1-3-3-1 \
+--model_name=jaw-sac-pytorch-v1-3-3-1-wait0.05 \
 --env=JawEnv-v1 \
 --alg=sac \
 --verbose=20 \
@@ -9,7 +9,7 @@ python src/python/main_sac.py \
 --port=8331 \
 --include_current_state=true \
 --include_current_excitations=true \
---wait_action=0.0 \
+--wait_action=0.05 \
 --incremental_actions=True \
 --reset_step=200 \
 --use_wandb=true \
@@ -23,5 +23,6 @@ python src/python/main_sac.py \
 --w_u=1 \
 --w_d=0 \
 --test=false \
---load_path=/home/amirabdi/artisynth-rl/results/JawEnv-v1/jaw-sac-pytorch-v1-3/trained/saved
+--load_path=/home/amirabdi/artisynth-rl/results/JawEnv-v1/jaw-sac-pytorch-v1-3/trained/saved \
+--gui=false \
 

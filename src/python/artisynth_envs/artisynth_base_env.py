@@ -17,7 +17,7 @@ logger = logging.getLogger(c.LOGGER_STR)
 class ArtiSynthBase(gym.Env, ABC):
     def __init__(self, ip, port, artisynth_model, test, components, zero_excitations_on_reset,
                  include_current_excitations, include_current_state, w_u, w_d, w_r, seed, incremental_actions,
-                 artisynth_args='', **kwargs):
+                 gui, artisynth_args='', **kwargs):
         logger.warning(f'The following args MIGHT have remained unused: {kwargs}')
 
         self.observation_space = None
@@ -42,7 +42,7 @@ class ArtiSynthBase(gym.Env, ABC):
 
         self.net = RestClient(ip, port)
         if not RestClient.server_is_alive(ip, port):  # if server is not already running, initiate ArtiSynth
-            self.run_artisynth(ip, port, artisynth_model, artisynth_args)
+            self.run_artisynth(ip, port, artisynth_model, gui, artisynth_args)
         self.seed(seed)
 
     def init_spaces(self, incremental_actions=False):
@@ -98,7 +98,7 @@ class ArtiSynthBase(gym.Env, ABC):
             high = np.append(high, np.full((action_size,), c.HIGH_EXCITATION))
         return low, high
 
-    def run_artisynth(self, ip, port, artisynth_model, artisynth_args=''):
+    def run_artisynth(self, ip, port, artisynth_model, gui, artisynth_args=''):
         if ip != 'localhost' and ip != '0.0.0.0' and ip != '127.0.0.1':
             raise NotImplementedError('Can\'t initialize ArtiSynth on a remote system.')
 
@@ -107,6 +107,7 @@ class ArtiSynthBase(gym.Env, ABC):
 
         command = 'artisynth -model {} '.format(artisynth_model) + \
                   '[ -port {} {} ] -play -noTimeline'.format(port, artisynth_args)
+        command += ' -noGui' if not gui else ''
         command_list = command.split(' ')
 
         FNULL = open(os.devnull, 'w')

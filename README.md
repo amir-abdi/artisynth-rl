@@ -141,7 +141,7 @@ the 4 directories are made in the artisynth_rl root.
 #### Jaw
 
     artisynth -model artisynth.models.rl.jaw.RlJawDemo \
-    [  -port 8080 -disc false -condyleConstraints true ]  \
+    [  -port 8080 -disc false -condyleConstraints false -condylarCapsule true ]  \
     -play -noTimeline
 
 

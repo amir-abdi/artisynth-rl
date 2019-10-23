@@ -1,5 +1,10 @@
+"""
+Originally implemented by: https://github.com/pranz24/pytorch-soft-actor-critic
+Check LICENSE for details
+"""
 import random
 import numpy as np
+
 
 class ReplayMemory:
     def __init__(self, capacity):

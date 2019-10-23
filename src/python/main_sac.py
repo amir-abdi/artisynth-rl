@@ -25,7 +25,7 @@ def extend_arguments(parser):
                         help='Automaically adjust α (default: False)')
     parser.add_argument('--batch_size', type=int, default=256, metavar='N',
                         help='batch size (default: 256)')
-    parser.add_argument('--num_steps', type=int, default=1000001, metavar='N',
+    parser.add_argument('--num_steps', type=int, default=10000001, metavar='N',
                         help='maximum number of steps (default: 1000000)')
     parser.add_argument('--hidden_size', type=int, default=256, metavar='N',
                         help='hidden size (default: 256)')
@@ -37,7 +37,7 @@ def extend_arguments(parser):
                         help='Value target update per no. of updates per step (default: 1)')
     parser.add_argument('--replay_size', type=int, default=1000000, metavar='N',
                         help='size of replay buffer (default: 1000000)')
-    parser.add_argument('--cuda', action="store_true", default=True,
+    parser.add_argument('--cuda', type=str2bool, default=True,
                         help='run on CUDA (default: True)')
     return parser
 

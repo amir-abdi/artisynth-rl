@@ -21,6 +21,8 @@ def get_parser(parser=None):
                         help='port to run the server on (default: 4545)')
     parser.add_argument('--env', default='Point2PointEnv-v0',
                         help='environment to train on (default: Point2PointEnv-v0)')
+    parser.add_argument('--gui', type=str2bool, default=True,
+                        help='run environment with GUI.')
 
     # Logging and saving
     parser.add_argument('--verbose', type=int, default='20',

@@ -73,6 +73,7 @@ import maspack.render.color.JetColorMap;
 import maspack.util.DoubleInterval;
 import maspack.util.NumberFormat;
 import maspack.util.ReaderTokenizer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import artisynth.core.util.ScalarRange;
 
 public class JawFemModel extends JawBaseModel {
@@ -118,13 +119,11 @@ public class JawFemModel extends JawBaseModel {
 
 	protected double myStiffnessDamping = 10;
 
-	protected static final double DEFAULT_E = 6 * 450000 / unitConversion;
-
-	protected static final double DEFAULT_Thickness = 0.4; // mm
-
-	protected static final double DEFAULT_Damping = 75;
-
-	protected static final double DEFAULT_Nu = 0.49;
+	// Used in Elastic Foundation Force Behaviour
+	protected static final double DEFAULT_E_ELASTIC_CONTACT = 6 * 450000 / unitConversion;
+	protected static final double DEFAULT_Thickness_ELASTIC_CONTACT = 0.45; // mm
+	protected static final double DEFAULT_Damping_ELASTIC_CONTACT = 75;
+	protected static final double DEFAULT_Nu_ELASTIC_CONTACT = 0.49;
 
 	protected boolean useMooneyRivlin = false;
 	protected boolean useBiteConstraints = false;
@@ -316,8 +315,8 @@ public class JawFemModel extends JawBaseModel {
 		behav4.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
 
 		if (useElasticFoundationContact == true) {
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E, DEFAULT_Nu,
-					DEFAULT_Damping, DEFAULT_Thickness);
+			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E_ELASTIC_CONTACT, DEFAULT_Nu_ELASTIC_CONTACT,
+					DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
 			behav1.setForceBehavior(EFContact);
 			behav2.setForceBehavior(EFContact);
 			behav3.setForceBehavior(EFContact);
@@ -788,7 +787,7 @@ public class JawFemModel extends JawBaseModel {
 	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints, Boolean condylarCapsule) 
 			throws IOException {
 		super();
-		setIntegrator(Integrator.FullBackwardEuler);
+		setIntegrator(Integrator.ConstrainedBackwardEuler);
 		
 		this.setName(name);
 		this.withDisc = withDisc;
@@ -874,6 +873,7 @@ public class JawFemModel extends JawBaseModel {
 			cbar.setColorMap(((FemModel3d) models().get(0)).getColorMap());
 			// addRenderable(cbar);
 		} else {
+			useElasticFoundationContact = false;
 			addInterBoneCollision();
 		}
 
@@ -887,7 +887,7 @@ public class JawFemModel extends JawBaseModel {
 			setCondylarCapsule();
 		}
 		for (BodyConnector bc : bodyConnectors()) {
-			bc.setCompliance(new VectorNd(new double[] { 0.00001 }));
+			bc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
 		}
 
 		setupRenderProps();
@@ -931,22 +931,28 @@ public class JawFemModel extends JawBaseModel {
 		System.out.println("#excitors =" + getMuscleExciters().size());
 	}
 
-	public void addInterBoneCollision() {
+	public void addInterBoneCollision() {		
 		CollisionBehavior behav1 = new CollisionBehavior(true, 0);
-
-		// TODO: try VERTEX_EDGE_PENETRATION VERTEX_PENETRATION_BILATERAL
-		behav1.setMethod(Method.VERTEX_EDGE_PENETRATION);
-
-		if (useElasticFoundationContact == true) {
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E, DEFAULT_Nu,
-					DEFAULT_Damping, DEFAULT_Thickness);
-			behav1.setForceBehavior(EFContact);
-			getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
-		}
-
 		behav1.setMethod(Method.DEFAULT);
+		if (useElasticFoundationContact == true) {						
+			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(
+					DEFAULT_E_ELASTIC_CONTACT, DEFAULT_Nu_ELASTIC_CONTACT,
+					DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
+			behav1.setForceBehavior(EFContact);									
+		} else {
+			// to model the PDL and tooth movement inside their sockets
+			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(
+					500, 0.0, 0, 0.25);
+			behav1.setForceBehavior(EFContact);					
+			
+			// 2.7 MPa = 2700
+			// 83 GPa = 83000000 enamel
+			// 0.5 MPa = 500 PDL
+			// 2.45 MPa = 2450 Retrodiscal laminae (2.8+2.5+2.9+1.6 / 4)
+		}		
+		getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);		
 		behav1.setName("mand_skull");
-		setCollisionBehavior(rigidBodies().get("jaw"), rigidBodies().get("skull"), behav1);
+		setCollisionBehavior(rigidBodies().get("jaw"), rigidBodies().get("skull"), behav1);			
 	}
 
 }

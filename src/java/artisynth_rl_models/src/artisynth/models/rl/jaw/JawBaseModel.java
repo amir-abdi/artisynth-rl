@@ -115,7 +115,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	static final double MEMBRANE_PT_RADIUS = 0.75;
 
-	static final double bodyConnectorCompliance = 0.0005;
+	static final double bodyConnectorCompliance = 0.000001;
 
 	static public final Point3d c1Point = new Point3d(0.0, 54.3478, 63.5381);
 
@@ -567,8 +567,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 	}
 
 	protected void setCondylarCapsule() {
-		double slack = -25.0; // increase if jaw needs more flexibility
-		LigamentAxialMaterial capsule_material = new LigamentAxialMaterial(300, 0, 10);
+		double slack = 7.5; // increase if jaw needs more flexibility
+		LigamentAxialMaterial capsule_material = new LigamentAxialMaterial(2450, 0, 0);
 
 		MultiPointSpring mpstring_r = new MultiPointSpring();
 		mpstring_r.addPoint(frameMarkers().get("rCapsulePosterior"));
