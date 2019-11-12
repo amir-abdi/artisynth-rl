@@ -44,10 +44,13 @@ public class RlRestApi {
 
 	public Route setExcitations = (Request request, Response response) -> {
 		Log.debug("setExcitations length:" + request.contentLength() + " type: " + request.contentType());
-		Gson gson = new Gson();
+		Gson gson = new Gson();	
 		Log.debug(request.body());
-		RlExcitations rlExcitations = gson.fromJson(request.body(), RlExcitations.class);
-		RlState nextState = this.rlController.setExcitations(rlExcitations.getExcitations());
+		RlMuscleProps rlExcitations = gson.fromJson(request.body(), RlMuscleProps.class);
+		Log.debug(rlExcitations);
+		Log.debug(rlExcitations.getProps());
+		///----------------- 
+		RlState nextState = this.rlController.setExcitations(rlExcitations.getProps());
 		return nextState;
 	};
 }

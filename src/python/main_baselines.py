@@ -33,7 +33,7 @@ def main(args):
     arg_parser = common.arguments.get_parser(arg_parser)
     args, unknown_args = arg_parser.parse_known_args(args)
     extra_args = parse_cmdline_kwargs(unknown_args)
-    configs = common.config.get_config(args)
+    configs = common.config.get_config(args.env, args.experiment_name)
 
     args.save_path = os.path.join(configs.trained_directory, 'model.ckpt')
 

@@ -141,3 +141,23 @@ register(
             }
 )
 
+register(
+    id='JawEnv-v2',
+    entry_point='artisynth_envs.envs:JawEnvV0',
+    nondeterministic=False,
+    kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
+            'artisynth_args': '-disc false -condyleConstraints false -condylarCapsule true',
+            c.COMPONENTS: {
+                c.CURRENT: [
+                    {c.NAME: 'lowerincisor',
+                     c.LOW: [-7, -105, -80, -10, -10, -10],
+                     c.HIGH: [14, -80, -35, 10, 10, 10]
+                     }],
+                c.TARGET: [
+                    {c.NAME: 'lowerincisor_ref',
+                     c.LOW: [-7, -105, -80, -10, -10, -10],
+                     c.HIGH: [14, -80, -35, 10, 10, 10]
+                     }],
+                c.PROPS: ['position', 'velocity']},
+            }
+)

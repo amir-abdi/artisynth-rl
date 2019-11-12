@@ -21,6 +21,7 @@ import javax.swing.JSeparator;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import sun.util.logging.resources.logging;
+import artisynth.core.femmodels.MuscleElementDescList;
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
 import artisynth.core.inverse.TargetPoint;
@@ -31,6 +32,7 @@ import artisynth.core.mechmodels.MechSystemModel;
 import artisynth.core.mechmodels.MotionTargetComponent;
 import artisynth.core.mechmodels.MultiPointMuscle;
 import artisynth.core.mechmodels.Muscle;
+import artisynth.core.mechmodels.MuscleExciter;
 import artisynth.core.mechmodels.Point;
 import artisynth.core.mechmodels.PointList;
 import artisynth.core.mechmodels.RigidBody;
@@ -200,7 +202,7 @@ public class RlController extends ControllerBase
 		RlState rlState = new RlState();
 		rlState.addAll(getRlComponents(getSources()));
 		rlState.addAll(getRlComponents(getTargets()));
-		rlState.setRlExcitations(this.getExcitations());
+		rlState.setExcitations(this.getExcitations());
 
 		// reset state
 		mySys.setState(saveState);
@@ -287,29 +289,8 @@ public class RlController extends ControllerBase
 		return tframe;
 	}
 
-	/**
-	 * Adds an exciter to be used as a free variable in the inverse routine
-	 * 
-	 * @param weight regularization weight to be applied to the exciter
-	 * @param ex     exciter to add
-	 * @param gain   the gain applied to the exciter
-	 */
 	public void addExciter(ExcitationComponent ex) {
 		exciters.add(ex);
-
-		if (ex instanceof MultiPointMuscle) {
-			MultiPointMuscle m = (MultiPointMuscle) ex;
-			if (m.getExcitationColor() == null) {
-				RenderProps.setLineColor(m, Color.WHITE);
-				m.setExcitationColor(Color.RED);
-			}
-		} else if (ex instanceof Muscle) {
-			Muscle m = (Muscle) ex;
-			if (m.getExcitationColor() == null) {
-				RenderProps.setLineColor(m, Color.WHITE);
-				m.setExcitationColor(Color.RED);
-			}
-		}
 	}
 
 	/**
@@ -591,7 +572,7 @@ public class RlController extends ControllerBase
 	@Override
 	public void apply(double t0, double t1) {
 		if (!excitersUpToDate) {
-
+				
 			for (int i = 0; i < excitationValues.size(); ++i) {
 				exciters.get(i).setExcitation(excitationValues.get(i));
 			}
@@ -629,7 +610,8 @@ public class RlController extends ControllerBase
 		rlState.addAll(getRlComponents(sources));
 		rlState.addAll(getRlComponents(targets));
 
-		rlState.setRlExcitations(getExcitations());
+		rlState.setExcitations(getExcitations());
+		rlState.setMuscleForces(getMuscleForces());
 
 		Log.debug("Get State state.size = " + rlState.numComponents());
 		return rlState;
@@ -693,12 +675,15 @@ public class RlController extends ControllerBase
 	public RlState setExcitations(ArrayList<Double> excitations) {
 		excitationValues = excitations;
 		excitersUpToDate = false;
-		
+		Log.info("setExcitations");
 		if (getNextState) {
 			nextStateUpToDate = false;
+			Log.info("waiting for next state");
 			waitForNextState();
+			Log.info("next state done");
 			return nextState;
 		}
+		Log.info("setExcitations done");
 		return new RlState();
 	}
 
@@ -724,6 +709,25 @@ public class RlController extends ControllerBase
 			exs.add(m.getExcitation());
 		}
 		return exs;
+	}
+	
+	@Override
+	public ArrayList<Double> getMuscleForces() {
+		ArrayList<Double> forces = new ArrayList<Double>(exciters.size());
+
+		for (ExcitationComponent e : this.exciters) {
+			MuscleExciter mex = (MuscleExciter)e;
+			double force = 0;
+			
+//			TODO: make sure muscle not counted twice
+			for (int i=0; i<mex.numTargets(); ++i) {
+				Muscle m = (Muscle)mex.getTarget(i);				
+				force += m.getForceNorm() - m.getPassiveForceNorm(); 			
+			}			
+			force /= mex.numTargets();
+			forces.add(force);
+		}
+		return forces;
 	}
 
 	@Override

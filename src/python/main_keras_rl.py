@@ -113,7 +113,7 @@ def extend_arguments(parser):
 
 def main():
     args = extend_arguments(get_parser()).parse_args()
-    configs = common.config.get_config(args)
+    configs = common.config.get_config(args.env, args.experiment_name)
     setup_tensorflow()
     get_custom_objects().update({'SmoothLogistic': Activation(smooth_logistic)})
 

@@ -1,5 +1,6 @@
 import gym
 import torch
+import pickle
 
 from algs.sac.sac import SAC
 import common.config
@@ -19,8 +20,7 @@ def extend_arguments(parser):
     parser.add_argument('--tau', type=float, default=0.005, metavar='G',
                         help='target smoothing coefficient(τ) (default: 0.005)')
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
-                        help='Temperature parameter α determines the relative importance of the entropy\
-                                term against the reward (default: 0.2)')
+                        help='Temperature parameter α - the relative importance of the entropy term (default: 0.2)')
     parser.add_argument('--automatic_entropy_tuning', type=str2bool, default=False, metavar='G',
                         help='Automaically adjust α (default: False)')
     parser.add_argument('--batch_size', type=int, default=256, metavar='N',
@@ -39,20 +39,38 @@ def extend_arguments(parser):
                         help='size of replay buffer (default: 1000000)')
     parser.add_argument('--cuda', type=str2bool, default=True,
                         help='run on CUDA (default: True)')
+
+    # learning rate
+    parser.add_argument('--lr_gamma', type=float, default=0.999995,
+                        help='gamma value for the exponential learning rate scheduler')
+    parser.add_argument('--lr_min', type=float, default=0,
+                        help='gamma value for the exponential learning rate scheduler')
+
+    # load model
+    parser.add_argument('--memory_load_path', default=None,
+                        help='Path to load the saved replay memory.')
+    parser.add_argument('--reset_global_episode', type=str2bool, default=False,
+                        help='start training episode from 0 or continue from the saved model.')
+    parser.add_argument('--load_optim', type=str2bool, default=False,
+                        help='to load the state of the optimizers, including the learning rate.')
+
+    parser.add_argument('--hack_log', type=str2bool, default=False,
+                        help='Add log to reward! (temporary... remove later!)')
+    parser.add_argument('--hack_muscle_forces', type=str2bool, default=False,
+                        help='use muscle forces instead of excitations for regularization')
     return parser
 
 
 def main():
     args = extend_arguments(get_parser()).parse_args()
-    configs = common.config.get_config(args)
+    configs = common.config.get_config(args.env, args.experiment_name)
 
     if args.test:
         args.num_processes = 1
         args.use_wandb = False
 
-    logger = setup_logger(args.verbose, args.model_name, configs.log_directory)
+    logger = setup_logger(args.verbose, args.experiment_name, configs.log_directory)
     torch.set_num_threads(1)
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     # set seed values
     seed = args.seed
@@ -62,21 +80,27 @@ def main():
     if args.use_wandb:
         import wandb
         resume_wandb = True if args.wandb_resume_id is not None else False
-        wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl')
+        wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl',
+                   name=args.experiment_name)
 
     env = gym.make(args.env, **vars(args))
 
     # Agent
+    global_episodes = 0
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
     if args.load_path:
-        # todo: save and load the optimizer
-        logger.info(f'loading model from {args.load_path}')
-        agent.load_state_dict(torch.load(args.load_path))
+        global_episodes = agent.load_model(args.load_path, args.load_optim) * int(not args.reset_global_episode)
+        logger.info(f'Agent loaded: {args.load_path} @{global_episodes}')
+
+    memory = None
+    if args.memory_load_path:
+        memory = pickle.load(open(args.memory_load_path, 'rb'))
+        logger.info(f'Memory loaded: {args.memory_load_path}')
 
     if args.test:
         test(env, agent, args)
     else:
-        train(env, agent, args, configs)
+        train(env, agent, args, configs, memory, global_episodes)
 
 
 if __name__ == "__main__":

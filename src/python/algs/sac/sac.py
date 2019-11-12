@@ -2,32 +2,37 @@
 Originally implemented by: https://github.com/pranz24/pytorch-soft-actor-critic
 Check LICENSE for details
 """
-import os
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
 from algs.sac.utils import soft_update, hard_update
 from algs.sac.model import GaussianPolicy, QNetwork, DeterministicPolicy
-import torch.nn as nn
+from common.utilities import ExponentialLRWithMin
 
 
-class SAC(nn.Module):
+class SAC:
     def __init__(self, num_inputs, action_space, args):
         super(SAC, self).__init__()
 
-        self.global_episode = 0
+        self.optims = dict()
+        self.models = dict()
+        self.lr_schedulers = []
+
         self.gamma = args.gamma
         self.tau = args.tau
         self.alpha = args.alpha
+        self.updates_count = 0
 
         self.policy_type = args.policy
         self.target_update_interval = args.target_update_interval
         self.automatic_entropy_tuning = args.automatic_entropy_tuning
-
         self.device = torch.device("cuda" if args.cuda else "cpu")
 
         self.critic = QNetwork(num_inputs, action_space.shape[0], args.hidden_size).to(device=self.device)
         self.critic_optim = Adam(self.critic.parameters(), lr=args.lr)
+        self.lr_schedulers.append(ExponentialLRWithMin(self.critic_optim, args.lr_gamma))
+        self.optims['critic_optim'] = self.critic_optim
+        self.models['critic'] = self.critic
 
         self.critic_target = QNetwork(num_inputs, action_space.shape[0], args.hidden_size).to(self.device)
         hard_update(self.critic_target, self.critic)
@@ -38,17 +43,21 @@ class SAC(nn.Module):
                 self.target_entropy = -torch.prod(torch.Tensor(action_space.shape).to(self.device)).item()
                 self.log_alpha = torch.zeros(1, requires_grad=True, device=self.device)
                 self.alpha_optim = Adam([self.log_alpha], lr=args.lr)
+                self.lr_schedulers.append(ExponentialLRWithMin(self.alpha_optim, args.lr_gamma))
+                self.models['alpha_optim'] = self.alpha_optim
 
             self.policy = GaussianPolicy(num_inputs, action_space.shape[0], args.hidden_size, action_space).to(
                 self.device)
             self.policy_optim = Adam(self.policy.parameters(), lr=args.lr)
-
         else:
             self.alpha = 0
             self.automatic_entropy_tuning = False
             self.policy = DeterministicPolicy(num_inputs, action_space.shape[0], args.hidden_size, action_space).to(
                 self.device)
             self.policy_optim = Adam(self.policy.parameters(), lr=args.lr)
+        self.lr_schedulers.append(ExponentialLRWithMin(self.policy_optim, args.lr_gamma))
+        self.optims['policy_optim'] = self.policy_optim
+        self.models['policy'] = self.policy
 
     def select_action(self, state, eval_mode=False):
         state = torch.FloatTensor(state).to(self.device).unsqueeze(0)
@@ -58,7 +67,7 @@ class SAC(nn.Module):
             _, _, action = self.policy.sample(state)
         return action.detach().cpu().numpy()[0]
 
-    def update_parameters(self, memory, batch_size, updates):
+    def update_parameters(self, memory, batch_size):
         # Sample a batch from memory
         state_batch, action_batch, reward_batch, next_state_batch, mask_batch = memory.sample(batch_size=batch_size)
 
@@ -74,16 +83,18 @@ class SAC(nn.Module):
             min_qf_next_target = torch.min(qf1_next_target, qf2_next_target) - self.alpha * next_state_log_pi
             next_q_value = reward_batch + mask_batch * self.gamma * min_qf_next_target
 
-        qf1, qf2 = self.critic(state_batch, action_batch)  # Two Q-functions to mitigate positive bias in the policy improvement step
+        # Two Q-functions to mitigate positive bias in the policy improvement step
+        qf1, qf2 = self.critic(state_batch, action_batch)
         qf1_loss = F.mse_loss(qf1, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
         qf2_loss = F.mse_loss(qf2, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
 
-        pi, log_pi, _ = self.policy.sample(state_batch)
+        action_pi, log_pi, _ = self.policy.sample(state_batch)
 
-        qf1_pi, qf2_pi = self.critic(state_batch, pi)
+        qf1_pi, qf2_pi = self.critic(state_batch, action_pi)
         min_qf_pi = torch.min(qf1_pi, qf2_pi)
 
-        policy_loss = ((self.alpha * log_pi) - min_qf_pi).mean()  # Jπ = 𝔼st∼D,εt∼N[α * logπ(f(εt;st)|st) − Q(st,f(εt;st))]
+        # Jπ = 𝔼st∼D,εt∼N[α * logπ(f(εt;st)|st) − Q(st,f(εt;st))]
+        policy_loss = ((self.alpha * log_pi) - min_qf_pi).mean()
 
         self.critic_optim.zero_grad()
         qf1_loss.backward()
@@ -99,7 +110,6 @@ class SAC(nn.Module):
 
         if self.automatic_entropy_tuning:
             alpha_loss = -(self.log_alpha * (log_pi + self.target_entropy).detach()).mean()
-
             self.alpha_optim.zero_grad()
             alpha_loss.backward()
             self.alpha_optim.step()
@@ -110,28 +120,48 @@ class SAC(nn.Module):
             alpha_loss = torch.tensor(0.).to(self.device)
             alpha_tlogs = torch.tensor(self.alpha)  # For TensorboardX logs
 
-        if updates % self.target_update_interval == 0:
+        if self.updates_count % self.target_update_interval == 0:
             soft_update(self.critic_target, self.critic, self.tau)
+
+        for scheduler in self.lr_schedulers:
+            scheduler.step()
 
         return qf1_loss.item(), qf2_loss.item(), policy_loss.item(), alpha_loss.item(), alpha_tlogs.item()
 
-    # Save model parameters
-    def save_model(self, env_name, suffix="", actor_path=None, critic_path=None):
-        if not os.path.exists('models/'):
-            os.makedirs('models/')
+    def save_model(self, filepath, global_episodes):
+        model_states = dict()
+        optim_states = dict()
 
-        if actor_path is None:
-            actor_path = "models/sac_actor_{}_{}".format(env_name, suffix)
-        if critic_path is None:
-            critic_path = "models/sac_critic_{}_{}".format(env_name, suffix)
-        print('Saving models to {} and {}'.format(actor_path, critic_path))
-        torch.save(self.policy.state_dict(), actor_path)
-        torch.save(self.critic.state_dict(), critic_path)
+        # neural models
+        for key, value in self.models.items():
+            model_states.update({key: value.state_dict()})
 
-    # Load model parameters
-    def load_model(self, actor_path, critic_path):
-        print('Loading models from {} and {}'.format(actor_path, critic_path))
-        if actor_path is not None:
-            self.policy.load_state_dict(torch.load(actor_path))
-        if critic_path is not None:
-            self.critic.load_state_dict(torch.load(critic_path))
+        # optimizers' states
+        for key, value in self.optims.items():
+            optim_states.update({key: value.state_dict()})
+
+        states = {'global_episode_num': global_episodes,  # to avoid saving right after loading
+                  'model_states': model_states,
+                  'optim_states': optim_states}
+
+        # make sure KeyboardInterrupt exceptions don't mess up the model saving process
+        while True:
+            try:
+                with open(filepath, 'wb+') as f:
+                    torch.save(states, f)
+                break
+            except KeyboardInterrupt:
+                pass
+
+    def load_model(self, filepath, load_optim=True):
+        with open(filepath, 'rb') as f:
+            checkpoint = torch.load(f)
+
+        for key, value in self.models.items():
+            value.load_state_dict(checkpoint['model_states'][key], strict=False)
+
+        if load_optim:
+            for key, value in self.optims.items():
+                value.load_state_dict(checkpoint['optim_states'][key])
+
+        return checkpoint['global_episode_num']

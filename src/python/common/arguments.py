@@ -29,8 +29,8 @@ def get_parser(parser=None):
                         help='Verbosity level')
     parser.add_argument('--project_name', default='ArtiSynth-RL',
                         help='Name of the RL project.')
-    parser.add_argument('--model_name', default='UnknownModel',
-                        help='Name of the RL model being trained for logging purposes.')
+    parser.add_argument('--experiment_name', default='UnknownModel',
+                        help='Name of the experiment, for logging purposes.')
     parser.add_argument('--load_path', default=None,
                         help='Path to load the trained model.')
     parser.add_argument('--log_interval', type=int, default=10,
@@ -67,6 +67,7 @@ def get_parser(parser=None):
     parser.add_argument('--zero_excitations_on_reset', type=str2bool, default=True,
                         help='Reset all muscle excitations to zero after each reset.')
     parser.add_argument('--lr', type=float, default=0.0003, metavar='G', help='learning rate (default: 0.0003)')
+    parser.add_argument('--pow_u', type=float, default=1, help='weight of distance reward term')
     parser.add_argument('--w_u', type=float, default=1, help='weight of distance reward term')
     parser.add_argument('--w_d', type=float, default=1, help='weight of damping reward term')
     parser.add_argument('--w_r', type=float, default=1, help='weight of excitation regularization reward term')

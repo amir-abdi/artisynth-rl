@@ -4,15 +4,16 @@ Check LICENSE for details
 """
 import datetime
 import itertools
-import torch
 from tensorboardX import SummaryWriter
-from algs.sac.replay_memory import ReplayMemory
 import os
+import pickle
 
+from algs.sac.replay_memory import ReplayMemory
 from common.config import setup_logger
+from common.utilities import get_lr_pytorch
 
 
-def train(env, agent, args, configs):
+def train(env, agent, args, configs, memory=None, global_episodes=0):
     logger = setup_logger()
 
     # TesnorboardX
@@ -23,60 +24,38 @@ def train(env, agent, args, configs):
                                                args.policy, "autotune" if args.automatic_entropy_tuning else ""))
 
     # Memory
-    memory = ReplayMemory(args.replay_size)
+    memory = memory or ReplayMemory(args.replay_size)
 
     # Training Loop
     global_steps = 0
-    updates = 0
 
-    for i_episode in itertools.count(start=agent.global_episode, step=1):
+    for global_episodes in itertools.count(start=global_episodes, step=1):
         episode_reward = 0
         episode_steps = 0
         done = False
 
         state = env.reset()
 
+        critic_1_loss_total = 0
+        critic_2_loss_total = 0
+        policy_loss_total = 0
+        ent_loss_total = 0
+        alpha_total = 0
         while not done:
-            if args.start_steps > global_steps:
+            if len(memory) < args.start_steps and global_steps < args.start_steps:
                 action = env.action_space.sample()  # Sample random action
             else:
                 action = agent.select_action(state)  # Sample action from policy
-
             if len(memory) > args.batch_size:
-                # Number of updates per step in environment
-                critic_1_loss_total = 0
-                critic_2_loss_total = 0
-                policy_loss_total = 0
-                ent_loss_total = 0
-                alpha_total = 0
-
-                for i in range(args.updates_per_step):
-                    # Update parameters of all the networks
+                for i in range(args.updates_per_step):  # Number of updates per step in environment
                     critic_1_loss, critic_2_loss, policy_loss, ent_loss, alpha = \
-                        agent.update_parameters(memory, args.batch_size, updates)
-
-                    if args.use_tensorboard:
-                        writer.add_scalar('loss/critic_1', critic_1_loss, updates)
-                        writer.add_scalar('loss/critic_2', critic_2_loss, updates)
-                        writer.add_scalar('loss/policy', policy_loss, updates)
-                        writer.add_scalar('loss/entropy_loss', ent_loss, updates)
-                        writer.add_scalar('entropy_temprature/alpha', alpha, updates)
+                        agent.update_parameters(memory, args.batch_size)  # update all parameters
 
                     critic_1_loss_total += critic_1_loss
                     critic_2_loss_total += critic_2_loss
                     policy_loss_total += policy_loss
                     ent_loss_total += ent_loss
                     alpha_total += alpha
-
-                    if args.use_wandb:
-                        import wandb
-                        wandb.log({'loss/critic_1': critic_1_loss_total / args.updates_per_step,
-                                   'loss/critic_2': critic_2_loss_total / args.updates_per_step,
-                                   'loss/policy': policy_loss_total / args.updates_per_step,
-                                   'loss/entropy_loss': ent_loss_total / args.updates_per_step,
-                                   'entropy_temprature/alpha': alpha_total / args.updates_per_step},
-                                  step=i_episode)
-                    updates += 1
 
             next_state, reward, done, _ = env.step(action)  # Step
             episode_steps += 1
@@ -88,39 +67,64 @@ def train(env, agent, args, configs):
             mask = 1 if episode_steps == env.reset_step else float(not done)
 
             memory.push(state, action, reward, next_state, mask)  # Append transition to memory
-
             state = next_state
+        # end of episode
 
-        if global_steps > args.num_steps:
-            break
+        # The following values are a bit off for the first episode as we have no updates for len(memory) < batch_size
+        critic_1_loss_total /= episode_steps
+        critic_2_loss_total /= episode_steps
+        policy_loss_total /= episode_steps
+        episode_reward /= episode_steps
+        ent_loss_total /= episode_steps
+        alpha_total /= episode_steps
 
-        if i_episode % args.episode_log_interval == 0:
+        if global_episodes % args.episode_log_interval == 0:
             print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(
-                i_episode, global_steps, episode_steps, round(episode_reward, 2)))
+                global_episodes, global_steps, episode_steps, round(episode_reward, 2)))
             if args.use_tensorboard:
-                writer.add_scalar('reward/train', episode_reward, i_episode)
+                writer.add_scalar('reward/train', episode_reward, global_episodes)
+                writer.add_scalar('loss/critic_1', critic_1_loss_total, global_episodes)
+                writer.add_scalar('loss/critic_2', critic_2_loss_total, global_episodes)
+                writer.add_scalar('loss/policy', policy_loss_total, global_episodes)
+                writer.add_scalar('loss/entropy_loss', ent_loss_total, global_episodes)
+                writer.add_scalar('entropy_temprature/alpha', alpha_total, global_episodes)
             if args.use_wandb:
                 import wandb
-                wandb.log({'episode_reward': episode_reward}, step=i_episode)
+                wandb.log({'episode_reward': episode_reward,
+                           'loss/critic_1': critic_1_loss_total / args.updates_per_step,
+                           'loss/critic_2': critic_2_loss_total / args.updates_per_step,
+                           'loss/policy': policy_loss_total / args.updates_per_step,
+                           'loss/entropy_loss': ent_loss_total / args.updates_per_step,
+                           'entropy_temprature/alpha': alpha_total / args.updates_per_step,
+                           'lr': get_lr_pytorch(agent.policy_optim)},
+                          step=global_episodes)
 
-        if i_episode % args.eval_interval == args.eval_interval - 1:
+        if global_episodes % args.eval_interval == args.eval_interval - 1:
             avg_reward, infos = _test(env, agent, args.eval_episode)
             if args.use_tensorboard:
-                writer.add_scalar('eval/avg_reward', avg_reward, i_episode)
+                writer.add_scalar('eval/avg_reward', avg_reward, global_episodes)
                 for key, val in infos.items():
-                    writer.add_scalar(f'eval/{key}', val, i_episode)
+                    writer.add_scalar(f'eval/{key}', val, global_episodes)
             if args.use_wandb:
                 import wandb
-                wandb.log({'eval/avg_reward': avg_reward}, step=i_episode)
+                wandb.log({'eval/avg_reward': avg_reward}, step=global_episodes)
                 for key, val in infos.items():
-                    wandb.log({f'eval/{key}': val}, step=i_episode)
+                    wandb.log({f'eval/{key}': val}, step=global_episodes)
 
-        if i_episode % args.save_interval == args.save_interval - 1:
-            path = os.path.join(configs.trained_directory, 'last')
-            agent.global_episode = i_episode
-            torch.save(agent.state_dict(), path)
-            logger.info(f'model saved: {path}')
+        if global_episodes % args.save_interval == args.save_interval - 1:
+            agent_save_path = os.path.join(configs.trained_directory, 'agent')
+            agent.global_episode = global_episodes + 1
+            # torch.save(agent, agent_save_path)
+            agent.save_model(agent_save_path, global_episodes)
+            logger.info(f'model saved: {agent_save_path}')
+
+            memory_path = os.path.join(configs.trained_directory, 'memory')
+            pickle.dump(memory, open(memory_path, 'wb'))
+            logger.info(f'memory saved: {memory_path}')
             print('------------------')
+
+        if global_steps > args.num_steps:  # end of training
+            break
 
     env.close()
 

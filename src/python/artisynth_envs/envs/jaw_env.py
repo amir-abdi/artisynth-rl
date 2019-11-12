@@ -41,7 +41,6 @@ class JawEnvV0(ArtiSynthBase):
         self.episode_counter += 1
 
         self.take_action(action)
-
         time.sleep(self.wait_action)
         state = self.get_state_dict()
 
@@ -53,26 +52,62 @@ class JawEnvV0(ArtiSynthBase):
 
         return state_array, reward, done, info
 
+    def distance_to_target(self, observation):
+        diff = 0
+        for current_comp, target_comp in zip(self.components[c.CURRENT], self.components[c.TARGET]):
+            for prop in self.components[c.PROPS]:
+                if prop == 'velocity':  # ignore velocity in the reward
+                    continue
+                p_current = np.asarray(observation[current_comp[c.NAME]][prop])
+                p_target = np.asarray(observation[target_comp[c.NAME]][prop])
+                diff += np.linalg.norm(p_current - p_target)
+        return diff
+
+    def get_velocity(self, observation):
+        diff = 0
+        for current_comp, target_comp in zip(self.components[c.CURRENT], self.components[c.TARGET]):
+            prop = 'velocity'
+            p_current = np.asarray(observation[current_comp[c.NAME]][prop])
+            p_target = np.asarray(observation[target_comp[c.NAME]][prop])
+            diff += np.linalg.norm(p_current - p_target)
+        return diff
+
     def calc_reward(self, state, action):
         observation = state[c.OBSERVATION_STR]
-        thres = self.goal_threshold
+        # excitations = state[c.EXCITATIONS_STR]
+        muscle_forces = state[c.MUSCLE_FORCES_STR]
+
         info = {}
-
-        phi_u = self.distance_to_target(observation)
-
         done = False
         done_reward = 0
-        if phi_u < thres:
+        eps = 0.0000001
+
+        velocity = self.get_velocity(observation)
+        phi_u = self.distance_to_target(observation)
+        # todo: the velocity might be removed... hard coded for now
+        if phi_u < self.goal_threshold and velocity < 3:
             done = True
             done_reward = self.goal_reward
-            logging.info(f'Done: {phi_u} < {thres}')
+            logging.info(f'Done: {phi_u} < {self.goal_threshold}')
 
-        excitations = action
-        phi_r = np.mean(excitations)  # phi_r = np.linalg.norm(excitations)
-        reward = done_reward - phi_u * self.w_u - phi_r * self.w_r
+        if self.args.hack_muscle_forces:
+            phi_r = np.linalg.norm(muscle_forces)
+            info['muscleForces'] = phi_r
+        else:
+            excitations = action
+            phi_r = np.mean(excitations)  # phi_r = np.linalg.norm(excitations)
+            info['excitations'] = phi_r
+
+        # todo: remove this hack
+        if self.args.hack_log:
+            reward = done_reward - \
+                     self.w_u * np.log10(phi_u + eps) - phi_r * self.w_r
+        else:
+            reward = done_reward - np.clip(((phi_u + eps) ** self.pow_u) * self.w_u,
+                                           a_min=-200, a_max=float('inf')) - \
+                     phi_r * self.w_r
 
         info['distance'] = phi_u
-        info['excitations'] = phi_r
         logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))
 
         return reward, done, info
@@ -80,5 +115,3 @@ class JawEnvV0(ArtiSynthBase):
     def reset(self):
         self.episode_counter = 0
         return super().reset()
-
-

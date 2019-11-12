@@ -16,8 +16,8 @@ logger = logging.getLogger(c.LOGGER_STR)
 
 class ArtiSynthBase(gym.Env, ABC):
     def __init__(self, ip, port, artisynth_model, test, components, zero_excitations_on_reset,
-                 include_current_excitations, include_current_state, w_u, w_d, w_r, seed, incremental_actions,
-                 gui, artisynth_args='', **kwargs):
+                 include_current_excitations, include_current_state, pow_u, w_u, w_d, w_r, seed,
+                 incremental_actions, gui, artisynth_args='', **kwargs):
         logger.warning(f'The following args MIGHT have remained unused: {kwargs}')
 
         self.observation_space = None
@@ -30,6 +30,7 @@ class ArtiSynthBase(gym.Env, ABC):
         self.include_current_state = include_current_state
         self.incremental_actions = incremental_actions
 
+        self.pow_u = pow_u  # position
         self.w_u = w_u  # position
         self.w_d = w_d  # temporal damping
         self.w_r = w_r  # excitation regularization
@@ -142,13 +143,13 @@ class ArtiSynthBase(gym.Env, ABC):
         pass
 
     def reset(self, set_excitations_zero=None):
-        # Let the environment to override zero_excitations_on_reset if needed for particular reset commands
+        # Let the environment override zero_excitations_on_reset if needed for particular reset commands
         if set_excitations_zero is None:
             set_excitations_zero = self.zero_excitations_on_reset
 
         self.net.get_post(set_excitations_zero, request_type=c.POST_STR, message=c.RESET_STR)
 
-        # wait two seconds for ArtiSynth environment to reset
+        # wait 1.0 second for ArtiSynth environment to reset
         time.sleep(1.0)
 
         state_dict = self.get_state_dict()

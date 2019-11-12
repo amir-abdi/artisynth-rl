@@ -20,7 +20,8 @@ public class RlStateSerializer<T> implements JsonSerializer<Object> {
 		
 		JsonObject result = new JsonObject();
 		result.add("observation", array_jo);		
-		result.add("excitations", gson.toJsonTree(object.getRlExcitations()));
+		result.add("excitations", gson.toJsonTree(object.getExcitations()));
+		result.add("muscleForces", gson.toJsonTree(object.getMuscleForces()));
 		
 		return result;
 	}

@@ -66,7 +66,7 @@ def extend_arguments(parser):
 
 def main():
     args = extend_arguments(get_parser()).parse_args()
-    configs = common.config.get_config(args)
+    configs = common.config.get_config(args.env, args.experiment_name)
     assert args.alg in ['a2c', 'ppo', 'acktr', 'sac']
     if args.recurrent_policy:
         assert args.alg in ['a2c', 'ppo'], 'Recurrent policy is not implemented for ACKTR'
@@ -86,7 +86,8 @@ def main():
     if args.use_wandb:
         import wandb
         resume_wandb = True if args.wandb_resume_id is not None else False
-        wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl')
+        wandb.init(config=args, resume=resume_wandb, id=args.wandb_resume_id, project='rl',
+                   name=args.experiment_name)
 
     # make environements (envs[0] is used for evaluation)
     envs, env_vector = make_vec_envs_pytorch(args.env, return_evn_vector=True,

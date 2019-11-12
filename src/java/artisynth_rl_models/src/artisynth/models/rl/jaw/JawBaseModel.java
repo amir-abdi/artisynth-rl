@@ -231,8 +231,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		conOrder.add(JawPlanes.RTMJ);
 
 		if (!onlyUpper) {
-//		conOrder.add(JawPlanes.LBITE);
-//		conOrder.add(JawPlanes.RBITE);
 			if (useComplexJoint) {
 				conOrder.add(JawPlanes.LMED);
 				conOrder.add(JawPlanes.RMED);
@@ -516,6 +514,8 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		this.useComplexJoint = useComplexJoint;
 
+		// set condylar constraints
+		constrainedBody = myRigidBodies.get("jaw");
 		setCondyleConstraints(fixedLaryngeal);
 	}
 
@@ -602,32 +602,40 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		mpstring_l.getRenderProps().setLineRadius(0.75);
 		addMultiPointSpring(mpstring_l);
 
-		addFixedMarkers();
-		initCons(true);
+		// Add the bilateral curvilinear constraint
+
+		
+		conOrder.add(JawPlanes.LTMJ);
+		conOrder.add(JawPlanes.RTMJ);
+		conOrder.add(JawPlanes.LPOST);
+		conOrder.add(JawPlanes.RPOST);
+
+		initCons();
 		if (this.useCurvJoint) {
 			// remove planar tmj constraints (first two in list)
 			Log.debug("Using curved linear TMJ");
+			removeBodyConnector(bodyConnectors().get("LTMJ"));
+			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();
 		}
-		for (BodyConnector bc : bodyConnectors()) {
-			bc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
+
+		// Add the posterior unilateral constraint "as a guarantee" that condyle never
+		// goes out of location
+
+		for (PlanarConnector pc : con) {
+			RenderProps props = new RenderProps(myRenderProps);
+			props.setFaceStyle(Renderer.FaceStyle.FRONT_AND_BACK);
+			props.setAlpha(0.8);
+			props.setVisible(true);
+			pc.setRenderProps(props);
+			RenderProps.setVisible(pc, true);
 		}
 	}
 
 	protected void setCondyleConstraints(Boolean fixedLaryngeal) {
-		constrainedBody = myRigidBodies.get("jaw");
-		if (constrainedBody == null) // no jaw body - error
-		{
-			System.err.println("JawModel: unable to get jaw rigidbody");
-			return;
-		}
-
-		initCons(false);
-
-		for (PlanarConnector pc : con) {
-			pc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
-			addBodyConnector(pc);
-		}
+		Boolean onlyUpperConstraint = false;
+		createConstraintOrder(onlyUpperConstraint);
+		initCons();
 
 		// do not use medial constraints in default jaw model
 		if (!useMedialWall) {
@@ -643,14 +651,22 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			addCricothyroidJoint();
 		}
 
-		this.useCurvJoint = useCurvJoint;
-
 		if (useCurvJoint) {
-			// remove planar tmj constraints (first two in list)
+			// remove planar tmj constraints (first two in list) and replace them with
+			// curvilinear
 			Log.debug("Using curved linear TMJ");
 			removeBodyConnector(bodyConnectors().get("LTMJ"));
 			removeBodyConnector(bodyConnectors().get("RTMJ"));
 			addCurvilinearTmjs();
+		}
+
+		for (PlanarConnector pc : con) {
+			RenderProps props = new RenderProps(myRenderProps);
+			props.setFaceStyle(Renderer.FaceStyle.FRONT_AND_BACK);
+			props.setAlpha(0.8);
+			props.setVisible(true);
+			pc.setRenderProps(props);
+			RenderProps.setVisible(pc, true);
 		}
 	}
 
@@ -2057,42 +2073,40 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 		globalConX.R.setAxisAngle(a);
 	}
 
-	public void initCons(boolean onlyUpperConstraint) {
-		createConstraintOrder(onlyUpperConstraint);
-		constrainedBody = myRigidBodies.get("jaw");
+	private PlanarConnector createPlanarConnector(JawPlanes jp) {
+		PlanarConnector pc;
+		conPt.add(myFrameMarkers.get(jp.getContactName()));
+		conPose.add(new RigidTransform3d());
+		// try to find existing constraints
+		BodyConnector rbc = bodyConnectors().get(jp.name());
+		if (rbc != null && rbc instanceof PlanarConnector) {
+			pc = (PlanarConnector) rbc;
+			System.out.println("initCons - found pc = " + rbc.getName());
+		} else { // didn't find it, so create a new one
+			if (jp.isUnilateral()) {
+				pc = new PlanarConnector();
+				pc.setUnilateral(true);
+			} else {
+				pc = new PlanarConnector();
+			}
+			pc.setPlaneSize(jp.getPlaneSize());
+			pc.setName(jp.name());
+		}
+		return pc;
+	}
 
+	public void initCons() {
 		// set initial marker position as origin for tmj planes
 		for (JawPlanes jp : conOrder) {
-			PlanarConnector pc;
-			conPt.add(myFrameMarkers.get(jp.getContactName()));
-			conPose.add(new RigidTransform3d());
-			// try to find existing constraints
-			BodyConnector rbc = bodyConnectors().get(jp.name());
-			if (rbc != null && rbc instanceof PlanarConnector) {
-				pc = (PlanarConnector) rbc;
-				System.out.println("initCons - found pc = " + rbc.getName());
-			} else { // didn't find it, so create a new one
-				if (jp.isUnilateral()) {
-					pc = new PlanarConnector();
-					pc.setUnilateral(true);
-				} else {
-					pc = new PlanarConnector();
-				}
-				pc.setPlaneSize(jp.getPlaneSize());
-				pc.setName(jp.name());
-			}
-			con.add(pc);
+			con.add(createPlanarConnector(jp));
 		}
 
-		updateCons(onlyUpperConstraint);
+		updateCons();
 
 		for (PlanarConnector pc : con) {
-			RenderProps props = new RenderProps(myRenderProps);
-			props.setFaceStyle(Renderer.FaceStyle.FRONT_AND_BACK);
-			props.setAlpha(0.8);
-			props.setVisible(true);
-			pc.setRenderProps(props);
-			RenderProps.setVisible(pc, true);
+			Log.info(pc.getName());
+			pc.setCompliance(new VectorNd(new double[] { bodyConnectorCompliance }));
+			addBodyConnector(pc);
 		}
 	}
 
@@ -2135,22 +2149,20 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 	}
 
-	public void updateCons(boolean onlyUpperConstraint) {
+	public void updateCons() {
+		updateCon(JawPlanes.LTMJ);
+		updateCon(JawPlanes.RTMJ);
+		updateCon(JawPlanes.LBITE);
+		updateCon(JawPlanes.RBITE);
+		updateCon(JawPlanes.LMED);
+		updateCon(JawPlanes.RMED);
+		updateCon(JawPlanes.LPOST);
+		updateCon(JawPlanes.RPOST);
+		updateCon(JawPlanes.LFRONT);
+		updateCon(JawPlanes.RFRONT);
+		updateCon(JawPlanes.LLTRL);
+		updateCon(JawPlanes.RLTRL);
 
-		if (!onlyUpperConstraint) {
-			updateCon(JawPlanes.LTMJ);
-			updateCon(JawPlanes.RTMJ);
-			updateCon(JawPlanes.LBITE);
-			updateCon(JawPlanes.RBITE);
-			updateCon(JawPlanes.LMED);
-			updateCon(JawPlanes.RMED);
-			updateCon(JawPlanes.LPOST);
-			updateCon(JawPlanes.RPOST);
-			updateCon(JawPlanes.LFRONT);
-			updateCon(JawPlanes.RFRONT);
-			updateCon(JawPlanes.LLTRL);
-			updateCon(JawPlanes.RLTRL);
-		}
 		updateCurvCons();
 	}
 
@@ -2594,7 +2606,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			return;
 		addCurvConstraint("LTMJ", "ltmj", jaw, JawPlanes.LTMJ.isUnilateral());
 		addCurvConstraint("RTMJ", "rtmj", jaw, JawPlanes.RTMJ.isUnilateral());
-
 	}
 
 	public void addCurvConstraint(String name, String contactName, RigidBody jaw, Boolean unilateral) {
@@ -3064,7 +3075,6 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 			ComponentList<MuscleExciter> myMuscleExciters) {
 		ArrayList<MuscleExciter> myExciters = new ArrayList<MuscleExciter>();
 		for (ExcitationComponent c : myMuscles.values()) {
-
 			MuscleExciter exciter = myMuscleExciters.get(c.getName());
 			if (exciter == null) {
 				// if the exciter is not already added

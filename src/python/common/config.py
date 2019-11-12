@@ -6,13 +6,10 @@ from common.utilities import Bunch
 import common.constants as c
 
 
-def get_config(args):
-    env_name = args.env
-    model_name = args.model_name
-
+def get_config(env_name, experiment_name):
     configs = dict()
     root_path = str(Path.cwd() / 'results')
-    model_path = str(Path(root_path) / env_name / model_name)
+    model_path = str(Path(root_path) / env_name / experiment_name)
     configs['root_path'] = root_path
     configs['model_path'] = model_path
 

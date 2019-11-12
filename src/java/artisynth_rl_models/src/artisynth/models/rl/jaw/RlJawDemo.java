@@ -125,6 +125,12 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 			this.condyleConstraints = Boolean.parseBoolean(dictionary.get("-condyleConstraints"));
 		if (dictionary.containsKey("-condylarCapsule"))
 			this.condylarCapsule = Boolean.parseBoolean(dictionary.get("-condylarCapsule"));
+		
+		if (condyleConstraints && condylarCapsule) { 
+			Log.info("The jaw can't be constrained by both condyleConstraints and condylarCapsule."
+					+ "Please choose only one, or only condylarCapsule would be considered.");
+			condyleConstraints = false;
+		}
 	}
 
 	enum JawModelType {
@@ -132,16 +138,17 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 	};
 
 	enum JawPositions {
-		closedPosition(2.6125553, -93.603598, -40.193028, JawModelType.withCondylarConstraints),
-		openPosition(3.689827, -85.574302, -74.711683, JawModelType.withCondylarConstraints, 8.0),
+		closedPosition(2.5096367, -93.705412, -40.160793, JawModelType.withCondylarConstraints),
+		openPosition(3.3689007, -85.471129, -74.432114, JawModelType.withCondylarConstraints, 4.0),
+		openPosition2(3.3689007, -85.471129, -74.432114, JawModelType.withCondylarConstraints, 4.0),
 //		restPosition(2.262723, -88.375605, -50.954255, JawModelType.withCondylarConstraints),		
-		pureRotationalOpeningPosition(3.4325864, -83.428434, -58.134616, JawModelType.withCondylarConstraints),
-		rightLaterotrusivePosition(-12.819281, -95.86765, -44.569985, JawModelType.withCondylarConstraints, 3.0),
-		leftLaterotrusivePosition(17.392102, -96.797142, -42.866704, JawModelType.withCondylarConstraints, 3.0),
-		retrudedContactPosition(2.8772912, -91.449043, -41.952765, JawModelType.withCondylarConstraints), // CentricRelation
-		edgeToEdgePosition(-0.024246108, -96.801937, -45.99113, JawModelType.withCondylarConstraints),
-		protrusivePosition(0.84730021, -107.36706, -40.258819, JawModelType.withCondylarConstraints, 3.0);
-		
+		pureRotationalOpeningPosition(3.8681168, -86.448567, -54.012106, JawModelType.withCondylarConstraints),
+		rightLaterotrusivePosition(-10.043439, -96.073347, -46.498435, JawModelType.withCondylarConstraints, 3.0),
+		leftLaterotrusivePosition(16.127454, -96.769054, -44.305393, JawModelType.withCondylarConstraints, 3.0),
+		retrudedContactPosition(2.8224137, -91.190817, -41.398978, JawModelType.withCondylarConstraints), // CentricRelation
+		edgeToEdgePosition(1.9139294, -95.848331, -45.183162, JawModelType.withCondylarConstraints),
+		protrusivePosition(1.2662906, -103.68767, -40.740465, JawModelType.withCondylarConstraints, 3.0);
+
 		JawModelType jawModelType;
 		double x, y, z;
 		double weight;
@@ -149,7 +156,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		private JawPositions(double x, double y, double z, JawModelType jawModelType) {
 			this(x, y, z, jawModelType, 1);
 		}
-		
+
 		private JawPositions(double x, double y, double z, JawModelType jawModelType, double weight) {
 			this.x = x;
 			this.y = y;
@@ -165,12 +172,11 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		public double getWeight() {
 			return weight;
 		}
-		
+
 		public JawModelType getJawModelType() {
 			return this.jawModelType;
 		}
-		
-		
+
 	}
 
 	public class RandomTargetController extends ControllerBase implements RlTargetControllerInterface {
@@ -180,7 +186,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 
 		Frame mandible = null;
 		Point lowerincisor = null;
-		
+
 		JawPositions jawPositionsArr[] = JawPositions.values();
 
 		public RandomTargetController(ArrayList<MotionTargetComponent> list) {
@@ -219,16 +225,29 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 		private Point3d getRandomPoint(JawPositions jawPositions[]) {
 			Point3d result = new Point3d();
 			double weights_sum = 0;
-			for (int i=0; i<jawPositions.length; ++i) {
-				JawPositions jp = jawPositions[i];
-				double w = rlTrack.random.nextDouble();
-				result.add(jp.getPosition().scale(jp.getWeight() * w));
-				weights_sum += jp.getWeight() * w;
+
+			if (rlTrack.random.nextDouble() < 0.25) {
+				// choose only two of the border points
+				int index1 = rlTrack.random.nextInt(jawPositions.length);
+				int index2 = rlTrack.random.nextInt(jawPositions.length); //it's ok to be the same as index1
+				double w1 = rlTrack.random.nextDouble();
+				double w2 = rlTrack.random.nextDouble();
+				result.add(jawPositions[index1].getPosition().scale(w1));
+				result.add(jawPositions[index2].getPosition().scale(w2));
+				result.scale(1 / (w1 + w2));				
+			} else {
+				// choose a combination of the border points
+				for (int i = 0; i < jawPositions.length; ++i) {
+					JawPositions jp = jawPositions[i];
+					double w = rlTrack.random.nextDouble() * jp.getWeight();
+					result.add(jp.getPosition().scale(w));
+					weights_sum += w;
+				}
+				result.scale(1 / weights_sum);				
 			}
-			result.scale(1/weights_sum);
 			return result;
 		}
-		
+
 		private void resetRefPosition(Boolean random) {
 			// TODO: complete the reset pos implementation
 			if (mandible != null) {
@@ -245,7 +264,7 @@ public class RlJawDemo extends RootModel implements RlModelInterface {
 				if (random) {
 					throw new NotImplementedException();
 				} else {
-					lowerincisor.setPosition(getRandomPoint(jawPositionsArr));								
+					lowerincisor.setPosition(getRandomPoint(jawPositionsArr));
 				}
 			}
 		}

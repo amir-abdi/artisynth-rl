@@ -862,6 +862,9 @@ public class JawFemModel extends JawBaseModel {
 
 		JawBaseModel.updateMuscleLengthProps(myAttachedMuscles);
 
+		// Add constraints (disc or condylar or capsule)
+		constrainedBody = myRigidBodies.get("jaw");
+		addFixedMarkers();
 		if (withDisc) {
 			addCartilage();
 			attachLigaments();
@@ -878,12 +881,11 @@ public class JawFemModel extends JawBaseModel {
 		}
 
 		if (condyleConstraints) {
-			Log.debug("Adding Condyle Constraints");
-			addFixedMarkers();
+			Log.debug("Adding Condyle Constraints");			
 			setCondyleConstraints(false);
 		}				
 		if (condylarCapsule) {
-			Log.debug("Adding Condylar Capsule");
+			Log.debug("Adding Condylar Capsule");			
 			setCondylarCapsule();
 		}
 		for (BodyConnector bc : bodyConnectors()) {

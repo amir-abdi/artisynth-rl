@@ -23,6 +23,7 @@ GET_STR = 'GET'
 POST_STR = 'POST'
 
 EXCITATIONS_STR = 'excitations'
+MUSCLE_FORCES_STR = 'muscleForces'
 OBSERVATION_STR = 'observation'
 SET_SEED_STR = 'setSeed'
 
