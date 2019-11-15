@@ -30,7 +30,7 @@ class SAC:
 
         self.critic = QNetwork(num_inputs, action_space.shape[0], args.hidden_size).to(device=self.device)
         self.critic_optim = Adam(self.critic.parameters(), lr=args.lr)
-        self.lr_schedulers.append(ExponentialLRWithMin(self.critic_optim, args.lr_gamma))
+        self.lr_schedulers.append(ExponentialLRWithMin(self.critic_optim, args.lr_gamma, min=args.lr_min))
         self.optims['critic_optim'] = self.critic_optim
         self.models['critic'] = self.critic
 
@@ -43,7 +43,7 @@ class SAC:
                 self.target_entropy = -torch.prod(torch.Tensor(action_space.shape).to(self.device)).item()
                 self.log_alpha = torch.zeros(1, requires_grad=True, device=self.device)
                 self.alpha_optim = Adam([self.log_alpha], lr=args.lr)
-                self.lr_schedulers.append(ExponentialLRWithMin(self.alpha_optim, args.lr_gamma))
+                self.lr_schedulers.append(ExponentialLRWithMin(self.alpha_optim, args.lr_gamma, min=args.lr_min))
                 self.models['alpha_optim'] = self.alpha_optim
 
             self.policy = GaussianPolicy(num_inputs, action_space.shape[0], args.hidden_size, action_space).to(
@@ -55,7 +55,7 @@ class SAC:
             self.policy = DeterministicPolicy(num_inputs, action_space.shape[0], args.hidden_size, action_space).to(
                 self.device)
             self.policy_optim = Adam(self.policy.parameters(), lr=args.lr)
-        self.lr_schedulers.append(ExponentialLRWithMin(self.policy_optim, args.lr_gamma))
+        self.lr_schedulers.append(ExponentialLRWithMin(self.policy_optim, args.lr_gamma, min=args.lr_min))
         self.optims['policy_optim'] = self.policy_optim
         self.models['policy'] = self.policy
 
@@ -161,6 +161,8 @@ class SAC:
             value.load_state_dict(checkpoint['model_states'][key], strict=False)
 
         if load_optim:
+            # todo: make sure learning rate loads from optim_state
+            self.lr_schedulers.clear()
             for key, value in self.optims.items():
                 value.load_state_dict(checkpoint['optim_states'][key])
 
