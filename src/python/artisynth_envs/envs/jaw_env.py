@@ -26,7 +26,8 @@ class JawEnvV0(ArtiSynthBase):
 
         self.goal_reward = goal_reward
 
-        self.action_size, self.obs_size = self.init_spaces(incremental_actions=self.incremental_actions)
+        self.action_size, self.obs_size = self.init_spaces(
+            incremental_actions=self.incremental_actions)
 
     def state_dict2tensor(self, state):
         return torch.tensor(self.state_dic_to_array(state))
@@ -72,9 +73,21 @@ class JawEnvV0(ArtiSynthBase):
             diff += np.linalg.norm(p_current - p_target)
         return diff
 
+    def non_sym_loss(self, excitations):
+        """
+        In the jaw model, right and left muscles are placed consecutively in the array,
+        i.e.,  rat, lat, rmt, lmt, rpt, lpt, ... , rgh, lgh
+        Here, a loss is defined by iterating over them and making sure the excitations of bilateral
+        muscles are close to one another.
+        :param excitations:
+        :return:
+        """
+        return np.mean([np.abs(excitations[i] - excitations[i + 1])
+                       for i in range(0, len(excitations), 2)])
+
     def calc_reward(self, state, action):
         observation = state[c.OBSERVATION_STR]
-        # excitations = state[c.EXCITATIONS_STR]
+        excitations = state[c.EXCITATIONS_STR]
         muscle_forces = state[c.MUSCLE_FORCES_STR]
 
         info = {}
@@ -106,6 +119,9 @@ class JawEnvV0(ArtiSynthBase):
             reward = done_reward - np.clip(((phi_u + eps) ** self.pow_u) * self.w_u,
                                            a_min=-200, a_max=float('inf')) - \
                      phi_r * self.w_r
+
+        if self.args.hack_sym:
+            reward -= self.non_sym_loss(excitations) * 100.0
 
         info['distance'] = phi_u
         logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))

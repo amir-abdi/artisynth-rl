@@ -58,6 +58,8 @@ def extend_arguments(parser):
                         help='Add log to reward! (temporary... remove later!)')
     parser.add_argument('--hack_muscle_forces', type=str2bool, default=False,
                         help='use muscle forces instead of excitations for regularization')
+    parser.add_argument('--hack_sym', type=str2bool, default=False,
+                        help='add penalty for non-symmetric activations (temporary... remove !)')
     return parser
 
 

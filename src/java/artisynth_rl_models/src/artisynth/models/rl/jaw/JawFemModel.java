@@ -185,7 +185,7 @@ public class JawFemModel extends JawBaseModel {
 
 	// update intertia and center of mass for the new geometry
 	public void setNewJawDynamicProps() {
-		rigidBodies().get("jaw").setInertiaFromMass(0.2);
+		rigidBodies().get("jaw").setInertiaFromMass(0.2); // mass = 0.2
 		// rigidBodies().get("jaw").setCenterOfMass(new Point3d(6.954, -61.147,
 		// 44.602));
 		rigidBodies().get("jaw").setRotaryDamping(100);
