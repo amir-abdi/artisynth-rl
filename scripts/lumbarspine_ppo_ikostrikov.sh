@@ -1,8 +1,12 @@
 #!/bin/bash
 
+FILENAME=$(basename $0)
+FILENAME="${FILENAME%.*}"
+NAME=${1:-$FILENAME}
+
 python3 src/python/main_ikostrikov.py \
+--experiment_name=$NAME \
 --env=SpineEnv-v0 \
---model_name=lumbarspine-ppo-ikostrikov \
 --log_interval=1 \
 --num_steps=32 \
 --save_interval=4 \

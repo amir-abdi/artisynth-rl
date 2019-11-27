@@ -1,7 +1,11 @@
 #!/bin/bash
 
+FILENAME=$(basename $0)
+FILENAME="${FILENAME%.*}"
+NAME=${1:-$FILENAME}
+
 python src/python/main_sac.py \
---model_name=lumbarspine-sac-pytorch \
+--experiment_name=$NAME \
 --env=SpineEnv-v0 \
 --alg=sac \
 --verbose=20 \

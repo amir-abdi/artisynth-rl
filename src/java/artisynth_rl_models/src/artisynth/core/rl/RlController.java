@@ -20,8 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import sun.util.logging.resources.logging;
-import artisynth.core.femmodels.MuscleElementDescList;
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
 import artisynth.core.inverse.TargetPoint;
@@ -719,10 +717,17 @@ public class RlController extends ControllerBase
 			MuscleExciter mex = (MuscleExciter)e;
 			double force = 0;
 			
-//			TODO: make sure muscle not counted twice
+			//TODO: make sure muscle not counted twice
 			for (int i=0; i<mex.numTargets(); ++i) {
-				Muscle m = (Muscle)mex.getTarget(i);				
-				force += m.getForceNorm() - m.getPassiveForceNorm(); 			
+				ExcitationComponent ec = mex.getTarget(i);
+				if (ec instanceof Muscle) {
+					Muscle m = (Muscle)ec;				
+					force += m.getForceNorm() - m.getPassiveForceNorm();
+				} else if (ec instanceof MultiPointMuscle) {
+					MultiPointMuscle m = (MultiPointMuscle)ec;				
+					force += m.getForceNorm() - m.getPassiveForceNorm();
+				}
+					
 			}			
 			force /= mex.numTargets();
 			forces.add(force);

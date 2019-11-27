@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# check artisynth-rl/src/python/artisynth_envs/__init__.py for list of defined environments
+FILENAME=$(basename $0)
+FILENAME="${FILENAME%.*}"
+NAME=${1:-$FILENAME}
+
+echo "check artisynth-rl/src/python/artisynth_envs/__init__.py for list of defined environments"
 
 python3 src/python/main_keras_rl.py \
+--experiment_name=$NAME \
 --env=Point2PointEnv-v2 \
---model_name=point2point-naf-kerasRL \
 --alg=naf \
 --port=8080 \
 --verbose=20 \
