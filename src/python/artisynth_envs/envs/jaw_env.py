@@ -121,7 +121,9 @@ class JawEnvV0(ArtiSynthBase):
                      phi_r * self.w_r
 
         if self.args.hack_sym:
-            reward -= self.non_sym_loss(excitations) * 100.0
+            sym_loss = self.non_sym_loss(excitations)
+            info['symmetric_loss'] = sym_loss
+            reward -= sym_loss * 100.0
 
         info['distance'] = phi_u
         logger.log(level=18, msg='reward={}  phi_u={}   phi_r={}'.format(reward, phi_u, phi_r))
