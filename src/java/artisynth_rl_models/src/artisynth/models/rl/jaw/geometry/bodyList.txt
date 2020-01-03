@@ -1,5 +1,6 @@
 skull "skull_with_cartilage.obj"
 jaw "mandible_with_cartilage.obj"
+teeth "mandible_with_cartilage_teeth.obj"
 hyoid "hyoid.obj"
 vertebrae "vertebrae.obj"
 skull_cartilage_right "cartilage_skull_right.obj"
