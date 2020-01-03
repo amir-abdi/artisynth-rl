@@ -12,7 +12,7 @@ python3 src/python/main_keras_rl.py \
 --alg=naf \
 --port=8080 \
 --verbose=20 \
---wait_action=0.1 \
+--wait_action=0.01 \
 --include_current_state=True \
 --include_current_excitations=True \
 --goal_reward=5 \

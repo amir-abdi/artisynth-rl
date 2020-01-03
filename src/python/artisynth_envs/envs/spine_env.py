@@ -1,5 +1,4 @@
 import logging
-import time
 import numpy as np
 
 from common import constants as c
@@ -79,7 +78,7 @@ class SpineEnvV0(ArtiSynthBase):
         logger.debug('action:{}'.format(action))
         self.take_action(action)
 
-        time.sleep(self.wait_action)
+        self.sleep(self.wait_action)
         state = self.get_state_dict()
 
         if state is not None:

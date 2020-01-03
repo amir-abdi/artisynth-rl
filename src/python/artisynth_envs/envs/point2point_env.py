@@ -1,6 +1,5 @@
 import numpy as np
 import logging
-import time
 
 from common import constants as c
 from artisynth_envs.artisynth_base_env import ArtiSynthBase
@@ -56,7 +55,7 @@ class Point2PointEnv(ArtiSynthBase):
         logger.debug('action:{}'.format(action))
         self.episode_counter += 1
         self.take_action(action)
-        time.sleep(self.wait_action)
+        self.sleep(self.wait_action)
 
         state = self.get_state_dict()
         if not state:

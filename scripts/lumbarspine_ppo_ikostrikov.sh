@@ -10,7 +10,7 @@ python3 src/python/main_ikostrikov.py \
 --log_interval=1 \
 --num_steps=32 \
 --save_interval=4 \
---wait_action=0.1 \
+--wait_action=0.01 \
 --eval_interval=1 \
 --num_steps_eval=30 \
 --ppo_epoch=4 \

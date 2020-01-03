@@ -13,7 +13,7 @@ python src/python/main_sac.py \
 --port=8080 \
 --include_current_state=true \
 --include_current_excitations=true \
---wait_action=0.1 \
+--wait_action=0.01 \
 --incremental_actions=True \
 --reset_step=100 \
 --goal_reward=5 \

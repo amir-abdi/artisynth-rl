@@ -32,7 +32,7 @@ class RestClient:
             logger.log(msg='ArtiSynth server at {} response={}'.format(url, response.content),
                        level=logging.INFO)
 
-    def get_post(self, obj=None, request_type=c.GET_STR, message=''):
+    def send_msg(self, obj=None, request_type=c.GET_STR, message=''):
         if not obj:
             obj = dict()
 

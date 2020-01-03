@@ -1,3 +1,4 @@
+TIME = 'time'
 CURRENT = 'current'
 TARGET = 'target'
 PROPS = 'props'
@@ -26,6 +27,7 @@ EXCITATIONS_STR = 'excitations'
 MUSCLE_FORCES_STR = 'muscleForces'
 OBSERVATION_STR = 'observation'
 SET_SEED_STR = 'setSeed'
+SET_TEST_STR = 'setTest'
 
 LOGGER_STR = 'artisynth_logger'
 

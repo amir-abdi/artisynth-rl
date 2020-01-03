@@ -6,7 +6,7 @@ import subprocess
 import gym
 from gym import spaces
 from gym.utils import seeding
-from abc import ABC, abstractmethod
+from abc import ABC
 
 from common.rest_client import RestClient
 import common.constants as c
@@ -35,16 +35,22 @@ class ArtiSynthBase(gym.Env, ABC):
         self.w_d = w_d  # temporal damping
         self.w_r = w_r  # excitation regularization
 
-        self.components = None
         self.action_size = 0
         self.obs_size = 0
         self.components = components
         self.zero_excitations_on_reset = zero_excitations_on_reset
 
         self.net = RestClient(ip, port)
-        if not RestClient.server_is_alive(ip, port):  # if server is not already running, initiate ArtiSynth
+        # if server is not already running, initiate ArtiSynth
+        if not RestClient.server_is_alive(ip, port):
             self.run_artisynth(ip, port, artisynth_model, gui, artisynth_args)
+
+        # set artisynth props
         self.seed(seed)
+        self.set_test_mode(test)
+
+    def set_test_mode(self, test_mode):
+        self.net.send_msg(test_mode, request_type=c.POST_STR, message=c.SET_TEST_STR)
 
     def init_spaces(self, incremental_actions=False):
         # todo: use the same init_spaces for all environments
@@ -55,10 +61,6 @@ class ArtiSynthBase(gym.Env, ABC):
 
         state_low, state_high = self.get_state_boundaries(action_size)
 
-        # sanity check
-        # assert state_size == obs_size + action_size, \
-        #     'The observation size {} and action size {} sent by the environment does not match the state size {}.'.\
-        #         format(obs_size, action_size, state_size)
         assert state_size == state_low.shape[0] and state_size == state_high.shape[0], \
             f'The shape of state_low ({state_low.shape[0]}), ' \
             f'state_high ({state_high.shape[0]}) and state_size ({state_size}) do not match.'
@@ -120,37 +122,38 @@ class ArtiSynthBase(gym.Env, ABC):
             time.sleep(3)
 
     def get_obs_size(self):
-        obs_size = self.net.get_post(request_type=c.GET_STR, message=c.OBS_SIZE_STR)
+        obs_size = self.net.send_msg(request_type=c.GET_STR, message=c.OBS_SIZE_STR)
         return obs_size
 
     def get_state_size(self):
-        state_size = self.net.get_post(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
+        state_size = self.net.send_msg(request_type=c.GET_STR, message=c.STATE_SIZE_STR)
         return state_size
 
     def get_action_size(self):
-        action_size = self.net.get_post(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
+        action_size = self.net.send_msg(request_type=c.GET_STR, message=c.ACTION_SIZE_STR)
         return action_size
 
     def get_state_dict(self):
-        state_dict = self.net.get_post(request_type=c.GET_STR, message=c.STATE_STR)
+        state_dict = self.net.send_msg(request_type=c.GET_STR, message=c.STATE_STR)
         return state_dict
 
     def get_excitations_dict(self):
-        state_dict = self.net.get_post(request_type=c.GET_STR, message=c.EXCITATIONS_STR)
+        state_dict = self.net.send_msg(request_type=c.GET_STR, message=c.EXCITATIONS_STR)
         return state_dict
 
     def step(self, action):
         pass
 
     def reset(self, set_excitations_zero=None):
-        # Let the environment override zero_excitations_on_reset if needed for particular reset commands
+        # Let the environment override zero_excitations_on_reset if needed for particular commands
         if set_excitations_zero is None:
             set_excitations_zero = self.zero_excitations_on_reset
 
-        self.net.get_post(set_excitations_zero, request_type=c.POST_STR, message=c.RESET_STR)
+        self.net.send_msg(set_excitations_zero, request_type=c.POST_STR, message=c.RESET_STR)
 
         # wait 1.0 second for ArtiSynth environment to reset
-        time.sleep(1.0)
+        if not self.test_mode:
+            self.sleep(0.1)
 
         state_dict = self.get_state_dict()
         return self.state_dic_to_array(state_dict)
@@ -158,7 +161,8 @@ class ArtiSynthBase(gym.Env, ABC):
     def take_action(self, action):
         action = np.clip(action, c.LOW_EXCITATION, c.HIGH_EXCITATION)
         logger.debug('excitations sent:{}'.format(action))
-        next_state_dict = self.net.get_post({c.EXCITATIONS_STR: action.tolist()}, request_type=c.POST_STR,
+        next_state_dict = self.net.send_msg({c.EXCITATIONS_STR: action.tolist()},
+                                            request_type=c.POST_STR,
                                             message=c.EXCITATIONS_STR)
         return next_state_dict
 
@@ -193,14 +197,22 @@ class ArtiSynthBase(gym.Env, ABC):
         return diff
 
     def seed(self, seed=None):
-        # todo [BUG]: seeding gives different (but consistent) results when running artisynth seprately vs. from python.
+        # todo [BUG]: seeding gives different (but consistent) results when running
+        # artisynth seprately vs. from python.
         np_random, seed = seeding.np_random(seed)
-        self.net.get_post(seed, request_type=c.POST_STR, message=c.SET_SEED_STR)
+        self.net.send_msg(seed, request_type=c.POST_STR, message=c.SET_SEED_STR)
         return [seed]
 
     def wrap_action(self, action):
         if self.incremental_actions:
             # todo: MAYBE get excitations from previous state not by calling the environment again!
             current_excitations = np.array(self.get_excitations_dict())
-            return np.clip(action + current_excitations, a_min=c.LOW_EXCITATION, a_max=c.HIGH_EXCITATION)
+            return np.clip(action + current_excitations, a_min=c.LOW_EXCITATION,
+                           a_max=c.HIGH_EXCITATION)
         return action
+
+    def sleep(self, seconds):
+        start_time = self.net.send_msg(request_type=c.GET_STR, message=c.TIME)
+        while self.net.send_msg(request_type=c.GET_STR, message=c.TIME) - start_time < seconds:
+            pass
+
