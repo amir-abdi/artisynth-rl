@@ -1023,6 +1023,7 @@ public class JawBaseModel extends MechModel implements ScalableUnits, Traceable 
 
 		// Rigidbody dampers for dynamic components
 		setBodyDamping("jaw", myJawDampingT * unitConversion, myJawDampingR * unitConversion);
+		setBodyDamping("teeth", 0., 0.);
 		setBodyDamping("hyoid", myHyoidDampingT * unitConversion, myHyoidDampingR * unitConversion);
 		setBodyDamping("thyroid", myHyoidDampingT * unitConversion, myHyoidDampingR * unitConversion);
 		setBodyDamping("cricoid", 0.1, 10);

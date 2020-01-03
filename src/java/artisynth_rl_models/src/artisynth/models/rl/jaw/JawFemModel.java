@@ -9,20 +9,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Map;
 
-import artisynth.core.femmodels.FemElement3d;
 import artisynth.core.femmodels.FemFactory;
 import artisynth.core.femmodels.FemModel3d;
 import artisynth.core.femmodels.FemNode;
 import artisynth.core.femmodels.FemNode3d;
 import artisynth.core.femmodels.PointFem3dAttachment;
-import artisynth.core.materials.AxialMaterial;
 import artisynth.core.materials.AxialMuscleMaterial;
-import artisynth.core.materials.IncompressibleMaterial;
-import artisynth.core.materials.LigamentAxialMaterial;
 import artisynth.core.materials.LinearMaterial;
 import artisynth.core.materials.MooneyRivlinMaterial;
-import artisynth.core.materials.MuscleMaterial;
 import artisynth.core.femmodels.FemModel.SurfaceRender;
 import artisynth.core.mechmodels.AxialSpring;
 import artisynth.core.mechmodels.BodyConnector;
@@ -38,22 +34,19 @@ import artisynth.core.mechmodels.Particle;
 import artisynth.core.mechmodels.PlanarConnector;
 import artisynth.core.mechmodels.RigidBody;
 import artisynth.core.mechmodels.RigidCylinder;
-import artisynth.core.mechmodels.RigidEllipsoid;
 import artisynth.core.mechmodels.Wrappable;
 import artisynth.core.modelbase.ComponentUtils;
-import artisynth.core.modelbase.ModelComponent;
 import artisynth.core.renderables.ColorBar;
 import artisynth.core.rl.Log;
 import artisynth.core.mechmodels.CollisionBehavior.ColorMapType;
 import artisynth.core.mechmodels.CollisionBehavior.Method;
 import artisynth.core.mechmodels.CollisionManager;
 import artisynth.core.mechmodels.CollisionManager.ColliderType;
+import artisynth.core.mechmodels.CollisionResponse;
 import artisynth.core.mechmodels.ExcitationComponent;
-import artisynth.core.util.AmiraLandmarkReader;
 import artisynth.core.util.ArtisynthPath;
-//import artisynth.models.fem_jaw.JawBaseModel;
-//import artisynth.models.uwknee.ElasticFoundationForceBehavior;
 import maspack.geometry.PolygonalMesh;
+import maspack.geometry.Vertex3d;
 import maspack.matrix.AxisAngle;
 import maspack.matrix.Point3d;
 import maspack.matrix.RigidTransform3d;
@@ -61,19 +54,13 @@ import maspack.matrix.RotationMatrix3d;
 import maspack.matrix.Vector3d;
 import maspack.matrix.VectorNd;
 import maspack.properties.PropertyList;
-import maspack.render.RenderList;
 import maspack.render.RenderProps;
 import maspack.render.Renderer;
-import maspack.render.Renderer.ColorInterpolation;
 import maspack.render.Renderer.FaceStyle;
 import maspack.render.Renderer.LineStyle;
 import maspack.render.Renderer.PointStyle;
-import maspack.render.Renderer.Shading;
 import maspack.render.color.JetColorMap;
-import maspack.util.DoubleInterval;
-import maspack.util.NumberFormat;
 import maspack.util.ReaderTokenizer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import artisynth.core.util.ScalarRange;
 
 public class JawFemModel extends JawBaseModel {
@@ -122,13 +109,15 @@ public class JawFemModel extends JawBaseModel {
 	// Used in Elastic Foundation Force Behaviour
 	protected static final double DEFAULT_E_ELASTIC_CONTACT = 6 * 450000 / unitConversion;
 	protected static final double DEFAULT_Thickness_ELASTIC_CONTACT = 0.45; // mm
-	protected static final double DEFAULT_Damping_ELASTIC_CONTACT = 75;
+	protected static final double DEFAULT_Damping_ELASTIC_CONTACT = 175;
 	protected static final double DEFAULT_Nu_ELASTIC_CONTACT = 0.49;
 
 	protected boolean useMooneyRivlin = false;
 	protected boolean useBiteConstraints = false;
 
 	protected boolean useElasticFoundationContact = true;
+	protected boolean useElasticFoundationContactForTeeth = false;
+	protected boolean drawContactCollisions = false;
 
 	protected static RigidTransform3d hyoid_translation = new RigidTransform3d(new Vector3d(0, 7, -7), new AxisAngle());
 
@@ -304,43 +293,6 @@ public class JawFemModel extends JawBaseModel {
 	}
 
 	public void addCartilage() {
-		CollisionBehavior behav1 = new CollisionBehavior(true, 0);
-		CollisionBehavior behav2 = new CollisionBehavior(true, 0);
-		CollisionBehavior behav3 = new CollisionBehavior(true, 0);
-		CollisionBehavior behav4 = new CollisionBehavior(true, 0);
-
-		behav1.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
-		behav2.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
-		behav3.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
-		behav4.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
-
-		if (useElasticFoundationContact == true) {
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E_ELASTIC_CONTACT, DEFAULT_Nu_ELASTIC_CONTACT,
-					DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
-			behav1.setForceBehavior(EFContact);
-			behav2.setForceBehavior(EFContact);
-			behav3.setForceBehavior(EFContact);
-			behav4.setForceBehavior(EFContact);
-
-			getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
-		}
-
-		behav1.setMethod(Method.DEFAULT);
-		behav1.setName("mand_disc_right");
-		setCollisionBehavior(rigidBodies().get("jaw"), (FemModel3d) models().get("disc_right"), behav1);
-
-		behav2.setMethod(Method.DEFAULT);
-		behav2.setName("skull_disc_right");
-		setCollisionBehavior(rigidBodies().get("skull"), (FemModel3d) models().get("disc_right"), behav2);
-
-		behav3.setMethod(Method.DEFAULT);
-		behav3.setName("mand_disc_left");
-		setCollisionBehavior(rigidBodies().get("jaw"), (FemModel3d) models().get("disc_left"), behav3);
-
-		behav4.setMethod(Method.DEFAULT);
-		behav4.setName("skull_disc_left");
-		setCollisionBehavior(rigidBodies().get("skull"), (FemModel3d) models().get("disc_left"), behav4);
-
 		// attach cartilage to respective bones
 		attachFrame(rigidBodies().get("mandible_cartilage_right"), rigidBodies().get("jaw"));
 		attachFrame(rigidBodies().get("mandible_cartilage_left"), rigidBodies().get("jaw"));
@@ -351,6 +303,68 @@ public class JawFemModel extends JawBaseModel {
 		rigidBodies().get("mandible_cartilage_left").setMass(0);
 		rigidBodies().get("skull_cartilage_right").setMass(0);
 		rigidBodies().get("skull_cartilage_left").setMass(0);
+
+		if (withDisc) {
+			CollisionBehavior behav1 = new CollisionBehavior(true, 0);
+			CollisionBehavior behav2 = new CollisionBehavior(true, 0);
+			CollisionBehavior behav3 = new CollisionBehavior(true, 0);
+			CollisionBehavior behav4 = new CollisionBehavior(true, 0);
+
+			behav1.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
+			behav2.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
+			behav3.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
+			behav4.setMethod(Method.VERTEX_PENETRATION_BILATERAL);
+
+			if (useElasticFoundationContact == true) {
+				ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E_ELASTIC_CONTACT,
+						DEFAULT_Nu_ELASTIC_CONTACT, DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
+				behav1.setForceBehavior(EFContact);
+				behav2.setForceBehavior(EFContact);
+				behav3.setForceBehavior(EFContact);
+				behav4.setForceBehavior(EFContact);
+
+				getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
+			}
+
+			behav1.setMethod(Method.DEFAULT);
+			behav1.setName("mand_disc_right");
+			setCollisionBehavior(rigidBodies().get("jaw"), (FemModel3d) models().get("disc_right"), behav1);
+
+			behav2.setMethod(Method.DEFAULT);
+			behav2.setName("skull_disc_right");
+			setCollisionBehavior(rigidBodies().get("skull"), (FemModel3d) models().get("disc_right"), behav2);
+
+			behav3.setMethod(Method.DEFAULT);
+			behav3.setName("mand_disc_left");
+			setCollisionBehavior(rigidBodies().get("jaw"), (FemModel3d) models().get("disc_left"), behav3);
+
+			behav4.setMethod(Method.DEFAULT);
+			behav4.setName("skull_disc_left");
+			setCollisionBehavior(rigidBodies().get("skull"), (FemModel3d) models().get("disc_left"), behav4);
+		} else {
+			CollisionBehavior behav1 = new CollisionBehavior(true, 0);
+			CollisionBehavior behav2 = new CollisionBehavior(true, 0);
+			behav1.setName("mand_skull_right");
+			behav2.setName("mand_skull_left");
+			behav1.setMethod(Method.VERTEX_PENETRATION);
+			behav2.setMethod(Method.VERTEX_PENETRATION);
+
+			if (useElasticFoundationContact == true) {
+				ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E_ELASTIC_CONTACT,
+						DEFAULT_Nu_ELASTIC_CONTACT, DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
+				behav1.setForceBehavior(EFContact);
+				behav2.setForceBehavior(EFContact);
+
+				getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
+			}
+
+			setCollisionBehavior(rigidBodies().get("mandible_cartilage_right"),
+					rigidBodies().get("skull_cartilage_right"), behav1);
+			setCollisionBehavior(rigidBodies().get("mandible_cartilage_left"),
+					rigidBodies().get("skull_cartilage_left"), behav2);
+
+		}
+
 	}
 
 	protected void setBiteConstraints() {
@@ -420,8 +434,6 @@ public class JawFemModel extends JawBaseModel {
 		addBodyConnector(con5);
 
 	}
-
-
 
 	protected void attachLigaments() throws IOException {
 
@@ -581,14 +593,14 @@ public class JawFemModel extends JawBaseModel {
 		pos.x = pos.x / (attached_points.size());
 		pos.y = pos.y / (attached_points.size());
 		pos.z = pos.z / (attached_points.size());
-		
+
 		// Create particle p1 on the average position
 		Particle p1 = new Particle();
-		p1.setMass(0);		
+		p1.setMass(0);
 		p1.setPosition(pos);
 		addParticle(p1);
-		
-		// Create a PointFem3dAttachment on p1 
+
+		// Create a PointFem3dAttachment on p1
 		PointFem3dAttachment att = new PointFem3dAttachment(p1);
 		att.setFromNodes(p1.getPosition(), collectNodes(model, attached_points));
 		addAttachment(att);
@@ -602,13 +614,13 @@ public class JawFemModel extends JawBaseModel {
 		as.setMaterial(capsule_ligament_material);
 		as.getRenderProps().setLineStyle(LineStyle.LINE);
 		as.setRestLength(as.getLength() + slack);
-		as.getRenderProps().setLineColor(Color.GREEN);
+		as.getRenderProps().setLineColor(Color.YELLOW);
 		as.getRenderProps().setLineStyle(LineStyle.CYLINDER);
 		as.getRenderProps().setLineRadius(0.75);
 		addMultiPointSpring(as);
 
 		for (FemNode n : att.getNodes()) {
-			RenderProps.setSphericalPoints(n, 0.2, Color.GREEN);
+			RenderProps.setSphericalPoints(n, 0.2, Color.YELLOW);
 		}
 	}
 
@@ -784,11 +796,11 @@ public class JawFemModel extends JawBaseModel {
 		return cbar;
 	}
 
-	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints, Boolean condylarCapsule) 
+	public JawFemModel(String name, boolean withDisc, Boolean condyleConstraints, Boolean condylarCapsule)
 			throws IOException {
 		super();
 		setIntegrator(Integrator.ConstrainedBackwardEuler);
-		
+
 		this.setName(name);
 		this.withDisc = withDisc;
 		setGravity(0, 0, -gravityVal * unitConversion);
@@ -809,8 +821,8 @@ public class JawFemModel extends JawBaseModel {
 				ArtisynthPath.getSrcRelativePath(JawFemModel.class, ""));
 
 		for (RigidBody body : bodies) {
-			if (body.getName().contains("cartilage") && this.withDisc == false)
-				continue;
+//			if (body.getName().contains("cartilage") && withDisc == false)
+//				continue;
 			Log.debug(body.getName());
 			addRigidBody(body);
 		}
@@ -865,27 +877,28 @@ public class JawFemModel extends JawBaseModel {
 		// Add constraints (disc or condylar or capsule)
 		constrainedBody = myRigidBodies.get("jaw");
 		addFixedMarkers();
+		addCartilage();
+
 		if (withDisc) {
-			addCartilage();
 			attachLigaments();
-			// renderCollisionForces();
+			renderCollisionForces();
 
 			// Create a colorbar
 			ColorBar cbar = new ColorBar();
 			cbar.setName("colorBar");
 			cbar.setColorMap(((FemModel3d) models().get(0)).getColorMap());
-			// addRenderable(cbar);
+			addRenderable(cbar);
 		} else {
-			useElasticFoundationContact = false;
+			// add collision between the teeth			
 			addInterBoneCollision();
 		}
 
 		if (condyleConstraints) {
-			Log.debug("Adding Condyle Constraints");			
+			Log.debug("Adding Condyle Constraints");
 			setCondyleConstraints(false);
-		}				
+		}
 		if (condylarCapsule) {
-			Log.debug("Adding Condylar Capsule");			
+			Log.debug("Adding Condylar Capsule");
 			setCondylarCapsule();
 		}
 		for (BodyConnector bc : bodyConnectors()) {
@@ -933,28 +946,74 @@ public class JawFemModel extends JawBaseModel {
 		System.out.println("#excitors =" + getMuscleExciters().size());
 	}
 
-	public void addInterBoneCollision() {		
+	private void addInterBoneCollision() {
 		CollisionBehavior behav1 = new CollisionBehavior(true, 0);
-		behav1.setMethod(Method.DEFAULT);
-		if (useElasticFoundationContact == true) {						
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(
-					DEFAULT_E_ELASTIC_CONTACT, DEFAULT_Nu_ELASTIC_CONTACT,
-					DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
-			behav1.setForceBehavior(EFContact);									
+		behav1.setMethod(Method.VERTEX_PENETRATION);
+
+		attachFrame(rigidBodies().get("teeth"), rigidBodies().get("jaw"));
+		rigidBodies().get("teeth").setMass(0);
+
+		if (useElasticFoundationContactForTeeth == true) {
+			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(DEFAULT_E_ELASTIC_CONTACT,
+					DEFAULT_Nu_ELASTIC_CONTACT, DEFAULT_Damping_ELASTIC_CONTACT, DEFAULT_Thickness_ELASTIC_CONTACT);
+			behav1.setForceBehavior(EFContact);
 		} else {
-			// to model the PDL and tooth movement inside their sockets
-			ElasticFoundationForceBehavior EFContact = new ElasticFoundationForceBehavior(
-					500, 0.0, 0, 0.25);
-			behav1.setForceBehavior(EFContact);					
-			
 			// 2.7 MPa = 2700
 			// 83 GPa = 83000000 enamel
 			// 0.5 MPa = 500 PDL
 			// 2.45 MPa = 2450 Retrodiscal laminae (2.8+2.5+2.9+1.6 / 4)
-		}		
-		getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);		
-		behav1.setName("mand_skull");
-		setCollisionBehavior(rigidBodies().get("jaw"), rigidBodies().get("skull"), behav1);			
+
+			behav1.setDamping(1000);
+			behav1.setCompliance(0.00001);
+
+		}
+		getCollisionManager().setColliderType(ColliderType.AJL_CONTOUR);
+		behav1.setName("teeth_skull");
+
+		// Draw
+		if (drawContactCollisions) {
+			behav1.setDrawColorMap(ColorMapType.CONTACT_PRESSURE);
+			behav1.getPenetrationDepthRange().setUpdating(ScalarRange.Updating.AUTO_FIT);
+			CollisionManager cm = getCollisionManager();
+			RenderProps.setVisible(cm, true);
+			cm.setContactForceLenScale(10);
+
+			JetColorMap map = new JetColorMap();
+			map.setColorArray(new Color[] {
+					// new Color(0xFFCC99 ), // dark bone
+					new Color(0x0000FF), // blue
+					new Color(0x007FFF), // dark cyan
+					new Color(0x00FFFF), // cyan
+					new Color(0x7FFF7F), // dark green
+					new Color(0xFFFF00), // yellow
+					new Color(0xFF7F00), // orange
+					new Color(0xFF0000), // red
+					new Color(0x7F0000), // dark red
+			});
+		}
+
+		setCollisionBehavior(rigidBodies().get("teeth"), rigidBodies().get("skull"), behav1);
+		CollisionResponse cResponse = new CollisionResponse();
+		setCollisionResponse(rigidBodies().get("teeth"), rigidBodies().get("skull"), cResponse);
 	}
 
+	public ArrayList<Double> getOcclusalForces() {
+		ArrayList<Double> forces = new ArrayList<Double>();
+		if (withDisc) {
+			// interbone collision is not active in "withDisc" mode
+			return forces;
+		}
+		CollisionResponse resp = getCollisionManager().getResponse(rigidBodies().get("teeth"),
+				rigidBodies().get("skull"));
+
+		// 0 for first; 1 for second object
+		Map<Vertex3d, Vector3d> forcesMap = resp.getContactForces(1);
+
+		for (Vector3d forceVector : forcesMap.values()) {
+			forces.add(forceVector.norm());
+			// forceSum.add(forceVector);
+		}		
+
+		return forces;
+	}
 }
