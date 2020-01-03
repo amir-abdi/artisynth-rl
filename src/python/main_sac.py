@@ -20,7 +20,8 @@ def extend_arguments(parser):
     parser.add_argument('--tau', type=float, default=0.005, metavar='G',
                         help='target smoothing coefficient(τ) (default: 0.005)')
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
-                        help='Temperature parameter α - the relative importance of the entropy term (default: 0.2)')
+                        help='Temperature parameter α - the relative importance of the entropy '
+                             'term (default: 0.2)')
     parser.add_argument('--automatic_entropy_tuning', type=str2bool, default=False, metavar='G',
                         help='Automaically adjust α (default: False)')
     parser.add_argument('--batch_size', type=int, default=256, metavar='N',
@@ -60,6 +61,7 @@ def extend_arguments(parser):
                         help='use muscle forces instead of excitations for regularization')
     parser.add_argument('--hack_sym', type=str2bool, default=False,
                         help='add penalty for non-symmetric activations (temporary... remove !)')
+
     return parser
 
 
@@ -91,13 +93,17 @@ def main():
     global_episodes = 0
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
     if args.load_path:
-        global_episodes = agent.load_model(args.load_path, args.load_optim) * int(not args.reset_global_episode)
+        global_episodes = agent.load_model(args.load_path, args.load_optim) * int(
+            not args.reset_global_episode)
         logger.info(f'Agent loaded: {args.load_path} @{global_episodes}')
 
     memory = None
     if args.memory_load_path:
         memory = pickle.load(open(args.memory_load_path, 'rb'))
         logger.info(f'Memory loaded: {args.memory_load_path}')
+        logger.info(f'Loaded Memory Length: {len(memory)}')
+        logger.warning('There is something wrong with loading experiments from memory and '
+                       'the training becomes unstable. Be extra careful when using this feature!')
 
     if args.test:
         test(env, agent, args)
