@@ -821,7 +821,7 @@ public class LumbarSpineBaseDemo extends RootModel implements ItemListener {
 			mesh2.transform(rt);
 			mesh = MeshFactory.getSubtraction(mesh1, mesh2);
 			try {
-				mesh.write(new File(abdomenMeshPath), "%g");
+				mesh.write(new File(abdomenMeshPath), "%g", true);
 			} catch (Exception e) {
 			}
 		} else {

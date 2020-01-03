@@ -30,6 +30,7 @@ import artisynth.core.modelbase.StepAdjustment;
 import artisynth.core.rl.Log;
 import artisynth.core.rl.RlController;
 import artisynth.core.rl.RlModelInterface;
+import artisynth.core.rl.RlProp;
 import artisynth.core.rl.RlTargetControllerInterface;
 import artisynth.core.util.ArtisynthIO;
 import artisynth.core.util.ArtisynthPath;
@@ -52,7 +53,8 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	protected int port = 8080;
 
 	String point_name = "point";
-
+	double myTime = 0;
+	
 	RandomTargetController targetMotionController;
 	RlController rlTrack;
 
@@ -237,6 +239,7 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	}
 
 	public StepAdjustment advance(double t0, double t1, int flags) {
+		myTime = t0;
 		return super.advance(t0, t1, flags);
 	}
 
@@ -542,5 +545,14 @@ public class RlPoint2PointDemo extends RootModel implements RlModelInterface {
 	public RlTargetControllerInterface getTargetMotionController() {		
 		return targetMotionController;
 	}
+	
 
+	public ArrayList<RlProp> getRlProps() {
+		ArrayList<RlProp> props = new ArrayList<RlProp>();
+		return props;
+	}
+
+	public double getTime() {
+		return myTime;
+	}
 }

@@ -1,10 +1,12 @@
 package artisynth.models.rl.lumbarspine;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import artisynth.core.mechmodels.MuscleExciter;
 import artisynth.core.rl.RlModelInterface;
+import artisynth.core.rl.RlProp;
 import artisynth.core.rl.RlTargetControllerInterface;
 import artisynth.core.utils.Utils;
 import artisynth.core.rl.RlController;
@@ -15,7 +17,7 @@ public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInte
 	protected int port = 8080;
 
 	RandomTargetController targetMotionController;
-	RlController rlTrack;
+	RlController rlTrack;	
 
 	public RlLumbarSpineDemo() {
 		this("RlLumbarSpineAngular");
@@ -71,5 +73,15 @@ public class RlLumbarSpineDemo extends InvLumbarSpineDemo implements RlModelInte
 	public RlTargetControllerInterface getTargetMotionController() {
 		return this.targetMotionController;
 	}
+	
+	public ArrayList<RlProp> getRlProps() {
+		ArrayList<RlProp> props = new ArrayList<RlProp>();
+		return props;
+	}
+	
+	public double getTime() {
+		return 0.;
+	}
+
 
 }
