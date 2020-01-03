@@ -72,12 +72,11 @@ def get_parser(parser=None):
                         help='Reset all muscle excitations to zero after each reset.')
     parser.add_argument('--lr', type=float, default=0.0003, metavar='G', help='learning rate')
 
-    parser.add_argument('--pow_u', type=float, default=1, help='weight of distance reward term')
     parser.add_argument('--w_u', type=float, default=1, help='weight of distance reward term')
-    parser.add_argument('--w_d', type=float, default=1, help='weight of damping reward term')
-    parser.add_argument('--w_r', type=float, default=1,
-                        help='weight of excitation regularization reward term')
+    parser.add_argument('--w_d', type=float, default=0, help='weight of damping reward term')
     parser.add_argument('--w_s', type=float, default=0, help='weight of symmetry reward term')
+    parser.add_argument('--w_r', type=float, default=0,
+                        help='weight of excitation/force regularization reward term')
 
     # others
     parser.add_argument('--test', type=str2bool, default=False, help='Evaluate a trained model.')

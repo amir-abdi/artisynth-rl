@@ -20,8 +20,10 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
     if args.use_tensorboard:
         writer = SummaryWriter(
             logdir='{}/{}_SAC_{}_{}_{}'.format(configs.tensorboard_log_directory,
-                                               datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), args.env,
-                                               args.policy, "autotune" if args.automatic_entropy_tuning else ""))
+                                               datetime.datetime.now().strftime(
+                                                   "%Y-%m-%d_%H-%M-%S"), args.env,
+                                               args.policy,
+                                               "autotune" if args.automatic_entropy_tuning else ""))
 
     # Memory
     memory = memory or ReplayMemory(args.replay_size)
@@ -42,11 +44,9 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
         ent_loss_total = 0
         alpha_total = 0
         while not done:
-            if len(memory) < args.start_steps and global_steps < args.start_steps:
-                action = env.action_space.sample()  # Sample random action
-            else:
-                action = agent.select_action(state)  # Sample action from policy
-            if len(memory) > args.batch_size:
+            action = agent.select_action(state)
+            if len(memory) > args.batch_size and global_steps > args.start_steps:
+                # print('updating', len(memory), global_steps)
                 for i in range(args.updates_per_step):  # Number of updates per step in environment
                     critic_1_loss, critic_2_loss, policy_loss, ent_loss, alpha = \
                         agent.update_parameters(memory, args.batch_size)  # update all parameters
@@ -70,13 +70,14 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
             state = next_state
         # end of episode
 
-        # The following values are a bit off for the first episode as we have no updates for len(memory) < batch_size
-        critic_1_loss_total /= episode_steps
-        critic_2_loss_total /= episode_steps
-        policy_loss_total /= episode_steps
+        # The following values are a bit off for the first episode as we have no updates
+        # for len(memory) < batch_size
+        critic_1_loss_total /= (episode_steps * args.updates_per_step)
+        critic_2_loss_total /= (episode_steps * args.updates_per_step)
+        policy_loss_total /= (episode_steps * args.updates_per_step)
+        ent_loss_total /= (episode_steps * args.updates_per_step)
+        alpha_total /= (episode_steps * args.updates_per_step)
         episode_reward /= episode_steps
-        ent_loss_total /= episode_steps
-        alpha_total /= episode_steps
 
         if global_episodes % args.episode_log_interval == 0:
             print("Episode: {}, total numsteps: {}, episode steps: {}, reward: {}".format(
@@ -90,14 +91,15 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
                 writer.add_scalar('entropy_temprature/alpha', alpha_total, global_episodes)
             if args.use_wandb:
                 import wandb
-                wandb.log({'episode_reward': episode_reward,
-                           'loss/critic_1': critic_1_loss_total / args.updates_per_step,
-                           'loss/critic_2': critic_2_loss_total / args.updates_per_step,
-                           'loss/policy': policy_loss_total / args.updates_per_step,
-                           'loss/entropy_loss': ent_loss_total / args.updates_per_step,
-                           'entropy_temprature/alpha': alpha_total / args.updates_per_step,
-                           'lr': get_lr_pytorch(agent.policy_optim)},
-                          step=global_episodes)
+                wandb.log({
+                    'episode_reward': episode_reward,
+                    'loss/critic_1': critic_1_loss_total,
+                    'loss/critic_2': critic_2_loss_total,
+                    'loss/policy': policy_loss_total,
+                    'loss/entropy_loss': ent_loss_total,
+                    'entropy_temprature/alpha': alpha_total,
+                    'lr': get_lr_pytorch(agent.policy_optim)},
+                    step=global_episodes)
 
         if global_episodes % args.eval_interval == args.eval_interval - 1:
             avg_reward, infos = _test(env, agent, args.eval_episode)
@@ -112,6 +114,13 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
                     wandb.log({f'eval/{key}': val}, step=global_episodes)
 
         if global_episodes % args.save_interval == args.save_interval - 1:
+            test_save_path = os.path.join(configs.trained_directory, 'test_file')
+
+            # TODO: update the following hack by saving file temp and copy to destination
+            with open(test_save_path, 'w') as test_file:
+                test_file.write("This is just to make sure we have enough disk space to fully save "
+                                "the file not to screw up the agent or the memory! " * 1000)
+            
             agent_save_path = os.path.join(configs.trained_directory, 'agent')
             agent.global_episode = global_episodes + 1
             # torch.save(agent, agent_save_path)
@@ -130,9 +139,23 @@ def train(env, agent, args, configs, memory=None, global_episodes=0):
 
 
 def test(env, agent, args):
-    # todo: add setSeed to api
+    logger = setup_logger()
     env.seed(args.seed)
-    _test(env, agent, args.test_episode)
+    avg_reward, infos = _test(env, agent, args.test_episode)
+    logger.info('Test trial complete. Writing results...')
+
+    results_path = args.load_path + '_test_results'
+
+    if args.env[0:6] == 'JawEnv':
+        from artisynth_envs.envs.jaw_env import write_infos, calculate_convex_hull, \
+            maximum_occlusal_force
+        write_infos(infos, results_path)
+
+        # Derived metrics
+        maximum_occlusal_force(env, results_path)
+        calculate_convex_hull(results_path)
+
+    logger.info(f'results written to: {results_path}')
     env.close()
 
 
@@ -146,6 +169,8 @@ def _test(env, agent, episodes):
         episode_iter_count = 0
         info_episode_avg = {}
         info_episode_final = {}
+        info_episode_all = {}
+
         while not done:
             action = agent.select_action(state, eval_mode=True)
             next_state, reward, done, info = env.step(action)
@@ -153,9 +178,20 @@ def _test(env, agent, episodes):
             state = next_state
             episode_iter_count += 1
 
+            if info['time'] < 0.6:  # sleepSeconds as hard coded on the java side
+                # print('time:', info['time'])
+                done = False
+                continue
+
             for key, val in info.items():
-                info_episode_avg['avg_' + key] = info_episode_avg.get('avg_' + key, 0) + val
-                info_episode_final['final_' + key] = val
+                # keep the average and last item for scalars
+                if isinstance(val, float):
+                    info_episode_avg['avg_' + key] = info_episode_avg.get('avg_' + key, 0) + val
+                    info_episode_final['final_' + key] = val
+
+                if 'all_' + key not in info_episode_all.keys():
+                    info_episode_all['all_' + key] = list()
+                info_episode_all['all_' + key].append(val)
 
         episode_reward /= episode_iter_count
         avg_reward += episode_reward
@@ -170,15 +206,24 @@ def _test(env, agent, episodes):
             infos[key] = infos.get(key, 0) + info_episode_final[key]
             episode_print_str += f'  {key}:{info_episode_final[key]:.3f}'
 
+        for key in info_episode_all.keys():
+            # create a list of lists (first list is episodes, second is iterations of the episodes)
+            if key not in infos.keys():
+                infos[key] = list()
+            infos[key].append(info_episode_all[key])
+
         print(episode_print_str)
 
     avg_reward /= episodes
     print_str = f'Test #Episodes: {episodes}, avg_reward: {round(avg_reward, 3)}'
     for key in infos.keys():
-        infos[key] /= episodes
-        print_str += f' {key}:{infos[key]:.3f}'
+        if not isinstance(infos[key], list):  # don't do this for the info_episode_all values
+            infos[key] /= episodes
+            print_str += f' {key}:{infos[key]:.3f}'
 
     print("----------------------------------------")
     print(print_str)
     print("----------------------------------------")
+
     return avg_reward, infos
+

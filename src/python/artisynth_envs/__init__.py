@@ -55,7 +55,7 @@ register(
 
 register(
     id='SpineEnv-v0',
-    entry_point='artisynth_envs.envs:SpineEnvV0',
+    entry_point='artisynth_envs.envs:SpineEnv',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.lumbarspine.RlLumbarSpineDemo',
             c.COMPONENTS: {
@@ -101,7 +101,7 @@ register(
 
 register(
     id='JawEnv-v0',
-    entry_point='artisynth_envs.envs:JawEnvV0',
+    entry_point='artisynth_envs.envs:JawEnv',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
             'artisynth_args': '-disc false -condyleConstraints true -condylarCapsule false',
@@ -122,7 +122,7 @@ register(
 
 register(
     id='JawEnv-v1',
-    entry_point='artisynth_envs.envs:JawEnvV0',
+    entry_point='artisynth_envs.envs:JawEnv',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
             'artisynth_args': '-disc false -condyleConstraints false -condylarCapsule true',
@@ -143,7 +143,7 @@ register(
 
 register(
     id='JawEnv-v2',
-    entry_point='artisynth_envs.envs:JawEnvV0',
+    entry_point='artisynth_envs.envs:JawEnv',
     nondeterministic=False,
     kwargs={'artisynth_model': 'artisynth.models.rl.jaw.RlJawDemo',
             'artisynth_args': '-disc false -condyleConstraints false -condylarCapsule true',

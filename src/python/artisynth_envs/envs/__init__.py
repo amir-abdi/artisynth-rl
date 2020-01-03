@@ -1,3 +1,3 @@
-from .spine_env import SpineEnvV0
+from .spine_env import SpineEnv
 from .point2point_env import Point2PointEnv
-from .jaw_env import JawEnvV0
+from .jaw_env import JawEnv

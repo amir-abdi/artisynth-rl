@@ -8,7 +8,7 @@ from artisynth_envs.artisynth_base_env import ArtiSynthBase
 logger = logging.getLogger(c.LOGGER_STR)
 
 
-class SpineEnvV0(ArtiSynthBase):
+class SpineEnv(ArtiSynthBase):
     def __init__(self, wait_action, reset_step, goal_reward, goal_threshold, **kwargs):
         self.args = Bunch(kwargs)
         super().__init__(**kwargs)

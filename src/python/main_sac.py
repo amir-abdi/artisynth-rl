@@ -55,13 +55,6 @@ def extend_arguments(parser):
     parser.add_argument('--load_optim', type=str2bool, default=False,
                         help='to load the state of the optimizers, including the learning rate.')
 
-    parser.add_argument('--hack_log', type=str2bool, default=False,
-                        help='Add log to reward! (temporary... remove later!)')
-    parser.add_argument('--hack_muscle_forces', type=str2bool, default=False,
-                        help='use muscle forces instead of excitations for regularization')
-    parser.add_argument('--hack_sym', type=str2bool, default=False,
-                        help='add penalty for non-symmetric activations (temporary... remove !)')
-
     return parser
 
 
