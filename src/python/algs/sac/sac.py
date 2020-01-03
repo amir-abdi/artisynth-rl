@@ -157,13 +157,15 @@ class SAC:
         with open(filepath, 'rb') as f:
             checkpoint = torch.load(f)
 
-        for key, value in self.models.items():
-            value.load_state_dict(checkpoint['model_states'][key], strict=False)
+        for key in self.models.keys():
+            self.models[key].load_state_dict(checkpoint['model_states'][key], strict=False)
+
+        hard_update(self.critic_target, self.critic)
 
         if load_optim:
             # todo: make sure learning rate loads from optim_state
             self.lr_schedulers.clear()
-            for key, value in self.optims.items():
-                value.load_state_dict(checkpoint['optim_states'][key])
+            for key in self.optims.keys():
+                self.optims[key].load_state_dict(checkpoint['optim_states'][key])
 
         return checkpoint['global_episode_num']
