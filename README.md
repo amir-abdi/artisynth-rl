@@ -139,6 +139,14 @@ the 4 directories are made in the artisynth_rl root.
         -play -noTimeline
 
 #### Jaw
+The Jaw model is modified from the 
+[Dynjaw package](https://github.com/artisynth/artisynth_models/tree/69fb58f521cead7b48250f320177475fcbea5ddc/src/artisynth/models/dynjaw) 
+in ArtiSynth, originally 
+developed by Ian Stavness (@stavness) form the University of Saskatchewan, 
+and later extended by Benedikt Sagl (Medical University of Vienna).
+The original jaw model is available in the 
+[artisynth_models](https://github.com/artisynth/artisynth_models)
+repository.
 
     artisynth -model artisynth.models.rl.jaw.RlJawDemo \
     [  -port 8080 -disc false -condyleConstraints false -condylarCapsule true ]  \
