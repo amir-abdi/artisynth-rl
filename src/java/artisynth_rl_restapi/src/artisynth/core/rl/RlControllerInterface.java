@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public interface RlControllerInterface {
 
 	RlState getState();
+	double getTime();
 	int getActionSize();
 	int getObservationSize();
 	int getStateSize();
@@ -13,4 +14,6 @@ public interface RlControllerInterface {
 	ArrayList<Double> getExcitations();
 	ArrayList<Double> getMuscleForces();
 	String setSeed(int seed);
+	String setTest(boolean isTest);
+	boolean getTest();
 }

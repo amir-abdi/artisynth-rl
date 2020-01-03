@@ -4,17 +4,33 @@ import java.util.ArrayList;
 
 public class RlState {
 	private ArrayList<RlComponent> rlComponents;
+	private ArrayList<RlProp> rlProps;
 	private RlMuscleProps excitations;
-	private RlMuscleProps muscleForces;
-
+	private RlMuscleProps muscleForces;	
+	private double time;
+	
 	public RlState() {
+		time = 0.;
 		rlComponents = new ArrayList<RlComponent>();
+		rlProps = new ArrayList<RlProp>();
 		excitations = new RlMuscleProps();
 		muscleForces = new RlMuscleProps();
+	}
+	
+	public void setTime(double t) { 
+		this.time = t;
+	}
+	
+	public double getTime() {
+		return this.time;
 	}
 
 	public ArrayList<RlComponent> getRlComponents() {
 		return rlComponents;
+	}	
+	
+	public ArrayList<RlProp> getProps() {
+		return rlProps;
 	}
 
 	public ArrayList<Double> getExcitations() {
@@ -33,17 +49,16 @@ public class RlState {
 		muscleForces.setProps(f);
 	}
 
-	public void setState(ArrayList<RlComponent> list) {
-		// TODO Should we always deep copy? We are only reading... maybe switch all to
-		// shallow copy
-		rlComponents = new ArrayList<RlComponent>(list.size());
-		for (int i = 0; i < list.size(); ++i) {
-			rlComponents.set(i, list.get(i));
-		}
-	}
-
-	public void addAll(ArrayList<RlComponent> list) {
+	public void addAllRlComponents(ArrayList<RlComponent> list) {
 		rlComponents.addAll(list);
+	}
+	
+	public void addAllProps(ArrayList<RlProp> list) {
+		rlProps.addAll(list);
+	}
+	
+	public void addProp(RlProp prop) {
+		rlProps.add(prop);
 	}
 
 	public int numComponents() {

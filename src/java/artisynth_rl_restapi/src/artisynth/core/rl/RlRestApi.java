@@ -11,8 +11,6 @@ import com.google.gson.Gson;
 public class RlRestApi {
 	RlControllerInterface rlController;
 	int serverPort;
-	// private static org.apache.logging.log4j.Logger logger =
-	// LogManager.getLogger(RlRestApi.class);
 
 	public RlRestApi(RlControllerInterface rlController, int serverPort) {
 		this.rlController = rlController;
@@ -24,7 +22,10 @@ public class RlRestApi {
 				(request, response) -> rlController.resetState(Boolean.parseBoolean(request.body())), json());
 		spark.Spark.post("/setSeed",
 				(request, response) -> rlController.setSeed(Integer.parseInt(request.body())), json());
+		spark.Spark.post("/setTest",
+				(request, response) -> rlController.setTest(Boolean.parseBoolean(request.body())), json());
 		spark.Spark.get("/state", (request, response) -> rlController.getState(), json());
+		spark.Spark.get("/time", (request, response) -> rlController.getTime(), json());
 		spark.Spark.get("/obsSize", (request, response) -> rlController.getObservationSize(), json());
 		spark.Spark.get("/stateSize", (request, response) -> rlController.getStateSize(), json());
 		spark.Spark.get("/actionSize", (request, response) -> rlController.getActionSize(), json());

@@ -75,9 +75,7 @@ public class RlComponent {
 		for (int i = 0; i < v.size(); ++i) {
 			position.add(v.get(i));
 		}
-	}
-	
-	
+	}	
 	
 	public void setVelocity(double[] v) {
 		assert v.length == 3;

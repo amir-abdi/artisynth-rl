@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+import com.sun.org.apache.bcel.internal.generic.ISTORE;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import artisynth.core.gui.ControlPanel;
 import artisynth.core.inverse.TargetFrame;
@@ -77,13 +79,9 @@ public class RlController extends ControllerBase
 
 	// list of all muscle exciters
 	protected ComponentList<ExcitationComponent> exciters;
-	protected ArrayList<Double> excitationValues = new ArrayList<Double>();
-	protected Boolean excitersUpToDate = true;
+	protected ArrayList<Double> excitationValues = new ArrayList<Double>();	
 	protected RlState nextState = new RlState();
-	protected Boolean nextStateUpToDate = false;
-	protected Boolean getNextState = false;
 	protected double lastStateT = 0.0;
-	protected Boolean nextStateUntilConvergence = false;
 
 	RlRestApi networkHandler;
 	protected MechSystemBase myMech;
@@ -92,10 +90,16 @@ public class RlController extends ControllerBase
 	protected RenderProps targetRenderProps;
 	protected RenderProps sourceRenderProps;
 
+	protected Boolean excitersUpToDate = true;
+	protected Boolean nextStateUpToDate = false;
+	protected Boolean getNextState = false;
+	protected Boolean nextStateUntilConvergence = false;	
 	protected boolean targetsVisible = true;
 	protected boolean sourcesVisible = true;
 	protected boolean enabled = true;
 	protected boolean debug = false;
+	protected boolean testTrial = false;
+	
 	protected double targetsPointRadius = DEFAULT_TARGET_RADIUS;
 	protected int targetsLineWidth = DEFAULT_TARGET_LINE_WIDTH;
 	public static final boolean DEFAULT_DEBUG = true;
@@ -198,8 +202,8 @@ public class RlController extends ControllerBase
 
 		// Create the RlState and fill with values
 		RlState rlState = new RlState();
-		rlState.addAll(getRlComponents(getSources()));
-		rlState.addAll(getRlComponents(getTargets()));
+		rlState.addAllRlComponents(getRlComponents(getSources()));
+		rlState.addAllRlComponents(getRlComponents(getTargets()));
 		rlState.setExcitations(this.getExcitations());
 
 		// reset state
@@ -605,11 +609,15 @@ public class RlController extends ControllerBase
 
 		// results
 		RlState rlState = new RlState();
-		rlState.addAll(getRlComponents(sources));
-		rlState.addAll(getRlComponents(targets));
+		rlState.addAllRlComponents(getRlComponents(sources));
+		rlState.addAllRlComponents(getRlComponents(targets));
 
 		rlState.setExcitations(getExcitations());
 		rlState.setMuscleForces(getMuscleForces());
+		
+		rlState.addAllProps(myInverseModel.getRlProps());
+		
+		rlState.setTime(myInverseModel.getTime());
 
 		Log.debug("Get State state.size = " + rlState.numComponents());
 		return rlState;
@@ -673,7 +681,7 @@ public class RlController extends ControllerBase
 	public RlState setExcitations(ArrayList<Double> excitations) {
 		excitationValues = excitations;
 		excitersUpToDate = false;
-		Log.info("setExcitations");
+		Log.debug("setExcitations");
 		if (getNextState) {
 			nextStateUpToDate = false;
 			Log.info("waiting for next state");
@@ -681,7 +689,7 @@ public class RlController extends ControllerBase
 			Log.info("next state done");
 			return nextState;
 		}
-		Log.info("setExcitations done");
+		Log.debug("setExcitations done");
 		return new RlState();
 	}
 
@@ -753,6 +761,18 @@ public class RlController extends ControllerBase
 		Log.info(message);
 		return message;
 	}
+	
+	@Override
+	public String setTest(boolean isTest) {
+		this.testTrial = isTest;		
+		Log.info("Is Test: " + isTest);
+		return "" + isTest;
+	}
+	
+	@Override
+	public boolean getTest() {
+		return testTrial;
+	}
 
 	/**
 	 * Clears all terms and disposes storage
@@ -780,10 +800,8 @@ public class RlController extends ControllerBase
 		return myComponents.remove(comp);
 	}
 
-	ControlPanel controlPanel;
-
-	public void createPanel() {
-//	      Main.getMain ().getInverseManager ().showInversePanel (root, this);		
-
+	@Override
+	public double getTime() {
+		return myInverseModel.getTime();
 	}
 }
