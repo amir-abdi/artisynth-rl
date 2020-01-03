@@ -1,8 +1,18 @@
-scripts
+*.h5f
+venv*
+output*
+.idea*
+src/__pycache__*
+results*
+.ipynb_checkpoints/
+*.pyc
+
 log
-wandb
+scripts
 results
 *legacy*
+
+*.sh
 
 # Compiled class file
 *.class
@@ -33,20 +43,6 @@ hs_err_pid*
 .settings/*
 
 # libraries
-
-*.h5f
-venv*
-output*
-.idea*
-src/__pycache__*
-results*
-src/wandb
-.ipynb_checkpoints/
-*.pyc
-
 wandb
+src/wandb
 
-results
-
-*legacy*
-log
