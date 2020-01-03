@@ -13,6 +13,9 @@ class ReplayMemory:
         self.position = 0
 
     def push(self, state, action, reward, next_state, done):
+        """Pushes the tuple into the memory and deletes oldest samples if the size of the memory
+        has reached its maximum capacity.
+        """
         if len(self.buffer) < self.capacity:
             self.buffer.append(None)
         self.buffer[self.position] = (state, action, reward, next_state, done)
