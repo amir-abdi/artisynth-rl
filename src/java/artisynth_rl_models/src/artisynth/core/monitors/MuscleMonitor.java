@@ -19,7 +19,7 @@ public class MuscleMonitor extends RlMonitor {
 	}
 
 	public void setMyMuscle(Muscle myMuscle) {
-		this.myMuscle = myMuscle;
+		this.myMuscle = myMuscle;		
 	}
 
 	@Override
