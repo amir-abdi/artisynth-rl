@@ -55,6 +55,8 @@ def extend_arguments(parser):
     parser.add_argument('--load_optim', type=str2bool, default=False,
                         help='to load the state of the optimizers, including the learning rate.')
 
+    parser.add_argument('--goal_hack', type=str2bool, default=False)
+
     return parser
 
 

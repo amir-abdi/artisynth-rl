@@ -1,10 +1,10 @@
 import numpy as np
-import logging
 
 from common import constants as c
+from common.config import setup_logger
 from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
-logger = logging.getLogger(c.LOGGER_STR)
+logger = setup_logger()
 
 
 class Point2PointEnv(ArtiSynthBase):

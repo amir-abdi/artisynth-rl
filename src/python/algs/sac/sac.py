@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from torch.optim import Adam
 from algs.sac.utils import soft_update, hard_update
 from algs.sac.model import GaussianPolicy, QNetwork, DeterministicPolicy
-from common.utilities import ExponentialLRWithMin
+from common.utilities_pytorch import ExponentialLRWithMin
 
 
 class SAC:

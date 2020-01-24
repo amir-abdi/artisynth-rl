@@ -1,11 +1,11 @@
-import logging
 import numpy as np
 
 from common import constants as c
 from common.utilities import Bunch
+from common.config import setup_logger
 from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
-logger = logging.getLogger(c.LOGGER_STR)
+logger = setup_logger()
 
 
 class SpineEnv(ArtiSynthBase):

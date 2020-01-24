@@ -1,14 +1,13 @@
-import logging
-
 import numpy as np
 import torch
 import os
 
 from common import constants as c
 from common.utilities import Bunch
+from common.config import setup_logger
 from artisynth_envs.artisynth_base_env import ArtiSynthBase
 
-logger = logging.getLogger(c.LOGGER_STR)
+logger = setup_logger()
 
 
 class JawEnv(ArtiSynthBase):
@@ -86,6 +85,7 @@ class JawEnv(ArtiSynthBase):
         return np.sum([np.abs(excitations[i] - excitations[i + 1])
                        for i in range(0, len(excitations), 2)])
 
+    goal_th_step = 0
     def calc_reward(self, state, action):
         # initialize
         observation = state[c.OBSERVATION_STR]
@@ -114,10 +114,19 @@ class JawEnv(ArtiSynthBase):
             # log location of the mid-incisal point during test
             info['lowerIncisorPosition'] = observation['lowerincisor']['position']
 
-        elif phi_u < self.goal_threshold and velocity < 3:
-            done = True
-            done_reward = self.goal_reward
-            logging.info(f'Done: {phi_u} < {self.goal_threshold}')
+        elif phi_u < self.goal_threshold:
+            if not self.args.goal_hack:
+                done = True
+                done_reward = self.goal_reward
+                logger.info(f'Done: {phi_u} < {self.goal_threshold}')
+            else:
+                self.goal_th_step += 1
+                if self.goal_th_step >= 5:
+                    done = True
+                    done_reward = self.goal_reward
+                    logger.info(f'Done: {phi_u} < {self.goal_threshold}, '
+                                 f'goal_th_step={self.goal_th_step}')
+                    self.goal_th_step = 0
 
         reward += done_reward
 
@@ -136,6 +145,8 @@ class JawEnv(ArtiSynthBase):
 
     def reset(self):
         self.episode_counter = 0
+        # todo: remove this hack
+        self.goal_th_step = 0
         return super().reset()
 
 
