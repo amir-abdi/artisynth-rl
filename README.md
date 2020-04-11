@@ -153,7 +153,7 @@ repository.
     -play -noTimeline
 
 
-**Demo**: You can watch a demo of the trained jaw model here 
+**Demo**: You can watch a demo of the trained jaw model here   
 [![Jaw Model Demo](https://img.youtube.com/vi/E9Ix0q5frSQ/0.jpg)](https://www.youtube.com/watch?v=E9Ix0q5frSQ) 
 
 ### Testing
